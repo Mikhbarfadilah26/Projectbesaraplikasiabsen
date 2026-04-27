@@ -1,0 +1,125 @@
+ABSENSISISWASMKIKHBARFADILLAH/
+│
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Auth/
+│   │   │   │   ├── ControllerAuthUser.php
+│   │   │   │   ├── ControllerAuthSiswa.php
+│   │   │   │   └── ControllerAuthLoginHistory.php
+│   │   │   ├── Dashboard/
+│   │   │   │   ├── ControllerDashboardAdmin.php
+│   │   │   │   ├── ControllerDashboardGuru.php
+│   │   │   │   └── ControllerDashboardSiswa.php
+│   │   │   ├── Master/
+│   │   │   │   ├── ControllerUser.php
+│   │   │   │   ├── ControllerJurusan.php
+│   │   │   │   ├── ControllerKelas.php
+│   │   │   │   ├── ControllerSiswa.php
+│   │   │   │   ├── ControllerMapel.php
+│   │   │   │   ├── ControllerTahunAjaran.php
+│   │   │   │   ├── ControllerSemester.php
+│   │   │   │   └── ControllerStatusAbsen.php  <-- (BARU: Sesuai tabel statusabsen)
+│   │   │   ├── Transaksi/
+│   │   │   │   ├── ControllerJadwal.php
+│   │   │   │   ├── ControllerAbsensi.php
+│   │   │   │   └── ControllerDetailAbsensi.php
+│   │   │   ├── Laporan/
+│   │   │   │   ├── ControllerLaporan.php
+│   │   │   │   ├── ControllerLaporanHarian.php
+│   │   │   │   ├── ControllerLaporanBulanan.php
+│   │   │   │   └── ControllerLaporanPerSiswa.php
+│   │   │   ├── ZonaSiswa/
+│   │   │   │   └── ControllerZonaSiswa.php
+│   │   │   └── Landing/
+│   │   │       └── ControllerLanding.php
+│   │   └── Middleware/
+│   │       ├── MiddlewareSiswa.php
+│   │       └── RoleMiddleware.php
+│   │
+│   ├── Models/
+│   │   ├── ModelUser.php
+│   │   ├── ModelJurusan.php
+│   │   ├── ModelKelas.php
+│   │   ├── ModelSiswa.php
+│   │   ├── ModelMapel.php
+│   │   ├── ModelTahunAjaran.php
+│   │   ├── ModelSemester.php
+│   │   ├── ModelStatusAbsen.php <-- (BARU: Sesuai tabel statusabsen)
+│   │   ├── ModelJadwal.php
+│   │   ├── ModelAbsensi.php
+│   │   └── ModelDetailAbsensi.php
+│   └── Providers/ ...
+│
+├── database/
+│   ├── migrations/
+│   │   └── migrasiabsensi.php
+│   └── seeders/
+│       └── SeederAbsensi.php
+│
+├── public/
+│   ├── dist/ (AdminLTE)
+│   ├── fotoupload/
+│   │   ├── user/
+│   │   └── siswa/
+│   └── index.php
+│
+├── resources/
+│   ├── views/
+│   │   ├── layouts/
+│   │   │   ├── appadmin.blade.php
+│   │   │   ├── appguru.blade.php
+│   │   │   └── appsiswa.blade.php
+│   │   │   └── applanding.blade.php
+│   │   ├── user/
+│   │   │   ├── dashboard/
+│   │   │   ├── user/
+│   │   │   ├── jurusan/
+│   │   │   ├── kelas/
+│   │   │   ├── siswa/
+│   │   │   ├── mapel/
+│   │   │   ├── tahunajaran/
+│   │   │   ├── semester/
+│   │   │   ├── statusabsen/ <-- (BARU: Folder view statusabsen)
+│   │   │   │   ├── index.blade.php
+│   │   │   │   └── edit.blade.php
+│   │   │   ├── jadwal/
+│   │   │   └── absensi/
+│   │
+│   │   ├── Zonasiswa/
+│   │   │   ├── dashboard/
+│   │   │   │   └── dashboardsiswa.blade.php
+│   │   │   └── riwayatabsensi.blade.php
+│   │
+│   │   ├── laporan/
+│   │   │   ├── daftarlaporan.blade.php
+│   │   │   ├── laporanharian.blade.php
+│   │   │   ├── laporanbulanan.blade.php
+│   │   │   ├── laporanpersiswa.blade.php
+│   │   │   └── cetaklaporan.blade.php
+│   │
+│   │   ├── landing/
+│   │   │   ├── home.blade.php
+│   │   │   ├── tentang.blade.php
+│   │   │   ├── kontak.blade.php
+│   │   │   ├── informasi.blade.php
+│   │   │   ├── jadwalumum.blade.php
+│   │   │   ├── pengumuman.blade.php
+│   │   │   └── detailpengumuman.blade.php
+│   │
+│   │   ├── auth/
+│   │   │   ├── loginuser.blade.php
+│   │   │   ├── loginsiswa.blade.php
+│   │   │   └── registersiswa.blade.php
+│   │
+│   │   └── errors/
+│   │       ├── 404.blade.php
+│   │       ├── 403.blade.php
+│   │       └── 500.blade.php
+│
+├── routes/
+│   └── web.php
+│
+├── storage/
+├── tests/
+└── .env
