@@ -1,0 +1,208 @@
+sewaalatahmadi/
+│
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Auth/
+│   │   │   │   ├── UserAuthController.php
+│   │   │   │   └── PenyewaAuthController.php
+│   │   │   │
+│   │   │   ├── Dashboard/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   └── PenyewaDashboardController.php
+│   │   │   │
+│   │   │   ├── Master/
+│   │   │   │   ├── UserController.php
+│   │   │   │   ├── PenyewaController.php
+│   │   │   │   ├── KategoriController.php
+│   │   │   │   ├── MerkController.php
+│   │   │   │   ├── KondisiController.php
+│   │   │   │   └── AlatController.php
+│   │   │   │
+│   │   │   ├── Transaksi/
+│   │   │   │   ├── PemesananController.php
+│   │   │   │   ├── PembayaranController.php
+│   │   │   │   ├── DendaController.php
+│   │   │   │   ├── ArtikelController.php
+│   │   │   │   └── KomentarController.php
+│   │   │   │
+│   │   │   ├── Laporan/
+│   │   │   │   ├── LaporanController.php
+│   │   │   │   ├── LaporanBulananController.php
+│   │   │   │   ├── LaporanTahunanController.php
+│   │   │   │   └── LaporanArusKasController.php
+│   │   │   │
+│   │   │   ├── Penyewa/
+│   │   │   │   ├── DashboardController.php
+│   │   │   │   └── PemesananController.php
+│   │   │   │
+│   │   │   └── Landing/
+│   │   │       └── LandingController.php
+│   │   │
+│   │   └── Middleware/
+│   │       ├── RoleMiddleware.php
+│   │       └── PenyewaMiddleware.php
+│   │
+│   ├── Models/
+│   │   ├── User.php
+│   │   ├── Penyewa.php
+│   │   ├── Kategori.php
+│   │   ├── Merk.php
+│   │   ├── Kondisi.php
+│   │   ├── Alat.php
+│   │   ├── Pemesanan.php
+│   │   ├── Pembayaran.php
+│   │   ├── Denda.php
+│   │   ├── Artikel.php
+│   │   └── Komentar.php
+│   │
+│   └── Services/   ← (opsional tapi sangat disarankan)
+│       ├── PemesananService.php
+│       └── PembayaranService.php
+│
+├── database/
+│   ├── migrations/
+│   │   └── migrasisewaalatahmadil.php
+│   │
+│   └── seeders/
+│       └── seedersewaalatahmadil.php => (seeder semua tabel kecuali pemesanan, pembayaran)
+│
+├── resources/
+│   ├── views/
+│   │
+│   │   ├── layouts/   
+│   │   │   ├── apptamu.blade.php
+│   │   │   ├── appuser.blade.php
+│   │   │   ├── apppenyewa.blade.php
+│   │   │   ├── tamu/
+│   │   │   │   ├── navbar.blade.php
+│   │   │   │   ├── sidebar.blade.php
+│   │   │   │   └── footer.blade.php
+│   │   │   ├── user/
+│   │   │   │   ├── navbar.blade.php
+│   │   │   │   ├── sidebaradmin.blade.php
+│   │   │   │   ├── sidebarpetugas.blade.php
+│   │   │   │   └── footer.blade.php
+│   │   │   └── Penyewa/
+│   │   │   │   ├── navbar.blade.php
+│   │   │   │   ├── sidebar.blade.php
+│   │   │   │   └── footer.blade.php
+│   │   │   └── Landing/
+│   │   │   │   ├── navbar.blade.php
+│   │   │   │   ├── sidebar.blade.php
+│   │   │       └── footer.blade.php
+│   │   │
+│   │   ├── user/   ← (ADMIN & PETUGAS)
+│   │   │   ├── dashboard/
+│   │   │   │   ├── dashboardadmin.blade.php
+│   │   │   │   └── dashboardpetugas.blade.php
+│   │   │   ├── user/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   ├── merk/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   ├── kondisi/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   ├── kategori/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   ├── Penyewa/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   ├── alat/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php        
+│   │   │   ├── denda/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php        
+│   │   │   ├── pemesanan/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php        
+│   │   │   ├── pembayaran/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   ├── show.blade.php
+│   │   │   │   └── kwitansi.blade.php    
+│   │   │   ├── artikel/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   ├── komentar/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   └── laporan/
+│   │   │       ├── laporantabulanan.blade.php
+│   │   │       ├── laporantahunan.blade.php
+│   │   │       ├── laporanaruskas.blade.php
+│   │   │       ├── cetaklaporanbulanan.blade.php
+│   │   │       ├── cetaklaporantahunan.blade.php
+│   │   │       ├── cetaklaporanaruskas.blade.php
+│   │   │       └── cetaklaporan.blade.php
+│   │   │
+│   │   ├── zonaPenyewa/   ← (LOGIN Penyewa)
+│   │   │   ├── dashboard/
+│   │   │   │   └── Penyewa.blade.php  (halaman yang berisi rangkuman data 5 pembayaran terakhir, 5 setoran terakhir, dan tunggakan pembayaran dan setoran)
+│   │   │   └── pemesanan/
+│   │   │       ├── index.blade.php  (halaman yang berisi seluruh data atau daftar pemesanan alat yang pernah dilakukan oleh seorang user dari sisi user)
+│   │   │       ├── create.blade.php   (halaman yang berisi form tambah pemesanan alat disisi user)
+│   │   │       ├── edit.blade.php   (halaman yang berisi form edit pemesanan alat disisi user)
+│   │   │       └── show.blade.php   (halaman yang berisi tampilan detail pemesanan alat disisi user yang munccul ketika diklik dari sebuah data di index)
+│   │   │
+│   │   ├── landing/   ← (PUBLIC)
+│   │   │   ├── home.blade.php (halaman defafult paling depan)
+│   │   │   ├── detailartikel.blade.php (tampil ketika diklik 'baca selengkapnya' di halaman home dan berisi isi dari seluruh konten dan menampilkan gambar termasuk seluruh atribut yang ada di fitur artikel)
+│   │   │   ├── daftarkategori.blade.php (halaman yang ada di navbar menu 'daftar kategori' yang berisi daftar seluruh kategori yang bisa menampilkan konten sesuai kategori yang diklik)
+│   │   │   ├── kategori.blade.php (halaman yang muncul ketika klik sebuah kategori untuk menampilkan seluruh konten yang ada di kategori tersebut)
+│   │   │   ├── tag.blade.php (halaman yang muncul ketika klik sebuah deskripsi dan menampilkan seluruh konten yang ada di tag tersebut)
+│   │   │   ├── tentang.blade.php (halaman yang muncul ketika klik navbar menu 'tentang')
+│   │   │   ├── kontak.blade.php (halaman yang muncul ketika klik navbar menu 'kontak')
+│   │   │   └── daftarisi.blade.php (halaman yang muncul ketika klik navbar menu 'daftarisi')
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── loginuser.blade.php
+│   │   │   ├── loginpenyewa.blade.php
+│   │   │   └── registerpenyewa.blade.php
+│   │   │
+│   │   └── errors/
+│   │       ├── 403.blade.php
+│   │       ├── 404.blade.php
+│   │       └── 500.blade.php
+│
+├── routes/
+│   └── web.php
+│
+├── public/
+│   ├── dist/
+│   ├── plugins/
+│   ├── uploads/
+│   │   ├── user/
+│   │   ├── anggota/
+│   │   ├── alat/
+│   │   ├── pemesanan/
+│   │   └── pembayaran/
+│   │
+│   └── index.php
+│
+└── .env
