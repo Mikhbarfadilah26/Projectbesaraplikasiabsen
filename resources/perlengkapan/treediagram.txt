@@ -19,7 +19,7 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │   │   │   ├── ControllerMapel.php
 │   │   │   │   ├── ControllerTahunAjaran.php
 │   │   │   │   ├── ControllerSemester.php
-│   │   │   │   └── ControllerStatusAbsen.php  <-- (BARU: Sesuai tabel statusabsen)
+│   │   │   │   └── ControllerStatusAbsen.php  
 │   │   │   ├── Transaksi/
 │   │   │   │   ├── ControllerJadwal.php
 │   │   │   │   ├── ControllerAbsensi.php
@@ -45,7 +45,7 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │   ├── ModelMapel.php
 │   │   ├── ModelTahunAjaran.php
 │   │   ├── ModelSemester.php
-│   │   ├── ModelStatusAbsen.php <-- (BARU: Sesuai tabel statusabsen)
+│   │   ├── ModelStatusAbsen.php 
 │   │   ├── ModelJadwal.php
 │   │   ├── ModelAbsensi.php
 │   │   └── ModelDetailAbsensi.php
@@ -80,7 +80,7 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │   │   ├── mapel/
 │   │   │   ├── tahunajaran/
 │   │   │   ├── semester/
-│   │   │   ├── statusabsen/ <-- (BARU: Folder view statusabsen)
+│   │   │   ├── statusabsen/ 
 │   │   │   │   ├── index.blade.php
 │   │   │   │   └── edit.blade.php
 │   │   │   ├── jadwal/

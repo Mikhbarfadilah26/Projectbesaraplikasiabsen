@@ -24,9 +24,16 @@
             <div class="container">
 
                 <!-- LOGO + NAMA -->
-                <a href="/" class="navbar-brand d-flex align-items-center">
+                <a href="/" class="navbar-brand d-flex align-items-center overflow-hidden" style="max-width: 250px;">
+
                     <img src="{{ asset('dist/img/foto1.png') }}" class="logo-sekolah mr-2">
-                    <span class="nama-sekolah" style="font-weight: 600;">SMK Negeri 1 Karang Baru</span>
+
+                    <div class="running-text-wrapper">
+                        <span class="running-text">
+                            SMK Negeri 1 Karang Baru
+                        </span>
+                    </div>
+
                 </a>
 
                 <!-- HAMBURGER -->
@@ -62,19 +69,19 @@
                             <a href="/kontak" class="nav-link {{ request()->is('kontak') ? 'active-menu' : '' }}">Kontak</a>
                         </li>
 
-<!-- LOGIN USER -->
-<li class="nav-item mt-2 mt-md-0 ml-md-2">
-    <a href="/loginuser" class="btn btn-primary btn-sm font-weight-bold btn-login-user">
-        Login User
-    </a>
-</li>
+                        <!-- LOGIN USER -->
+                        <li class="nav-item mt-2 mt-md-0 ml-md-2">
+                            <a href="/login-admin" class="btn btn-primary btn-sm font-weight-bold btn-login-user">
+                                Login User
+                            </a>
+                        </li>
 
-<!-- LOGIN SISWA -->
-<li class="nav-item mt-2 mt-md-0 ml-md-2">
-    <a href="{{ route('login.siswa') }}" class="btn btn-warning btn-sm font-weight-bold text-dark btn-login-siswa">
-        Login Siswa
-    </a>
-</li>
+                        <!-- LOGIN SISWA -->
+                        <li class="nav-item mt-2 mt-md-0 ml-md-2">
+                            <a href="{{ route('login.siswa') }}" class="btn btn-warning btn-sm font-weight-bold text-dark btn-login-siswa">
+                                Login Siswa
+                            </a>
+                        </li>
 
                     </ul>
                 </div>
