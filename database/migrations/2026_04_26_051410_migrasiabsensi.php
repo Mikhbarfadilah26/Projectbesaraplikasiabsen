@@ -28,30 +28,10 @@ return new class extends Migration {
             $table->id();
             $table->string('nis')->unique();
             $table->string('nama');
+            $table->string('password');
             $table->enum('jeniskelamin',['L','P']);
             $table->foreignId('kelasid')->constrained('kelas')->cascadeOnDelete();
             $table->text('alamat')->nullable();
-            $table->timestamps();
-        });
-
-        // MAPEL
-        Schema::create('mapel', function (Blueprint $table) {
-            $table->id();
-            $table->string('namamapel');
-            $table->timestamps();
-        });
-
-        // TAHUN AJARAN
-        Schema::create('tahunajaran', function (Blueprint $table) {
-            $table->id();
-            $table->string('tahun');
-            $table->timestamps();
-        });
-
-        // SEMESTER
-        Schema::create('semester', function (Blueprint $table) {
-            $table->id();
-            $table->enum('nama',['ganjil','genap']);
             $table->timestamps();
         });
 
@@ -65,52 +45,49 @@ return new class extends Migration {
             $table->timestamps();
         });
 
-        // STATUS ABSEN (BARU)
-        Schema::create('statusabsen', function (Blueprint $table) {
+        // TAHUN AJARAN
+        Schema::create('tahunajaran', function (Blueprint $table) {
             $table->id();
-            $table->string('nama'); // hadir, izin, sakit, alpha
+            $table->string('tahun'); // contoh 2025/2026
             $table->timestamps();
         });
 
-        // JADWAL
-        Schema::create('jadwal', function (Blueprint $table) {
+        // SEMESTER
+        Schema::create('semester', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kelasid')->constrained('kelas')->cascadeOnDelete();
-            $table->foreignId('mapelid')->constrained('mapel')->cascadeOnDelete();
-            $table->foreignId('userid')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('tahunid')->constrained('tahunajaran')->cascadeOnDelete();
-            $table->foreignId('semesterid')->constrained('semester')->cascadeOnDelete();
-
-            $table->enum('hari',['senin','selasa','rabu','kamis','jumat','sabtu']);
-            $table->time('jammulai');
-            $table->time('jamselesai');
-
+            $table->enum('nama',['ganjil','genap']);
             $table->timestamps();
         });
 
-        // ABSENSI
+        // ABSENSI (INTI)
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
 
-            $table->foreignId('jadwalid')->constrained('jadwal')->cascadeOnDelete();
-            $table->foreignId('userid')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('siswaid')->constrained('siswa')->cascadeOnDelete();
             $table->foreignId('tahunid')->constrained('tahunajaran')->cascadeOnDelete();
             $table->foreignId('semesterid')->constrained('semester')->cascadeOnDelete();
 
-            $table->enum('status',['draft','selesai'])->default('draft');
+            $table->date('tanggal');
+
+            // MASUK
+            $table->time('jam_masuk')->nullable();
+            $table->enum('status_masuk',['hadir','izin','sakit','alpha'])->nullable();
+
+            // PULANG
+            $table->time('jam_pulang')->nullable();
+            $table->enum('status_pulang',['hadir','izin','sakit','alpha'])->nullable();
 
             $table->timestamps();
         });
 
-        // DETAIL ABSENSI (FIX)
+        // DETAIL ABSENSI (LOG TAMBAHAN)
         Schema::create('detailabsensi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('absensiid')->constrained('absensi')->cascadeOnDelete();
-            $table->foreignId('siswaid')->constrained('siswa')->cascadeOnDelete();
-            $table->foreignId('statusid')->constrained('statusabsen')->cascadeOnDelete();
 
-            $table->time('jamabsen'); // 🔥 JAM MASUK
+            $table->foreignId('absensiid')->constrained('absensi')->cascadeOnDelete();
+
+            $table->string('keterangan')->nullable(); 
+            // contoh: "telat", "pulang cepat", "izin guru"
 
             $table->timestamps();
         });
@@ -120,12 +97,9 @@ return new class extends Migration {
     {
         Schema::dropIfExists('detailabsensi');
         Schema::dropIfExists('absensi');
-        Schema::dropIfExists('jadwal');
-        Schema::dropIfExists('statusabsen');
-        Schema::dropIfExists('users');
         Schema::dropIfExists('semester');
         Schema::dropIfExists('tahunajaran');
-        Schema::dropIfExists('mapel');
+        Schema::dropIfExists('users');
         Schema::dropIfExists('siswa');
         Schema::dropIfExists('kelas');
         Schema::dropIfExists('jurusan');

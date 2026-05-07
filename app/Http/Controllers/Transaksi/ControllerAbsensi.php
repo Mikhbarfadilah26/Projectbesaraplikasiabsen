@@ -1,0 +1,99 @@
+<?php
+
+namespace App\Http\Controllers\Transaksi;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\ModelAbsensi;
+use App\Models\ModelSiswa;
+use App\Models\ModelTahunAjaran;
+use App\Models\ModelSemester;
+
+class ControllerAbsensi extends Controller
+{
+    public function index()
+    {
+        $data = ModelAbsensi::with(['siswa','tahun','semester'])
+                    ->latest()
+                    ->get();
+
+        return view('user.absensi.index', compact('data'));
+    }
+
+    public function create()
+    {
+        $siswa = ModelSiswa::all();
+        $tahun = ModelTahunAjaran::all();
+        $semester = ModelSemester::all();
+
+        return view('user.absensi.create', compact('siswa','tahun','semester'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'siswaid' => 'required',
+            'tahunid' => 'required',
+            'semesterid' => 'required',
+            'tanggal' => 'required|date',
+        ]);
+
+        $cek = ModelAbsensi::where('siswaid', $request->siswaid)
+                    ->where('tanggal', $request->tanggal)
+                    ->first();
+
+        if ($cek) {
+            return back()->with('error','Siswa sudah absen di tanggal ini');
+        }
+
+        ModelAbsensi::create([
+            'siswaid' => $request->siswaid,
+            'tahunid' => $request->tahunid,
+            'semesterid' => $request->semesterid,
+            'tanggal' => $request->tanggal,
+            'jam_masuk' => $request->jam_masuk,
+            'status_masuk' => $request->status_masuk,
+            'jam_pulang' => $request->jam_pulang,
+            'status_pulang' => $request->status_pulang,
+        ]);
+
+        return redirect()->route('absensi.index')
+                        ->with('success','Absensi berhasil ditambahkan');
+    }
+
+    public function edit($id)
+    {
+        $data = ModelAbsensi::findOrFail($id);
+        $siswa = ModelSiswa::all();
+        $tahun = ModelTahunAjaran::all();
+        $semester = ModelSemester::all();
+
+        return view('user.absensi.edit', compact('data','siswa','tahun','semester'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = ModelAbsensi::findOrFail($id);
+
+        $data->update([
+            'siswaid' => $request->siswaid,
+            'tahunid' => $request->tahunid,
+            'semesterid' => $request->semesterid,
+            'tanggal' => $request->tanggal,
+            'jam_masuk' => $request->jam_masuk,
+            'status_masuk' => $request->status_masuk,
+            'jam_pulang' => $request->jam_pulang,
+            'status_pulang' => $request->status_pulang,
+        ]);
+
+        return redirect()->route('absensi.index')
+                        ->with('success','Absensi berhasil diupdate');
+    }
+
+    public function destroy($id)
+    {
+        ModelAbsensi::findOrFail($id)->delete();
+
+        return back()->with('success','Absensi berhasil dihapus');
+    }
+}
