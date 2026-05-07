@@ -3,23 +3,38 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ModelKelas extends Model
 {
+    use HasFactory;
+
     protected $table = 'kelas';
 
     protected $fillable = [
         'namakelas',
-        'tingkat',
-        'jurusanid'
+        'jurusanid',
     ];
 
-    // RELASI
-    public function jurusan(){
-        return $this->belongsTo(ModelJurusan::class,'jurusanid');
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI KE JURUSAN
+    |--------------------------------------------------------------------------
+    */
+
+    public function jurusan()
+    {
+        return $this->belongsTo(ModelJurusan::class, 'jurusanid');
     }
 
-    public function siswa(){
-        return $this->hasMany(ModelSiswa::class,'kelasid');
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI KE SISWA
+    |--------------------------------------------------------------------------
+    */
+
+    public function siswa()
+    {
+        return $this->hasMany(ModelSiswa::class, 'kelasid');
     }
 }

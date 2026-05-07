@@ -109,48 +109,71 @@ Route::post('/logout-siswa', function () {
     return redirect('/');
 });
 /*
+|/*
 |--------------------------------------------------------------------------
-| MENU CRUD PADA MENU USERS(ADMIN&GURU)
-|--------------------------------------------------------------------------
-*/
-Route::middleware(['auth', 'role:admin,guru'])->prefix('master')->group(function () {
-    Route::resource('kelas', ControllerKelas::class);
-    Route::resource('jurusan', ControllerJurusan::class);
-    Route::resource('siswa', ControllerSiswa::class);
-    Route::resource('tahunajaran', ControllerTahunAjaran::class);
-    Route::resource('user', ControllerUser::class);
-    Route::resource('semester', ControllerSemester::class);
-
-    /*
-|--------------------------------------------------------------------------
-| MENU CRUD PADA MENU USERS(ADMIN&GURU) MENU TRANSAKSI
+| MENU CRUD MASTER (ADMIN & GURU)
 |--------------------------------------------------------------------------
 */
-    Route::prefix('transaksi')->group(function () {
-        Route::resource('absensi', ControllerAbsensi::class);
 
-        Route::resource('detailabsensi', ControllerDetailAbsensi::class);
+Route::middleware(['auth', 'role:admin,guru'])
+    ->prefix('master')
+    ->group(function () {
+
+        Route::resource('kelas', ControllerKelas::class);
+        Route::resource('jurusan', ControllerJurusan::class);
+        Route::resource('siswa', ControllerSiswa::class);
+        Route::resource('tahunajaran', ControllerTahunAjaran::class);
+        Route::resource('user', ControllerUser::class);
+        Route::resource('semester', ControllerSemester::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | TRANSAKSI
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('transaksi')->group(function () {
+
+            Route::resource('absensi', ControllerAbsensi::class);
+
+            Route::resource('detailabsensi', ControllerDetailAbsensi::class);
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | LAPORAN
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('laporan')->group(function () {
+
+            Route::get('absensi', [ControllerLaporan::class, 'absensi'])
+                ->name('laporan.absensi');
+        });
     });
-    /*
+
+/*
 |--------------------------------------------------------------------------
-| MENU LAPORAN PADA USERS 
+| ZONA SISWA
 |--------------------------------------------------------------------------
 */
-    Route::prefix('laporan')->group(function () {
-        Route::get('absensi', [ControllerLaporan::class, 'absensi'])
-            ->name('laporan.absensi');
-    });
-    Route::middleware(['auth:siswa'])->prefix('siswa')->group(function () {
-    Route::get('/dashboard', [ControllerDashboardSiswa::class, 'index'])->name('siswa.dashboard');
-    
-    // Halaman Proses Absen
-    Route::get('/absensi', [ControllerDashboardSiswa::class, 'absensi'])->name('siswa.absensi');
-    
-    // Halaman Riwayat
-    Route::get('/riwayat', [ControllerDashboardSiswa::class, 'riwayat'])->name('siswa.riwayat');
-});
 
-// Route Store (Gunakan Resource yang sudah ada atau buat manual)
-Route::post('/siswa/absensi/store', [ControllerAbsensi::class, 'store'])->name('absensi.store');
-Route::put('/siswa/absensi/update/{id}', [ControllerAbsensi::class, 'update'])->name('absensi.update');
-});
+Route::middleware(['auth:siswa'])
+    ->prefix('siswa')
+    ->group(function () {
+
+        Route::get('/dashboard', [ControllerDashboardSiswa::class, 'index'])
+            ->name('siswa.dashboard');
+
+        Route::get('/absensi', [ControllerDashboardSiswa::class, 'absensi'])
+            ->name('siswa.absensi');
+
+        Route::get('/riwayat', [ControllerDashboardSiswa::class, 'riwayat'])
+            ->name('siswa.riwayat');
+
+        Route::post('/absensi/store', [ControllerAbsensi::class, 'store'])
+            ->name('siswa.absensi.store');
+
+        Route::put('/absensi/update/{id}', [ControllerAbsensi::class, 'update'])
+            ->name('siswa.absensi.update');
+    });

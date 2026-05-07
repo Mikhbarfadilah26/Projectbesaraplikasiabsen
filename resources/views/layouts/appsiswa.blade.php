@@ -82,46 +82,37 @@
             </a>
 
             <div class="sidebar">
-<!-- Add this to your sidebar menu -->
-<nav class="mt-2">
-    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        
-        <li class="nav-header font-weight-bold text-uppercase" style="font-size: 0.7rem; opacity: 0.6;">Menu Utama</li>
+                <!-- Add this to your sidebar menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-        <li class="nav-item">
-            <a href="{{ route('siswa.dashboard') }}" class="nav-link {{ request()->is('siswa/dashboard') ? 'active shadow-sm' : '' }}" style="border-radius: 10px;">
-                <i class="nav-icon fas fa-th-large"></i>
-                <p>Dashboard</p>
-            </a>
-        </li>
+                        <li class="nav-header font-weight-bold text-uppercase" style="font-size: 0.7rem; opacity: 0.6;">Menu Utama</li>
 
-        <li class="nav-item">
-            <a href="{{ route('siswa.absensi') }}" class="nav-link {{ request()->is('siswa/absensi') ? 'active shadow-sm' : '' }}" style="border-radius: 10px;">
-                <i class="nav-icon fas fa-calendar-check"></i>
-                <p>Absensi Hari Ini</p>
-            </a>
-        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('siswa.dashboard') }}" class="nav-link {{ request()->is('siswa/dashboard') ? 'active shadow-sm' : '' }}" style="border-radius: 10px;">
+                                <i class="nav-icon fas fa-th-large"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
 
-        <li class="nav-item">
-            <a href="{{ route('siswa.riwayat') }}" class="nav-link {{ request()->is('siswa/riwayat') ? 'active shadow-sm' : '' }}" style="border-radius: 10px;">
-                <i class="nav-icon fas fa-history"></i>
-                <p>Riwayat Absen</p>
-            </a>
-        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('siswa.absensi') }}" class="nav-link {{ request()->is('siswa/absensi') ? 'active shadow-sm' : '' }}" style="border-radius: 10px;">
+                                <i class="nav-icon fas fa-calendar-check"></i>
+                                <p>Absensi Hari Ini</p>
+                            </a>
+                        </li>
 
-        <li class="nav-header font-weight-bold text-uppercase mt-3" style="font-size: 0.7rem; opacity: 0.6;">Akun</li>
+                        <li class="nav-item">
+                            <a href="{{ route('siswa.riwayat') }}" class="nav-link {{ request()->is('siswa/riwayat') ? 'active shadow-sm' : '' }}" style="border-radius: 10px;">
+                                <i class="nav-icon fas fa-history"></i>
+                                <p>Riwayat Absen</p>
+                            </a>
+                        </li>
 
-        <li class="nav-item">
-            <a href="/logout-siswa" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="nav-link text-danger">
-                <i class="nav-icon fas fa-power-off"></i>
-                <p>Keluar Aplikasi</p>
-            </a>
-            <form id="logout-form" action="/logout-siswa" method="POST" class="d-none">
-                @csrf
-            </form>
-        </li>
-    </ul>
-</nav>
+
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </aside>
 
