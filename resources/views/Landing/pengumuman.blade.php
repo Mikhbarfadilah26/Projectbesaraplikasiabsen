@@ -8,6 +8,7 @@
         transition: all 0.3s ease;
         color: #fff;
         overflow: hidden;
+        border: none;
     }
 
     .card-pengumuman:hover {
@@ -15,13 +16,26 @@
         box-shadow: 0 12px 25px rgba(0,0,0,0.15);
     }
 
-    .bg-1 { background: linear-gradient(135deg, #42a5f5, #478ed1); }
-    .bg-2 { background: linear-gradient(135deg, #66bb6a, #43a047); }
-    .bg-3 { background: linear-gradient(135deg, #ffa726, #fb8c00); }
+    .bg-1 {
+        background: linear-gradient(135deg, #42a5f5, #478ed1);
+    }
+
+    .bg-2 {
+        background: linear-gradient(135deg, #66bb6a, #43a047);
+    }
+
+    .bg-3 {
+        background: linear-gradient(135deg, #ffa726, #fb8c00);
+    }
 
     .tanggal {
         font-size: 13px;
         opacity: 0.85;
+    }
+
+    .btn-detail {
+        border-radius: 12px;
+        font-weight: 600;
     }
 </style>
 
@@ -29,49 +43,80 @@
 
     {{-- HEADER --}}
     <div class="text-center mb-5">
-        <h2 class="fw-bold text-primary">Pengumuman</h2>
-        <p class="text-muted">Informasi terbaru dari sekolah</p>
+
+        <h2 class="fw-bold text-primary">
+
+            Pengumuman
+
+        </h2>
+
+        <p class="text-muted">
+
+            Informasi terbaru dari sekolah
+
+        </p>
+
     </div>
 
     <div class="row justify-content-center">
+
         <div class="col-md-8">
 
-            {{-- CARD 1 --}}
-            <div class="card card-pengumuman bg-1 mb-4 shadow">
+            @php
+                $bgClass = ['bg-1', 'bg-2', 'bg-3'];
+            @endphp
+
+            @forelse($pengumuman as $index => $item)
+
+            <div class="card card-pengumuman {{ $bgClass[$index % 3] }} mb-4 shadow">
+
                 <div class="card-body">
-                    <h5 class="fw-bold">📘 Jadwal Ujian Semester</h5>
-                    <div class="tanggal">25 April 2026</div>
-                    <p class="mt-2 mb-0">
-                        Ujian semester akan dilaksanakan mulai tanggal 1 Mei 2026. 
-                        Seluruh siswa diharapkan mempersiapkan diri dengan baik.
+
+                    <h5 class="fw-bold">
+
+                        📢 {{ $item->judul }}
+
+                    </h5>
+
+                    <div class="tanggal">
+
+                        <i class="fas fa-calendar-alt mr-1"></i>
+
+                        {{ \Carbon\Carbon::parse($item->created_at)->translatedFormat('d F Y') }}
+
+                    </div>
+
+                    <p class="mt-3 mb-3">
+
+                        {{ \Illuminate\Support\Str::limit($item->isi, 150) }}
+
                     </p>
+
+                    <a href="{{ route('landing.pengumuman.detail', $item->id) }}"
+                        class="btn btn-light btn-sm btn-detail">
+
+                        <i class="fas fa-arrow-right mr-1"></i>
+
+                        Lihat Selengkapnya
+
+                    </a>
+
                 </div>
+
             </div>
 
-            {{-- CARD 2 --}}
-            <div class="card card-pengumuman bg-2 mb-4 shadow">
-                <div class="card-body">
-                    <h5 class="fw-bold">🎓 Libur Hari Pendidikan</h5>
-                    <div class="tanggal">24 April 2026</div>
-                    <p class="mt-2 mb-0">
-                        Kegiatan belajar mengajar diliburkan pada tanggal 2 Mei 2026 
-                        dalam rangka Hari Pendidikan Nasional.
-                    </p>
-                </div>
+            @empty
+
+            <div class="alert alert-warning shadow-sm rounded-4">
+
+                Belum ada pengumuman tersedia.
+
             </div>
 
-            {{-- CARD 3 --}}
-            <div class="card card-pengumuman bg-3 mb-4 shadow">
-                <div class="card-body">
-                    <h5 class="fw-bold">📱 Absensi Wajib Online</h5>
-                    <div class="tanggal">23 April 2026</div>
-                    <p class="mt-2 mb-0">
-                        Mulai minggu ini, seluruh siswa wajib melakukan absensi melalui sistem online.
-                    </p>
-                </div>
-            </div>
+            @endforelse
 
         </div>
+
     </div>
 
 </div>

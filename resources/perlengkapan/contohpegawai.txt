@@ -1,0 +1,156 @@
+ABSENSIPEGAWAICVMAJUBERSAMA/
+│
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │
+│   │   │   ├── Auth/
+│   │   │   │   ├── ControllerAuthUser.php
+│   │   │   │   ├── ControllerAuthPegawai.php
+│   │   │   │   └── ControllerRegisterPegawai.php
+│   │   │   │
+│   │   │   ├── Dashboard/
+│   │   │   │   ├── ControllerDashboardAdmin.php
+│   │   │   │   ├── ControllerDashboardHRD.php
+│   │   │   │   └── ControllerDashboardPegawai.php
+│   │   │   │
+│   │   │   ├── Master/
+│   │   │   │   ├── ControllerUser.php
+│   │   │   │   ├── ControllerPegawai.php
+│   │   │   │   ├── ControllerJabatan.php
+│   │   │   │   ├── ControllerDivisi.php
+│   │   │   │   ├── ControllerShift.php
+│   │   │   │   └── ControllerStatusAbsensi.php
+│   │   │   │
+│   │   │   ├── Transaksi/
+│   │   │   │   ├── ControllerAbsensi.php
+│   │   │   │   ├── ControllerIzin.php
+│   │   │   │   └── ControllerCuti.php
+│   │   │   │
+│   │   │   ├── Laporan/
+│   │   │   │   └── ControllerLaporan.php
+│   │   │   │
+│   │   │   ├── ZonaPegawai/
+│   │   │   │   └── ControllerZonaPegawai.php
+│   │   │   │
+│   │   │   └── Landing/
+│   │   │       └── ControllerLanding.php
+│   │   │
+│   │   └── Middleware/
+│   │       ├── MiddlewarePegawai.php
+│   │       └── RoleMiddleware.php
+│   │
+│   ├── Models/
+│   │   ├── ModelUser.php
+│   │   ├── ModelPegawai.php
+│   │   ├── ModelJabatan.php
+│   │   ├── ModelDivisi.php
+│   │   ├── ModelShift.php
+│   │   ├── ModelStatusAbsensi.php
+│   │   ├── ModelAbsensi.php
+│   │   ├── ModelIzin.php
+│   │   └── ModelCuti.php
+│   │
+│   └── Providers/ ...
+│
+├── database/
+│   ├── migrations/
+│   │   ├── create_users_table.php
+│   │   ├── create_pegawai_table.php
+│   │   ├── create_jabatan_table.php
+│   │   ├── create_divisi_table.php
+│   │   ├── create_shift_table.php
+│   │   ├── create_status_absensi_table.php
+│   │   ├── create_absensi_table.php
+│   │   ├── create_izin_table.php
+│   │   └── create_cuti_table.php
+│   │
+│   └── seeders/
+│       ├── UserSeeder.php
+│       ├── PegawaiSeeder.php
+│       ├── JabatanSeeder.php
+│       ├── DivisiSeeder.php
+│       └── AbsensiSeeder.php
+│
+├── public/
+│   ├── dist/
+│   ├── plugins/
+│   ├── upload/
+│   │   ├── pegawai/
+│   │   ├── absensi/
+│   │   └── izin/
+│   └── index.php
+│
+├── resources/
+│   ├── views/
+│   │
+│   │   ├── layouts/
+│   │   │   ├── appadmin.blade.php
+│   │   │   ├── apphrd.blade.php
+│   │   │   ├── apppegawai.blade.php
+│   │   │   └── applanding.blade.php
+│   │   │
+│   │   ├── admin/
+│   │   │   ├── dashboard/
+│   │   │   │   └── admin.blade.php
+│   │   │   │
+│   │   │   ├── user/
+│   │   │   ├── pegawai/
+│   │   │   ├── jabatan/
+│   │   │   ├── divisi/
+│   │   │   ├── shift/
+│   │   │   ├── statusabsensi/
+│   │   │   ├── absensi/
+│   │   │   ├── izin/
+│   │   │   ├── laporan/
+│   │   │   └── setting/
+│   │   │
+│   │   ├── hrd/
+│   │   │   ├── dashboard/
+│   │   │   │   └── hrd.blade.php
+│   │   │   │
+│   │   │   ├── absensi/
+│   │   │   ├── izin/
+│   │   │   ├── laporan/
+│   │   │   └── pegawai/
+│   │   │
+│   │   ├── pegawai/
+│   │   │   ├── dashboard/
+│   │   │   │   └── dashboardpegawai.blade.php
+│   │   │   │
+│   │   │   ├── absensi/
+│   │   │   │   ├── absenmasuk.blade.php
+│   │   │   │   ├── absenpulang.blade.php
+│   │   │   │   └── riwayat.blade.php
+│   │   │   │
+│   │   │   ├── izin/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   └── create.blade.php
+│   │   │   │
+│   │   │   └── profile/
+│   │   │       └── index.blade.php
+│   │   │
+│   │   ├── landing/
+│   │   │   ├── home.blade.php
+│   │   │   ├── tentang.blade.php
+│   │   │   ├── fitur.blade.php
+│   │   │   ├── kontak.blade.php
+│   │   │   ├── cara-kerja.blade.php
+│   │   │   └── statistik.blade.php
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── loginuser.blade.php
+│   │   │   ├── loginpegawai.blade.php
+│   │   │   └── registerpegawai.blade.php
+│   │   │
+│   │   └── errors/
+│   │       ├── 403.blade.php
+│   │       ├── 404.blade.php
+│   │       └── 500.blade.php
+│
+├── routes/
+│   └── web.php
+│
+├── storage/
+├── tests/
+└── .env

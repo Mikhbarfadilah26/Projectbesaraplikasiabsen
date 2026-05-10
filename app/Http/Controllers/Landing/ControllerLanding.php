@@ -4,13 +4,35 @@ namespace App\Http\Controllers\Landing;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ModelJurusan;
+use App\Models\ModelPengumuman;
 
 class ControllerLanding extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | HOME LANDING
+    |--------------------------------------------------------------------------
+    | Pengumuman di HOME ambil dari DATABASE
+    */
+
     public function index()
     {
-        return view('landing.home');
+        $jurusan = ModelJurusan::latest()->take(6)->get();
+
+        $pengumumanHome = ModelPengumuman::latest()->take(3)->get();
+
+        return view('landing.home', compact(
+            'jurusan',
+            'pengumumanHome'
+        ));
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | MENU NAVBAR
+    |--------------------------------------------------------------------------
+    */
 
     public function tentang()
     {
@@ -32,14 +54,44 @@ class ControllerLanding extends Controller
         return view('landing.jadwalumum');
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | JURUSAN DATABASE
+    |--------------------------------------------------------------------------
+    */
+
+    public function jurusan()
+    {
+        $jurusan = ModelJurusan::latest()->get();
+
+        return view('landing.jurusan', compact('jurusan'));
+    }
+
+    public function detailJurusan($id)
+    {
+        $jurusan = ModelJurusan::findOrFail($id);
+
+        return view('landing.detailjurusan', compact('jurusan'));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | PENGUMUMAN NAVBAR
+    |--------------------------------------------------------------------------
+    | Ini halaman penuh pengumuman
+    */
+
     public function pengumuman()
     {
-        return view('landing.pengumuman');
+        $pengumuman = ModelPengumuman::latest()->paginate(6);
+
+        return view('landing.pengumuman', compact('pengumuman'));
     }
 
     public function detailPengumuman($id)
     {
-        // Nantinya kamu bisa ambil data pengumuman berdasarkan ID dari database
-        return view('landing.detailpengumuman');
+        $pengumuman = ModelPengumuman::findOrFail($id);
+
+        return view('landing.detailpengumuman', compact('pengumuman'));
     }
 }

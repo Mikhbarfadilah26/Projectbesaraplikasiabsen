@@ -14,8 +14,21 @@ class SeederAbsensi extends Seeder
         // JURUSAN
         // =====================
         DB::table('jurusan')->insert([
-            ['namajurusan' => 'RPL'],
-            ['namajurusan' => 'TKJ'],
+            [
+                'namajurusan' => 'RPL',
+                'icon' => 'fas fa-laptop-code',
+                'deskripsi' => 'Mempelajari pemrograman, website, aplikasi, dan software modern.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'namajurusan' => 'TKJ',
+                'icon' => 'fas fa-network-wired',
+                'deskripsi' => 'Mempelajari jaringan komputer, server, dan infrastruktur IT.',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
 
         // =====================
@@ -55,6 +68,7 @@ class SeederAbsensi extends Seeder
                 'alamat' => 'Deli Serdang'
             ],
         ]);
+
         // =====================
         // USERS
         // =====================
@@ -89,7 +103,7 @@ class SeederAbsensi extends Seeder
         ]);
 
         // =====================
-        // ABSENSI (SESUAI MIGRATION BARU)
+        // ABSENSI
         // =====================
         DB::table('absensi')->insert([
             [
@@ -117,6 +131,7 @@ class SeederAbsensi extends Seeder
                 'status_pulang' => 'hadir',
             ],
         ]);
+
         // =====================
         // DETAIL ABSENSI
         // =====================
@@ -129,6 +144,55 @@ class SeederAbsensi extends Seeder
                 'absensiid' => 2,
                 'keterangan' => 'Izin masuk karena sakit'
             ],
+        ]);
+
+        // =====================
+        // PENGUMUMAN
+        // =====================
+        DB::table('pengumuman')->insert([
+
+            [
+                'judul' => 'Persiapan Ujian Semester',
+
+                'isi' =>
+                    'Seluruh siswa diharapkan mempersiapkan diri untuk menghadapi ujian semester yang akan dimulai minggu depan.',
+
+                'tanggal' => now(),
+
+                'is_active' => true,
+
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'judul' => 'Jadwal Piket Laboratorium',
+
+                'isi' =>
+                    'Siswa jurusan RPL diwajibkan mengikuti jadwal piket laboratorium sesuai pembagian kelompok.',
+
+                'tanggal' => now(),
+
+                'is_active' => true,
+
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
+            [
+                'judul' => 'Libur Nasional',
+
+                'isi' =>
+                    'Kegiatan belajar mengajar diliburkan pada tanggal 17 Agustus dalam rangka Hari Kemerdekaan Indonesia.',
+
+                'tanggal' => now(),
+
+                'is_active' => true,
+
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+
         ]);
     }
 }

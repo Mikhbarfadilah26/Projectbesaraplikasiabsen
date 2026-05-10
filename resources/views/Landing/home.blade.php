@@ -2,296 +2,564 @@
 
 @section('content')
 
-{{-- HERO --}}
-@php
-$bg = asset('dist/img/pagar.jpg');
-@endphp
-
 <style>
-    /* Animasi halus untuk elemen floating */
-    @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
+    :root {
+        --primary-green: #22c55e;
+        --dark-navy: #0f172a;
+        --text-slate: #94a3b8;
     }
 
-    .hero-container {
+    /* HERO */
+    .hero-wrapper {
         position: relative;
+        min-height: 85vh;
+        display: flex;
+        align-items: flex-start;
         overflow: hidden;
-        min-height: 80vh;
+
+        background:
+            radial-gradient(circle at top left, rgba(34, 197, 94, 0.08), transparent 35%),
+            radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.08), transparent 35%),
+            linear-gradient(135deg, #0f172a 0%, #111827 45%, #1e293b 100%);
+
+        padding: 110px 0 70px;
+        color: white;
+
+        border-radius: 0 0 40px 40px;
+    }
+
+    .hero-wrapper::before {
+        content: '';
+        position: absolute;
+        width: 450px;
+        height: 450px;
+        background: rgba(34, 197, 94, 0.08);
+        border-radius: 50%;
+        top: -150px;
+        left: -120px;
+        filter: blur(100px);
+    }
+
+    .hero-wrapper::after {
+        content: '';
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: rgba(59, 130, 246, 0.08);
+        border-radius: 50%;
+        bottom: -150px;
+        right: -100px;
+        filter: blur(100px);
+    }
+
+    .hero-content-inner {
+        padding-left: 45px;
+        padding-right: 30px;
+        padding-top: 10px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .badge-modern {
+        background: rgba(34, 197, 94, 0.15);
+        color: var(--primary-green);
+        border: 1px solid rgba(34, 197, 94, 0.3);
+        padding: 10px 22px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 25px;
+        font-weight: 600;
+    }
+
+    .hero-title-main {
+        font-size: clamp(2.8rem, 6vw, 4.5rem);
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+
+    .text-highlight {
+        color: var(--primary-green);
+    }
+
+    .hero-description {
+        font-size: 1.1rem;
+        color: var(--text-slate);
+        max-width: 760px;
+        line-height: 1.8;
+        margin-bottom: 35px;
+    }
+
+    .btn-cta {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: white;
+        padding: 18px 40px;
+        border-radius: 16px;
+        font-weight: 700;
+        transition: all 0.3s;
+        box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-cta:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(34, 197, 94, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    .content-section {
+        padding: 90px 0;
+        background: #f8fafc;
+    }
+
+    .custom-card {
+        border: none;
+        border-radius: 24px;
+        transition: 0.3s;
+        overflow: hidden;
+    }
+
+    .custom-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-gradient-purple {
+        background: linear-gradient(135deg, #6366f1, #4338ca);
+        color: white;
+    }
+
+    .stat-circle {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 4rem 1rem;
-        /* Overlay Gradient berlapis untuk kedalaman tema gelap */
-        background: 
-            radial-gradient(circle at 10% 20%, rgba(34, 197, 94, 0.15) 0%, transparent 40%),
-            radial-gradient(circle at 90% 80%, rgba(30, 41, 59, 0.2) 0%, transparent 40%),
-            linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.9)),
-            url('{{ $bg }}');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
+        margin: 0 auto 12px;
+        font-weight: bold;
+        font-size: 15px;
     }
 
-    .glass-box {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 30px;
-        padding: 50px 60px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        animation: float 6s ease-in-out infinite;
-        max-width: 800px;
-        width: 100%;
+    .jurusan-box {
+        border-radius: 20px;
+        transition: .3s;
+        border: 1px solid #e2e8f0;
     }
 
-    .digital-clock {
-        font-family: 'Monaco', 'Consolas', monospace;
-        font-size: clamp(3rem, 10vw, 5rem);
-        font-weight: 800;
-        letter-spacing: -2px;
-        background: linear-gradient(to bottom, #ffffff, #94a3b8);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 0;
-        line-height: 1;
+    .jurusan-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,.08);
     }
 
-    .date-text {
-        font-size: 1.1rem;
-        color: #4ade80; /* Hijau Emerald */
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        margin-bottom: 30px;
-    }
+    @media(max-width:991px) {
 
-    .hero-title {
-        font-size: clamp(1.8rem, 5vw, 2.8rem);
-        font-weight: 700;
-        color: white;
-        margin-bottom: 8px;
-    }
+        .hero-wrapper {
+            text-align: center;
+            padding: 90px 0 70px;
+        }
 
-    .hero-subtitle {
-        color: #94a3b8;
-        font-size: 1.2rem;
-        margin-bottom: 35px;
-        font-weight: 300;
-    }
+        .hero-content-inner {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
 
-    .btn-modern {
-        background: linear-gradient(135deg, #22c55e, #16a34a);
-        color: white;
-        padding: 16px 45px;
-        border-radius: 16px;
-        font-weight: 600;
-        font-size: 1.1rem;
-        text-decoration: none !important;
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 10px 20px -10px rgba(34, 197, 94, 0.5);
-    }
+        .hero-description {
+            margin: auto auto 35px;
+        }
 
-    .btn-modern:hover {
-        transform: scale(1.05) translateY(-3px);
-        box-shadow: 0 20px 30px -10px rgba(34, 197, 94, 0.6);
-        color: white;
-    }
-
-    .btn-modern i {
-        transition: transform 0.3s;
-    }
-
-    .btn-modern:hover i {
-        transform: translateX(5px);
     }
 </style>
 
-<div class="hero-container text-center">
-    
-    <div class="glass-box">
-        {{-- JAM DIGITAL --}}
-        <h1 id="jam" class="digital-clock">00:00:00</h1>
+{{-- HERO --}}
+<section class="hero-wrapper">
 
-        {{-- TANGGAL --}}
-        <p id="tanggal" class="date-text">Memuat tanggal...</p>
+    <div class="container">
 
-        <div style="width: 60px; height: 4px; background: #22c55e; margin: 0 auto 30px; border-radius: 2px;"></div>
+        <div class="row justify-content-center text-center align-items-start">
 
-        {{-- JUDUL --}}
-        <h2 class="hero-title">Sistem Absensi Digital</h2>
-        <p class="hero-subtitle">SMK NEGERI 1 KARANG BARU</p>
+            <div class="col-lg-9">
 
-        {{-- TOMBOL --}}
-        <a href="{{ route('login.siswa') }}" class="btn-modern">
-            <i class="fas fa-sign-in-alt"></i> Login Kehadiran Siswa
-        </a>
-    </div>
+                <div class="hero-content-inner">
 
-</div>
+                    <div class="badge-modern">
 
-<script>
-    function updateWaktu() {
-        const sekarang = new Date();
-        
-        // Format Jam
-        const jam = String(sekarang.getHours()).padStart(2, '0');
-        const menit = String(sekarang.getMinutes()).padStart(2, '0');
-        const detik = String(sekarang.getSeconds()).padStart(2, '0');
-        document.getElementById('jam').innerHTML = `${jam}:${menit}:${detik}`;
+                        <i class="fas fa-shield-alt"></i>
 
-        // Format Tanggal Indonesia
-        const opsi = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('tanggal').innerHTML = sekarang.toLocaleDateString('id-ID', opsi);
-    }
-    
-    setInterval(updateWaktu, 1000);
-    updateWaktu();
-</script>
-{{-- CONTENT --}}
-<div class="container mt-4">
-    <div class="row">
+                        Sistem Absensi Digital Modern
 
-        {{-- KONTEN KIRI --}}
-        <div class="col-lg-8">
-
-            {{-- PENGUMUMAN --}}
-            <div class="card mb-4 shadow border-0" style="border-radius: 15px; overflow: hidden;">
-
-                {{-- HEADER --}}
-                <div class="card-header text-white"
-                    style="background: linear-gradient(135deg, #6f42c1, #5a32a3);">
-                    <strong>📢 Pengumuman</strong>
-                </div>
-
-                {{-- BODY --}}
-                <div class="card-body" style="background-color: #f8f9fa;">
-
-                    <div class="mb-3 p-2 rounded"
-                        style="border-left: 5px solid #6f42c1; background: #ffffff;">
-                        <small class="text-muted d-block">26 April 2026</small>
-                        <span>Persiapan Ujian Akhir Semester</span>
                     </div>
 
-                    <div class="mb-3 p-2 rounded"
-                        style="border-left: 5px solid #6f42c1; background: #ffffff;">
-                        <small class="text-muted d-block">24 April 2026</small>
-                        <span>Jadwal Piket Kebersihan Baru</span>
-                    </div>
+                    <h1 class="hero-title-main">
 
-                    {{-- BUTTON --}}
-                    <div class="text-center mt-3">
-                        <a href="#" class="btn btn-outline-primary btn-sm px-4">
-                            Lihat Selengkapnya
-                        </a>
-                    </div>
+                        Aplikasi Absensi
 
-                </div>
-            </div>
+                        <span class="text-highlight d-block">
+                            SMK Negeri 1 Karang Baru
+                        </span>
 
-            {{-- STATISTIK --}}
-            <div class="card mb-4 shadow-sm text-center">
-                <div class="card-header bg-primary text-white">
-                    Statistik Absensi
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-6">
-                            <h5 class="text-success mb-0">80%</h5>
-                            <small>Hadir</small>
-                        </div>
-                        <div class="col-6">
-                            <h5 class="text-warning mb-0">10%</h5>
-                            <small>Izin</small>
-                        </div>
-                        <div class="col-6 mt-3">
-                            <h5 class="text-info mb-0">5%</h5>
-                            <small>Sakit</small>
-                        </div>
-                        <div class="col-6 mt-3">
-                            <h5 class="text-danger mb-0">5%</h5>
-                            <small>Alpha</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    </h1>
 
-        </div>
+                    <p class="hero-description mx-auto">
 
-        {{-- SIDEBAR KANAN --}}
-        <div class="col-lg-4">
-            {{-- INFORMASI --}}
-            <div class="card mb-4 shadow border-0" style="border-radius: 15px; overflow: hidden;">
+                        Kelola absensi siswa, monitoring kehadiran,
+                        laporan sekolah, dan data akademik
+                        secara cepat, modern, aman,
+                        dan terintegrasi dalam satu platform digital.
 
-                {{-- HEADER --}}
-                <div class="card-header text-white"
-                    style="background: linear-gradient(135deg, #17a2b8, #138496);">
-                    <strong>Informasi</strong>
-                </div>
-
-                {{-- BODY --}}
-                <div class="card-body" style="background-color: #f8f9fa;">
-
-                    <p class="small text-muted">
-                        Sistem absensi ini digunakan untuk mencatat kehadiran siswa secara digital.
-                        Pastikan login menggunakan NIS dan melakukan absensi sesuai jadwal.
                     </p>
 
-                    {{-- JAM MASUK --}}
-                    <div class="p-3 mb-2 text-center rounded"
-                        style="background: linear-gradient(135deg, #28a745, #218838); color: white;">
-                        <small>Jam Masuk</small><br>
-                        <strong>07:00 - 08:00</strong>
+                    <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
+
+                        <a href="{{ route('login.siswa') }}"
+                            class="btn-cta">
+
+                            <i class="fas fa-user-graduate mr-2"></i>
+
+                            Login Siswa
+
+                        </a>
+
                     </div>
 
-                    {{-- JAM PULANG --}}
-                    <div class="p-3 text-center rounded"
-                        style="background: linear-gradient(135deg, #ffc107, #e0a800); color: black;">
-                        <small>Jam Pulang</small><br>
-                        <strong>15:00 - 16:30</strong>
+                    <div class="row justify-content-center mt-5 text-center">
+
+                        <div class="col-4 col-md-2">
+
+                            <h3 class="font-weight-bold text-success">
+                                Fast
+                            </h3>
+
+                            <small class="text-muted">
+                                Absensi Cepat
+                            </small>
+
+                        </div>
+
+                        <div class="col-4 col-md-2">
+
+                            <h3 class="font-weight-bold text-info">
+                                Smart
+                            </h3>
+
+                            <small class="text-muted">
+                                Dashboard Modern
+                            </small>
+
+                        </div>
+
+                        <div class="col-4 col-md-2">
+
+                            <h3 class="font-weight-bold text-warning">
+                                Report
+                            </h3>
+
+                            <small class="text-muted">
+                                Laporan Otomatis
+                            </small>
+
+                        </div>
+
                     </div>
 
                 </div>
-            </div>
 
-            {{-- BUTUH BANTUAN --}}
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h6 class="font-weight-bold">Butuh Bantuan?</h6>
-                    <p class="small text-muted">Hubungi kami kapan saja</p>
-                    <button class="btn btn-success btn-sm">Kontak</button>
-                </div>
             </div>
 
         </div>
 
     </div>
-</div>
 
-{{-- SCRIPT JAM --}}
-<script>
-    function updateWaktu() {
-        const sekarang = new Date();
-        const jam = String(sekarang.getHours()).padStart(2, '0');
-        const menit = String(sekarang.getMinutes()).padStart(2, '0');
-        const detik = String(sekarang.getSeconds()).padStart(2, '0');
-        document.getElementById('jam').innerHTML = `${jam}:${menit}:${detik}`;
+</section>
 
-        document.getElementById('tanggal').innerHTML =
-            sekarang.toLocaleDateString('id-ID', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-    }
-    setInterval(updateWaktu, 1000);
-    updateWaktu();
-</script>
+{{-- CONTENT --}}
+<section class="content-section">
+
+    <div class="container">
+
+        <div class="row">
+
+            {{-- LEFT --}}
+            <div class="col-lg-8">
+
+                {{-- PENGUMUMAN DATABASE --}}
+                <div class="card custom-card shadow-sm mb-4">
+
+                    <div class="card-header card-gradient-purple p-3">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <h6 class="mb-0 text-white">
+
+                                <i class="fas fa-bullhorn mr-2"></i>
+
+                                Pengumuman Terbaru
+
+                            </h6>
+
+                            <a href="{{ route('landing.pengumuman') }}"
+                                class="text-white">
+
+                                Lihat Semua
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <div class="card-body p-4">
+
+                        @forelse($pengumumanHome as $item)
+
+                        <div class="d-flex align-items-center mb-3 p-3 border-left border-success border-4 bg-light rounded">
+
+                            <div class="flex-grow-1">
+
+                                <small class="text-muted">
+
+                                    {{ $item->created_at->format('d F Y') }}
+
+                                </small>
+
+                                <h6 class="mb-2 mt-1">
+
+                                    {{ $item->judul }}
+
+                                </h6>
+
+                                <a href="{{ route('landing.pengumuman.detail',$item->id) }}"
+                                    class="text-success font-weight-bold">
+
+                                    Lihat Selengkapnya
+
+                                </a>
+
+                            </div>
+
+                            <i class="fas fa-chevron-right text-muted"></i>
+
+                        </div>
+
+                        @empty
+
+                        <div class="alert alert-light mb-0">
+
+                            Belum ada pengumuman terbaru.
+
+                        </div>
+
+                        @endforelse
+
+                    </div>
+
+                </div>
+
+                {{-- JURUSAN DATABASE --}}
+                <div class="card custom-card shadow-sm mb-4">
+
+                    <div class="card-body p-4">
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+
+                            <h5 class="font-weight-bold mb-0">
+
+                                Jurusan Sekolah
+
+                            </h5>
+
+                            <a href="{{ route('landing.jurusan') }}"
+                                class="text-success font-weight-bold">
+
+                                Lihat Semua
+
+                            </a>
+
+                        </div>
+
+                        <div class="row">
+
+                            @foreach($jurusan as $item)
+
+                            <div class="col-md-4 mb-3">
+
+                                <div class="jurusan-box bg-white p-4 text-center h-100">
+
+                                    <i class="fas fa-laptop-code fa-2x text-success mb-3"></i>
+
+                                    <h6 class="font-weight-bold">
+
+                                        {{ $item->namajurusan }}
+
+                                    </h6>
+
+                                    <a href="{{ route('landing.jurusan.detail',$item->id) }}"
+                                        class="btn btn-outline-success btn-sm mt-3 rounded-pill">
+
+                                        Detail
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                            @endforeach
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- STATISTIK --}}
+                <div class="card custom-card shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <h6 class="font-weight-bold mb-4">
+                            Ringkasan Kehadiran Hari Ini
+                        </h6>
+
+                        <div class="row text-center">
+
+                            <div class="col-3">
+
+                                <div class="stat-circle text-success"
+                                    style="background:#dcfce7;">
+
+                                    80%
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Hadir
+                                </small>
+
+                            </div>
+
+                            <div class="col-3">
+
+                                <div class="stat-circle text-warning"
+                                    style="background:#fef9c3;">
+
+                                    10%
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Izin
+                                </small>
+
+                            </div>
+
+                            <div class="col-3">
+
+                                <div class="stat-circle text-info"
+                                    style="background:#e0f2fe;">
+
+                                    5%
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Sakit
+                                </small>
+
+                            </div>
+
+                            <div class="col-3">
+
+                                <div class="stat-circle text-danger"
+                                    style="background:#fee2e2;">
+
+                                    5%
+
+                                </div>
+
+                                <small class="text-muted">
+                                    Alpha
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {{-- RIGHT --}}
+            <div class="col-lg-4">
+
+                <div class="card custom-card shadow-sm border-0 mb-4 bg-dark text-white">
+
+                    <div class="card-body p-4 text-center">
+
+                        <i class="fas fa-info-circle fa-2x mb-3 text-success"></i>
+
+                        <h6 class="font-weight-bold">
+                            Informasi Login
+                        </h6>
+
+                        <p class="small text-secondary">
+
+                            Gunakan NIS untuk masuk ke sistem
+                            dan lakukan absensi tepat waktu.
+
+                        </p>
+
+                        <button class="btn btn-outline-light btn-sm w-100 mt-2">
+
+                            Panduan Penggunaan
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="card custom-card shadow-sm border-0 text-center">
+
+                    <div class="card-body p-4">
+
+                        <h6 class="font-weight-bold">
+                            Butuh Bantuan?
+                        </h6>
+
+                        <p class="small text-muted mb-4">
+
+                            Tim IT Support siap membantu
+                            jika terjadi kendala teknis.
+
+                        </p>
+
+                        <a href="#"
+                            class="btn btn-success w-100"
+                            style="border-radius: 12px;">
+
+                            <i class="fab fa-whatsapp mr-2"></i>
+
+                            Hubungi Admin
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 @endsection

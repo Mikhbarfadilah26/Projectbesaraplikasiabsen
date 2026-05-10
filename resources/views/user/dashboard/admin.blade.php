@@ -5,7 +5,7 @@
 <style>
     .dashboard-header {
         background: linear-gradient(135deg, #2563eb, #1e40af);
-        border-radius: 20px;
+        border-radius: 12px;
         padding: 30px;
         color: white;
         position: relative;
@@ -37,19 +37,19 @@
 
     .info-card {
         border: none;
-        border-radius: 18px;
+        border-radius: 10px;
         overflow: hidden;
         transition: 0.3s;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     }
 
     .info-card:hover {
-        transform: translateY(-6px);
+        transform: translateY(-4px);
     }
 
     .info-icon {
-        font-size: 50px;
-        opacity: 0.2;
+        font-size: 45px;
+        opacity: 0.15;
         position: absolute;
         right: 20px;
         top: 20px;
@@ -57,20 +57,20 @@
 
     .card-modern {
         border: none;
-        border-radius: 18px;
+        border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     }
 
     .quick-btn {
-        border-radius: 14px;
-        padding: 14px 18px;
+        border-radius: 8px;
+        padding: 12px 18px;
         font-weight: 600;
         transition: 0.3s;
     }
 
     .quick-btn:hover {
-        transform: scale(1.05);
+        transform: scale(1.03);
     }
 
     .bg-gradient-primary {
@@ -111,6 +111,7 @@
         <div class="row align-items-center">
 
             <div class="col-md-8">
+
                 <h2 class="welcome-text">
                     <i class="fas fa-user-shield mr-2"></i>
                     Dashboard Admin
@@ -120,11 +121,15 @@
                     Selamat datang kembali,
                     <strong>{{ auth()->user()->nama }}</strong>
                 </p>
+
             </div>
 
             <div class="col-md-4 text-md-right mt-3 mt-md-0">
+
                 <h5>{{ date('d F Y') }}</h5>
+
                 <small>Management Sistem Absensi Sekolah</small>
+
             </div>
 
         </div>
@@ -136,166 +141,396 @@
 
         {{-- ADMIN --}}
         <div class="col-lg-3 col-md-6 mb-4">
+
             <div class="card info-card bg-gradient-primary position-relative">
 
                 <div class="card-body">
-                    <h5 class="font-weight-bold">Admin Login</h5>
-                    <h4>{{ auth()->user()->nama }}</h4>
+
+                    <h6 class="font-weight-bold">
+                        Admin Login
+                    </h6>
+
+                    <h4>
+                        {{ auth()->user()->nama }}
+                    </h4>
 
                     <i class="fas fa-user-shield info-icon"></i>
+
                 </div>
 
             </div>
+
         </div>
 
         {{-- SISWA --}}
         <div class="col-lg-3 col-md-6 mb-4">
+
             <div class="card info-card bg-gradient-success position-relative">
 
                 <div class="card-body">
-                    <h5 class="font-weight-bold">Total Siswa</h5>
-                    <h2>150</h2>
+
+                    <h6 class="font-weight-bold">
+                        Total Siswa
+                    </h6>
+
+                    <h2>
+                        {{ $totalsiswa }}
+                    </h2>
+
+                    <small>
+                        Data siswa aktif
+                    </small>
 
                     <i class="fas fa-user-graduate info-icon"></i>
+
                 </div>
 
                 <div class="card-footer bg-transparent border-0">
-                    <a href="/siswa" class="text-white">
+
+                    <a href="/master/siswa" class="text-white">
+
                         Lihat Data
                         <i class="fas fa-arrow-circle-right"></i>
+
                     </a>
+
                 </div>
 
             </div>
+
         </div>
 
         {{-- KELAS --}}
         <div class="col-lg-3 col-md-6 mb-4">
+
             <div class="card info-card bg-gradient-warning position-relative">
 
                 <div class="card-body">
-                    <h5 class="font-weight-bold">Total Kelas</h5>
-                    <h2>12</h2>
 
-                    <i class="fas fa-door-open info-icon"></i>
+                    <h6 class="font-weight-bold">
+                        Total Kelas
+                    </h6>
+
+                    <h2>
+                        {{ $totalkelas }}
+                    </h2>
+
+                    <small>
+                        Seluruh kelas aktif
+                    </small>
+
+                    <i class="fas fa-school info-icon"></i>
+
                 </div>
 
                 <div class="card-footer bg-transparent border-0">
-                    <a href="/kelas" class="text-white">
+
+                    <a href="/master/kelas" class="text-white">
+
                         Lihat Data
                         <i class="fas fa-arrow-circle-right"></i>
+
                     </a>
+
                 </div>
 
             </div>
+
         </div>
 
         {{-- ABSENSI --}}
         <div class="col-lg-3 col-md-6 mb-4">
+
             <div class="card info-card bg-gradient-danger position-relative">
 
                 <div class="card-body">
-                    <h5 class="font-weight-bold">Absensi Hari Ini</h5>
-                    <h2>53</h2>
+
+                    <h6 class="font-weight-bold">
+                        Absensi Hari Ini
+                    </h6>
+
+                    <h2>
+                        {{ $totalabsensi }}
+                    </h2>
+
+                    <small>
+                        Data absensi masuk
+                    </small>
 
                     <i class="fas fa-check-circle info-icon"></i>
+
                 </div>
 
                 <div class="card-footer bg-transparent border-0">
-                    <a href="/absensi" class="text-white">
-                        Input Absensi
+
+                    <a href="/master/transaksi/absensi" class="text-white">
+
+                        Lihat Absensi
                         <i class="fas fa-arrow-circle-right"></i>
+
                     </a>
+
                 </div>
 
             </div>
+
         </div>
 
     </div>
 
-    {{-- CONTENT --}}
+    {{-- DATA TERBARU --}}
     <div class="row">
 
-        {{-- INFORMASI --}}
+        {{-- DATA SISWA --}}
         <div class="col-md-6 mb-4">
 
             <div class="card card-modern">
 
-                <div class="card-header bg-primary text-white border-0">
+                <div class="card-header bg-primary text-white">
+
                     <h5 class="mb-0">
-                        <i class="fas fa-info-circle mr-2"></i>
-                        Informasi Sistem
+                        <i class="fas fa-user-graduate mr-2"></i>
+                        Data Siswa Terbaru
                     </h5>
+
                 </div>
 
-                <div class="card-body">
+                <div class="card-body p-0">
 
-                    <table class="table table-borderless">
+                    <table class="table table-hover mb-0">
 
-                        <tr>
-                            <th width="40%">Nama Admin</th>
-                            <td>: {{ auth()->user()->nama }}</td>
-                        </tr>
+                        <thead class="bg-light">
 
-                        <tr>
-                            <th>Tanggal Login</th>
-                            <td>: {{ date('d-m-Y') }}</td>
-                        </tr>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Kelas</th>
+                            </tr>
 
-                        <tr>
-                            <th>Status</th>
-                            <td>
-                                :
-                                <span class="badge badge-success">
-                                    Online
-                                </span>
-                            </td>
-                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @forelse ($datasiswa as $item)
+
+                            <tr>
+
+                                <td>{{ $loop->iteration }}</td>
+
+                                <td>{{ $item->nama }}</td>
+
+                                <td>
+                                    {{ $item->kelas->namakelas ?? '-' }}
+                                </td>
+
+                            </tr>
+
+                            @empty
+
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">
+                                    Data siswa kosong
+                                </td>
+                            </tr>
+
+                            @endforelse
+
+                        </tbody>
 
                     </table>
 
                 </div>
 
+                <div class="card-footer text-right">
+
+                    <a href="/master/siswa" class="btn btn-sm btn-primary">
+                        Lihat Semua
+                    </a>
+
+                </div>
+
             </div>
 
         </div>
 
-        {{-- MENU CEPAT --}}
+        {{-- DATA JURUSAN --}}
         <div class="col-md-6 mb-4">
 
             <div class="card card-modern">
 
-                <div class="card-header bg-success text-white border-0">
+                <div class="card-header bg-success text-white">
+
                     <h5 class="mb-0">
-                        <i class="fas fa-bolt mr-2"></i>
-                        Menu Cepat
+                        <i class="fas fa-layer-group mr-2"></i>
+                        Data Jurusan
                     </h5>
+
                 </div>
 
-                <div class="card-body text-center">
+                <div class="card-body p-0">
 
-                    <a href="/siswa"
-                        class="btn btn-primary quick-btn m-2">
-                        <i class="fas fa-user-graduate"></i>
-                        Data Siswa
+                    <table class="table table-hover mb-0">
+
+                        <thead class="bg-light">
+
+                            <tr>
+                                <th>No</th>
+                                <th>Jurusan</th>
+                                <th>Dibuat</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @forelse ($datajurusan as $item)
+
+                            <tr>
+
+                                <td>{{ $loop->iteration }}</td>
+
+                                <td>{{ $item->namajurusan }}</td>
+
+                                <td>
+                                    {{ $item->created_at->format('d-m-Y') }}
+                                </td>
+
+                            </tr>
+
+                            @empty
+
+                            <tr>
+                                <td colspan="3" class="text-center text-muted">
+                                    Data jurusan kosong
+                                </td>
+                            </tr>
+
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="card-footer text-right">
+
+                    <a href="/master/jurusan" class="btn btn-sm btn-success">
+                        Lihat Semua
                     </a>
 
-                    <a href="/kelas"
-                        class="btn btn-warning quick-btn m-2 text-white">
-                        <i class="fas fa-door-open"></i>
-                        Data Kelas
-                    </a>
+                </div>
 
-                    <a href="/absensi"
-                        class="btn btn-success quick-btn m-2">
-                        <i class="fas fa-check-circle"></i>
-                        Absensi
-                    </a>
+            </div>
 
-                    <a href="/laporan/harian"
-                        class="btn btn-danger quick-btn m-2">
-                        <i class="fas fa-file-alt"></i>
-                        Laporan
+        </div>
+
+    </div>
+
+    {{-- DATA ABSENSI --}}
+    <div class="row">
+
+        <div class="col-12">
+
+            <div class="card card-modern">
+
+                <div class="card-header bg-danger text-white">
+
+                    <h5 class="mb-0">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        Absensi Terbaru
+                    </h5>
+
+                </div>
+
+                <div class="card-body p-0">
+
+                    <table class="table table-hover mb-0">
+
+                        <thead class="bg-light">
+
+                            <tr>
+
+                                <th>No</th>
+                                <th>Nama Siswa</th>
+                                <th>Tanggal</th>
+                                <th>Status</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @forelse ($dataabsensi as $item)
+
+                            <tr>
+
+                                <td>{{ $loop->iteration }}</td>
+
+                                <td>
+                                    {{ $item->siswa->nama ?? '-' }}
+                                </td>
+
+                                <td>
+                                    {{ date('d-m-Y', strtotime($item->created_at)) }}
+                                </td>
+
+                                <td>
+
+                                    @if($item->status_masuk == 'Hadir')
+
+                                    <span class="badge badge-success">
+                                        Hadir
+                                    </span>
+
+                                    @elseif($item->status_masuk == 'Izin')
+
+                                    <span class="badge badge-warning">
+                                        Izin
+                                    </span>
+
+                                    @elseif($item->status_masuk == 'Sakit')
+
+                                    <span class="badge badge-info">
+                                        Sakit
+                                    </span>
+
+                                    @else
+
+                                    <span class="badge badge-danger">
+                                        Alpha
+                                    </span>
+
+                                    @endif
+
+                                </td>
+
+                            </tr>
+
+                            @empty
+
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">
+                                    Belum ada data absensi
+                                </td>
+                            </tr>
+
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="card-footer text-right">
+
+                    <a href="/master/transaksi/absensi"
+                        class="btn btn-sm btn-danger">
+
+                        Lihat Semua
+
                     </a>
 
                 </div>
