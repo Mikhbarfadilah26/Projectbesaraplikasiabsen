@@ -12,6 +12,7 @@ class ModelUser extends Authenticatable
         'nama',
         'username',
         'password',
+        'foto',
         'role'
     ];
 

@@ -1,0 +1,103 @@
+ABSENSISISWASMKIKHBARFADILLAH/
+│
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │
+│   │   ├── Auth/
+│   │   │   ├── ControllerAuthUser.php
+│   │   │   └── ControllerAuthSiswa.php
+│   │   │
+│   │   ├── Dashboard/
+│   │   │   ├── ControllerDashboardAdmin.php
+│   │   │   ├── ControllerDashboardGuru.php
+│   │   │   └── ControllerDashboardSiswa.php
+│   │   │
+│   │   ├── Master/
+│   │   │   ├── ControllerUser.php
+│   │   │   ├── ControllerJurusan.php
+│   │   │   ├── ControllerKelas.php
+│   │   │   ├── ControllerSiswa.php
+│   │   │   ├── ControllerTahunAjaran.php
+│   │   │   └── ControllerSemester.php
+│   │   │
+│   │   ├── Transaksi/
+│   │   │   └── ControllerAbsensi.php
+│   │   │
+│   │   ├── Laporan/
+│   │   │   └── ControllerLaporan.php
+│   │   │
+│   │   └── Landing/
+│   │   │       └── ControllerLanding.php
+│   │   │
+│   │   └── Middleware/
+│   │       ├── MiddlewareSiswa.php
+│   │       └── RoleMiddleware.php
+│   │
+│   ├── Models/
+│   │   ├── ModelUser.php
+│   │   ├── ModelJurusan.php
+│   │   ├── ModelKelas.php
+│   │   ├── ModelSiswa.php
+│   │   ├── ModelTahunAjaran.php
+│   │   ├── ModelSemester.php
+│   │   ├── ModelAbsensi.php
+│   │   └── ModelPengumuman.php
+│   │
+│   └── Providers/
+│
+├── database/
+│   ├── migrations/
+│   │   └── migrasiabsensi.php
+│   │
+│   └── seeders/
+│       ├── SeederAbsensi.php
+│       └── DatabaseSeeder.php
+│
+├── resources/
+│   ├── views/
+│   │
+│   │   ├── layouts/
+│   │   │   ├── admin/
+│   │   │   ├── guru/
+│   │   │   ├── siswa/
+│   │   │   └── landing/
+│   │   │
+│   │   ├── admin/
+│   │   │   ├── dashboard/
+│   │   │   ├── user/
+│   │   │   ├── jurusan/
+│   │   │   ├── kelas/
+│   │   │   ├── siswa/
+│   │   │   ├── tahunajaran/
+│   │   │   ├── semester/
+│   │   │   ├── absensi/
+│   │   │   └── pengumuman/
+│   │   │
+│   │   ├── guru/
+│   │   │   ├── dashboard/
+│   │   │   ├── isiabsen/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   └── edit.blade.php
+│   │   │   │
+│   │   │   └── riwayat/
+│   │   │       └── index.blade.php
+│   │   │
+│   │   ├── siswa/
+│   │   │   ├── dashboard/
+│   │   │   │   └── index.blade.php
+│   │   │   │
+│   │   │   └── riwayat/
+│   │   │       └── index.blade.php
+│   │   │
+│   │   ├── landing/
+│   │   │
+│   │   ├── auth/
+│   │   │
+│   │   └── errors/
+│
+├── routes/
+│   └── web.php
+│
+└── .env

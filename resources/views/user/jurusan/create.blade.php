@@ -1,20 +1,33 @@
 @extends('layouts.appadmin')
 
 @section('content')
-<form action="{{ route('kelas.store') }}" method="POST">
-@csrf
 
-<input type="text" name="namakelas" placeholder="Nama Kelas" class="form-control mb-2" required>
-<input type="text" name="tingkat" placeholder="Tingkat" class="form-control mb-2" required>
+<div class="card">
+    <div class="card-header">
+        <h4>Tambah Jurusan</h4>
+    </div>
 
-{{--  TAMBAH INI --}}
-<select name="jurusanid" class="form-control mb-2" required>
-    <option value="">-- Pilih Jurusan --</option>
-    @foreach($jurusan as $j)
-        <option value="{{ $j->id }}">{{ $j->namajurusan }}</option>
-    @endforeach
-</select>
+    <div class="card-body">
 
-<button class="btn btn-success">Simpan</button>
-</form>
+        <form action="{{ route('jurusan.store') }}" method="POST">
+            @csrf
+
+            <div class="mb-3">
+                <label>Nama Jurusan</label>
+
+                <input type="text"
+                       name="namajurusan"
+                       class="form-control"
+                       required>
+            </div>
+
+            <button class="btn btn-success">
+                Simpan
+            </button>
+
+        </form>
+
+    </div>
+</div>
+
 @endsection

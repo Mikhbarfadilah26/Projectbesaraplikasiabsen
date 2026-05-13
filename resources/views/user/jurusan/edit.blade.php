@@ -1,22 +1,61 @@
 @extends('layouts.appadmin')
 
 @section('content')
-<form action="{{ route('kelas.update',$kelas->id) }}" method="POST">
-@csrf
-@method('PUT')
 
-<input type="text" name="namakelas" value="{{ $kelas->namakelas }}" class="form-control mb-2" required>
-<input type="text" name="tingkat" value="{{ $kelas->tingkat }}" class="form-control mb-2" required>
+<div class="container py-4">
 
-{{-- 🔥 TAMBAH INI --}}
-<select name="jurusanid" class="form-control mb-2" required>
-    @foreach($jurusan as $j)
-        <option value="{{ $j->id }}" {{ $kelas->jurusanid == $j->id ? 'selected' : '' }}>
-            {{ $j->namajurusan }}
-        </option>
-    @endforeach
-</select>
+    <div class="card shadow-sm border-0 rounded-4">
 
-<button class="btn btn-primary">Update</button>
-</form>
+        <div class="card-header bg-white border-0 py-3">
+
+            <h5 class="mb-0 font-weight-bold">
+                Edit Jurusan
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            <form action="{{ route('jurusan.update', $jurusan->id) }}"
+                  method="POST">
+
+                @csrf
+                @method('PUT')
+
+                <div class="mb-3">
+
+                    <label class="font-weight-bold">
+                        Nama Jurusan
+                    </label>
+
+                    <input type="text"
+                           name="namajurusan"
+                           value="{{ $jurusan->namajurusan }}"
+                           class="form-control"
+                           required>
+
+                </div>
+
+                <button class="btn btn-primary rounded-pill px-4">
+
+                    <i class="fas fa-save mr-1"></i>
+                    Update
+
+                </button>
+
+                <a href="{{ route('jurusan.index') }}"
+                   class="btn btn-secondary rounded-pill px-4">
+
+                    Kembali
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
 @endsection

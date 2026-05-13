@@ -8,6 +8,7 @@ return new class extends Migration {
 
     public function up(): void
     {
+
         /*
         |--------------------------------------------------------------------------
         | JURUSAN
@@ -19,11 +20,39 @@ return new class extends Migration {
 
             $table->string('namajurusan');
 
-            // ICON LANDING
             $table->string('icon')->nullable();
 
-            // DESKRIPSI LANDING
             $table->text('deskripsi')->nullable();
+
+            $table->timestamps();
+
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | USERS
+        |--------------------------------------------------------------------------
+        | role:
+        | - admin
+        | - guru (otomatis wali kelas)
+        |--------------------------------------------------------------------------
+        */
+        Schema::create('users', function (Blueprint $table) {
+
+            $table->id();
+
+            $table->string('nama');
+
+            $table->string('username')->unique();
+
+            $table->string('password');
+
+            $table->string('foto')->nullable();
+
+            $table->enum('role', [
+                'admin',
+                'guru'
+            ]);
 
             $table->timestamps();
 
@@ -38,13 +67,42 @@ return new class extends Migration {
 
             $table->id();
 
+            /*
+            |--------------------------------------------------------------------------
+            | CONTOH:
+            | X RPL 1
+            | XI TKJ 2
+            |--------------------------------------------------------------------------
+            */
             $table->string('namakelas');
 
-            $table->string('tingkat');
+            $table->enum('tingkat', [
+                'X',
+                'XI',
+                'XII'
+            ]);
 
+            /*
+            |--------------------------------------------------------------------------
+            | RELASI JURUSAN
+            |--------------------------------------------------------------------------
+            */
             $table->foreignId('jurusanid')
                 ->constrained('jurusan')
                 ->cascadeOnDelete();
+
+            /*
+            |--------------------------------------------------------------------------
+            | WALI KELAS
+            |--------------------------------------------------------------------------
+            | 1 guru hanya bisa punya 1 kelas
+            |--------------------------------------------------------------------------
+            */
+            $table->foreignId('guruid')
+                ->nullable()
+                ->unique()
+                ->constrained('users')
+                ->nullOnDelete();
 
             $table->timestamps();
 
@@ -65,34 +123,23 @@ return new class extends Migration {
 
             $table->string('password');
 
-            $table->enum('jeniskelamin', ['L', 'P']);
+            $table->string('foto')->nullable();
 
+            $table->enum('jeniskelamin', [
+                'L',
+                'P'
+            ]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | KELAS SISWA
+            |--------------------------------------------------------------------------
+            */
             $table->foreignId('kelasid')
                 ->constrained('kelas')
                 ->cascadeOnDelete();
 
             $table->text('alamat')->nullable();
-
-            $table->timestamps();
-
-        });
-
-        /*
-        |--------------------------------------------------------------------------
-        | USERS
-        |--------------------------------------------------------------------------
-        */
-        Schema::create('users', function (Blueprint $table) {
-
-            $table->id();
-
-            $table->string('nama');
-
-            $table->string('username')->unique();
-
-            $table->string('password');
-
-            $table->enum('role', ['admin', 'guru']);
 
             $table->timestamps();
 
@@ -107,7 +154,16 @@ return new class extends Migration {
 
             $table->id();
 
+            /*
+            |--------------------------------------------------------------------------
+            | CONTOH:
+            | 2025/2026
+            |--------------------------------------------------------------------------
+            */
             $table->string('tahun');
+
+            $table->boolean('is_active')
+                ->default(true);
 
             $table->timestamps();
 
@@ -122,7 +178,13 @@ return new class extends Migration {
 
             $table->id();
 
-            $table->enum('nama', ['ganjil', 'genap']);
+            $table->enum('nama', [
+                'ganjil',
+                'genap'
+            ]);
+
+            $table->boolean('is_active')
+                ->default(true);
 
             $table->timestamps();
 
@@ -132,75 +194,96 @@ return new class extends Migration {
         |--------------------------------------------------------------------------
         | ABSENSI
         |--------------------------------------------------------------------------
+        | Absensi manual oleh wali kelas
+        |--------------------------------------------------------------------------
         */
         Schema::create('absensi', function (Blueprint $table) {
 
             $table->id();
 
+            /*
+            |--------------------------------------------------------------------------
+            | RELASI SISWA
+            |--------------------------------------------------------------------------
+            */
             $table->foreignId('siswaid')
                 ->constrained('siswa')
                 ->cascadeOnDelete();
 
+            /*
+            |--------------------------------------------------------------------------
+            | RELASI GURU / WALI KELAS
+            |--------------------------------------------------------------------------
+            */
+            $table->foreignId('guruid')
+                ->constrained('users')
+                ->cascadeOnDelete();
+
+            /*
+            |--------------------------------------------------------------------------
+            | RELASI KELAS
+            |--------------------------------------------------------------------------
+            */
+            $table->foreignId('kelasid')
+                ->constrained('kelas')
+                ->cascadeOnDelete();
+
+            /*
+            |--------------------------------------------------------------------------
+            | RELASI TAHUN AJARAN
+            |--------------------------------------------------------------------------
+            */
             $table->foreignId('tahunid')
                 ->constrained('tahunajaran')
                 ->cascadeOnDelete();
 
+            /*
+            |--------------------------------------------------------------------------
+            | RELASI SEMESTER
+            |--------------------------------------------------------------------------
+            */
             $table->foreignId('semesterid')
                 ->constrained('semester')
                 ->cascadeOnDelete();
 
+            /*
+            |--------------------------------------------------------------------------
+            | TANGGAL ABSEN
+            |--------------------------------------------------------------------------
+            */
             $table->date('tanggal');
 
             /*
             |--------------------------------------------------------------------------
-            | ABSENSI MASUK
+            | STATUS ABSENSI
             |--------------------------------------------------------------------------
             */
-            $table->time('jam_masuk')->nullable();
+            $table->enum('status', [
 
-            $table->enum('status_masuk', [
                 'hadir',
                 'izin',
                 'sakit',
-                'alpha'
-            ])->nullable();
+                'alpha',
+                'cabut'
+
+            ])->default('hadir');
 
             /*
             |--------------------------------------------------------------------------
-            | ABSENSI PULANG
+            | KETERANGAN TAMBAHAN
             |--------------------------------------------------------------------------
             */
-            $table->time('jam_pulang')->nullable();
+            $table->text('keterangan')->nullable();
 
-            $table->enum('status_pulang', [
-                'hadir',
-                'izin',
-                'sakit',
-                'alpha'
-            ])->nullable();
-
-            $table->timestamps();
-
-        });
-
-        /*
-        |--------------------------------------------------------------------------
-        | DETAIL ABSENSI
-        |--------------------------------------------------------------------------
-        */
-        Schema::create('detailabsensi', function (Blueprint $table) {
-
-            $table->id();
-
-            $table->foreignId('absensiid')
-                ->constrained('absensi')
-                ->cascadeOnDelete();
-
-            $table->string('keterangan')->nullable();
-            // contoh:
-            // telat
-            // pulang cepat
-            // izin guru
+            /*
+            |--------------------------------------------------------------------------
+            | MENCEGAH ABSENSI DOUBLE
+            |--------------------------------------------------------------------------
+            */
+            $table->unique([
+                'siswaid',
+                'tanggal'
+            ]);
 
             $table->timestamps();
 
@@ -215,13 +298,18 @@ return new class extends Migration {
 
             $table->id();
 
+            $table->foreignId('userid')
+                ->constrained('users')
+                ->cascadeOnDelete();
+
             $table->string('judul');
 
             $table->text('isi');
 
             $table->date('tanggal');
 
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')
+                ->default(true);
 
             $table->timestamps();
 
@@ -232,13 +320,12 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('pengumuman');
-        Schema::dropIfExists('detailabsensi');
         Schema::dropIfExists('absensi');
         Schema::dropIfExists('semester');
         Schema::dropIfExists('tahunajaran');
-        Schema::dropIfExists('users');
         Schema::dropIfExists('siswa');
         Schema::dropIfExists('kelas');
+        Schema::dropIfExists('users');
         Schema::dropIfExists('jurusan');
     }
 

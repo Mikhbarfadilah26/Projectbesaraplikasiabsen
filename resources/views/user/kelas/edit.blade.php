@@ -1,30 +1,60 @@
 @extends('layouts.appadmin')
 
 @section('content')
+
 <div class="container">
 
-<h4>Edit Kelas</h4>
+    <h4>Edit Kelas</h4>
 
-<form action="{{ route('kelas.update',$kelas->id) }}" method="POST">
-@csrf
-@method('PUT')
+    <form action="{{ route('kelas.update',$kelas->id) }}"
+          method="POST">
 
-<input type="text" name="namakelas" value="{{ $kelas->namakelas }}" class="form-control mb-2" required>
+        @csrf
+        @method('PUT')
 
-<input type="text" name="tingkat" value="{{ $kelas->tingkat }}" class="form-control mb-2" required>
+        {{-- TINGKAT --}}
+        <select name="tingkat"
+                class="form-control mb-3"
+                required>
 
-{{-- 🔥 RELASI JURUSAN --}}
-<select name="jurusanid" class="form-control mb-2" required>
-    @foreach($jurusan as $j)
-        <option value="{{ $j->id }}" {{ $kelas->jurusanid == $j->id ? 'selected' : '' }}>
-            {{ $j->namajurusan }}
-        </option>
-    @endforeach
-</select>
+            <option value="X" {{ $kelas->tingkat == 'X' ? 'selected' : '' }}>
+                X
+            </option>
 
-<button class="btn btn-primary">Update</button>
+            <option value="XI" {{ $kelas->tingkat == 'XI' ? 'selected' : '' }}>
+                XI
+            </option>
 
-</form>
+            <option value="XII" {{ $kelas->tingkat == 'XII' ? 'selected' : '' }}>
+                XII
+            </option>
+
+        </select>
+
+        {{-- JURUSAN --}}
+        <select name="jurusanid"
+                class="form-control mb-3"
+                required>
+
+            @foreach($jurusan as $j)
+
+                <option value="{{ $j->id }}"
+                    {{ $kelas->jurusanid == $j->id ? 'selected' : '' }}>
+
+                    {{ $j->namajurusan }}
+
+                </option>
+
+            @endforeach
+
+        </select>
+
+        <button class="btn btn-primary">
+            Update
+        </button>
+
+    </form>
 
 </div>
+
 @endsection

@@ -4,63 +4,186 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
 use App\Models\ModelKelas;
 use App\Models\ModelJurusan;
 
 class ControllerKelas extends Controller
 {
-    public function index(){
-        $data = ModelKelas::with('jurusan')->get();
+    /**
+     * =================================
+     * LIST DATA KELAS
+     * =================================
+     */
+    public function index()
+    {
+        $data = ModelKelas::with('jurusan')
+                    ->latest()
+                    ->get();
+
         return view('user.kelas.index', compact('data'));
     }
 
-    public function create(){
-        $jurusan = ModelJurusan::all();
+    /**
+     * =================================
+     * FORM TAMBAH KELAS
+     * =================================
+     */
+    public function create()
+    {
+        $jurusan = ModelJurusan::latest()->get();
+
         return view('user.kelas.create', compact('jurusan'));
     }
 
-    public function store(Request $r){
+    /**
+     * =================================
+     * SIMPAN DATA KELAS
+     * =================================
+     */
+    public function store(Request $r)
+    {
         $r->validate([
-            'namakelas'=>'required',
-            'tingkat'=>'required',
-            'jurusanid'=>'required'
+
+            'tingkat' => [
+
+                'required',
+
+                Rule::unique('kelas')
+                    ->where(function ($q) use ($r) {
+
+                        return $q->where(
+                            'jurusanid',
+                            $r->jurusanid
+                        );
+
+                    }),
+            ],
+
+            'jurusanid' => 'required'
+
+        ], [
+
+            'tingkat.required' => 'Tingkat wajib dipilih.',
+            'tingkat.unique'   => 'Kelas tersebut sudah ada.',
+            'jurusanid.required' => 'Jurusan wajib dipilih.'
+
         ]);
 
-        ModelKelas::create($r->all());
+        ModelKelas::create([
 
-        return redirect()->route('kelas.index')
-                         ->with('success','Data kelas berhasil ditambah');
+            'tingkat'   => $r->tingkat,
+            'jurusanid' => $r->jurusanid
+
+        ]);
+
+        return redirect()
+            ->route('kelas.index')
+            ->with(
+                'success',
+                'Data kelas berhasil ditambahkan.'
+            );
     }
 
-    public function show($id){
-        $kelas = ModelKelas::with('jurusan')->findOrFail($id);
+    /**
+     * =================================
+     * DETAIL KELAS
+     * =================================
+     */
+    public function show($id)
+    {
+        $kelas = ModelKelas::with('jurusan')
+                    ->findOrFail($id);
+
         return view('user.kelas.show', compact('kelas'));
     }
 
-    public function edit($id){
+    /**
+     * =================================
+     * FORM EDIT KELAS
+     * =================================
+     */
+    public function edit($id)
+    {
         $kelas = ModelKelas::findOrFail($id);
-        $jurusan = ModelJurusan::all();
 
-        return view('user.kelas.edit', compact('kelas','jurusan'));
+        $jurusan = ModelJurusan::latest()->get();
+
+        return view(
+            'user.kelas.edit',
+            compact('kelas', 'jurusan')
+        );
     }
 
-    public function update(Request $r, $id){
+    /**
+     * =================================
+     * UPDATE DATA KELAS
+     * =================================
+     */
+    public function update(Request $r, $id)
+    {
+        $kelas = ModelKelas::findOrFail($id);
+
         $r->validate([
-            'namakelas'=>'required',
-            'tingkat'=>'required',
-            'jurusanid'=>'required'
+
+            'tingkat' => [
+
+                'required',
+
+                Rule::unique('kelas')
+                    ->where(function ($q) use ($r) {
+
+                        return $q->where(
+                            'jurusanid',
+                            $r->jurusanid
+                        );
+
+                    })
+                    ->ignore($id),
+            ],
+
+            'jurusanid' => 'required'
+
+        ], [
+
+            'tingkat.required' => 'Tingkat wajib dipilih.',
+            'tingkat.unique'   => 'Kelas tersebut sudah ada.',
+            'jurusanid.required' => 'Jurusan wajib dipilih.'
+
         ]);
 
-        ModelKelas::findOrFail($id)->update($r->all());
+        $kelas->update([
 
-        return redirect()->route('kelas.index')
-                         ->with('success','Data kelas berhasil diupdate');
+            'tingkat'   => $r->tingkat,
+            'jurusanid' => $r->jurusanid
+
+        ]);
+
+        return redirect()
+            ->route('kelas.index')
+            ->with(
+                'success',
+                'Data kelas berhasil diupdate.'
+            );
     }
 
-    public function destroy($id){
-        ModelKelas::destroy($id);
+    /**
+     * =================================
+     * HAPUS KELAS
+     * =================================
+     */
+    public function destroy($id)
+    {
+        $kelas = ModelKelas::findOrFail($id);
 
-        return redirect()->route('kelas.index')
-                         ->with('success','Data kelas berhasil dihapus');
+        $kelas->delete();
+
+        return redirect()
+            ->route('kelas.index')
+            ->with(
+                'success',
+                'Data kelas berhasil dihapus.'
+            );
     }
 }

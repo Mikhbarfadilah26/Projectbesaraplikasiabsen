@@ -15,6 +15,7 @@ use App\Http\Controllers\Landing\ControllerLanding;
 // AUTH
 use App\Http\Controllers\Auth\ControllerAuthUser;
 use App\Http\Controllers\Auth\ControllerAuthSiswa;
+use App\Http\Controllers\ZonaSiswa\ControllerZonaSiswa;
 
 // DASHBOARD
 use App\Http\Controllers\Dashboard\ControllerDashboardAdmin;
@@ -29,6 +30,7 @@ use App\Http\Controllers\Master\ControllerMapel;
 use App\Http\Controllers\Master\ControllerSemester;
 use App\Http\Controllers\Master\ControllerUser;
 use App\Http\Controllers\Master\ControllerTahunAjaran;
+use App\Http\Controllers\Master\ControllerJadwalAbsensi;
 
 // TRANSAKSI
 use App\Http\Controllers\Transaksi\ControllerAbsensi;
@@ -36,6 +38,22 @@ use App\Http\Controllers\Transaksi\ControllerDetailAbsensi;
 
 // LAPORAN
 use App\Http\Controllers\Laporan\ControllerLaporan;
+
+/*
+|--------------------------------------------------------------------------
+| PROFILE SISWA
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/siswa/profile',
+    [ControllerZonaSiswa::class, 'profile']
+)->name('siswa.profile');
+
+Route::get(
+    '/siswa/laporan/cetak',
+    [ControllerZonaSiswa::class, 'cetakLaporan']
+)->name('siswa.laporan.cetak');
 
 /*
 |--------------------------------------------------------------------------
@@ -51,18 +69,18 @@ Route::controller(ControllerLanding::class)->group(function () {
     Route::get('/tentang', 'tentang')
         ->name('landing.tentang');
 
-/*
+    /*
 |--------------------------------------------------------------------------
 | JURUSAN
 |--------------------------------------------------------------------------
 */
 
-Route::get('/jurusan', 'jurusan')
-    ->name('landing.jurusan');
+    Route::get('/jurusan', 'jurusan')
+        ->name('landing.jurusan');
 
-// DETAIL JURUSAN
-Route::get('/jurusan/{id}', 'detailJurusan')
-    ->name('landing.jurusan.detail');
+    // DETAIL JURUSAN
+    Route::get('/jurusan/{id}', 'detailJurusan')
+        ->name('landing.jurusan.detail');
     /*
     |--------------------------------------------------------------------------
     | PENGUMUMAN
@@ -126,7 +144,6 @@ Route::post('/logout', function () {
     request()->session()->regenerateToken();
 
     return redirect('/');
-
 })->name('logout');
 
 Route::post('/logout-siswa', function () {
@@ -138,7 +155,6 @@ Route::post('/logout-siswa', function () {
     request()->session()->regenerateToken();
 
     return redirect('/');
-
 })->name('logout.siswa');
 
 /*
@@ -222,6 +238,10 @@ Route::middleware(['auth', 'role:admin,guru'])
         Route::resource('semester', ControllerSemester::class);
 
         Route::resource('user', ControllerUser::class);
+
+        Route::resource('jadwalabsensi', ControllerJadwalAbsensi::class);
+
+        
 
         /*
         |--------------------------------------------------------------------------

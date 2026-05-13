@@ -169,12 +169,10 @@ class ControllerAbsensi extends Controller
                     'Sudah absen pulang.'
                 );
             }
-
-            $data->update([
-                'jam_pulang'    => Carbon::now()->format('H:i:s'),
-                'status_pulang' => 'pulang',
-            ]);
-
+$data->update([
+    'jam_pulang'    => Carbon::now()->format('H:i:s'),
+    'status_pulang' => 'hadir',
+]);
             return back()->with(
                 'success',
                 'Absen pulang berhasil.'

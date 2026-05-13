@@ -164,10 +164,10 @@
                 <div class="card-body">
 
                     <h5 class="font-weight-bold">
-                        Guru Aktif
+                        Total Guru
                     </h5>
 
-                    <h4>{{ auth()->user()->nama }}</h4>
+                    <h2>{{ $jumlahGuru }}</h2>
 
                     <i class="fas fa-user-tie icon-bg"></i>
 
@@ -288,6 +288,11 @@
                         </tr>
 
                         <tr>
+                            <th>Email</th>
+                            <td>: {{ auth()->user()->email }}</td>
+                        </tr>
+
+                        <tr>
                             <th>Tanggal</th>
                             <td>: {{ date('d-m-Y') }}</td>
                         </tr>
@@ -345,6 +350,69 @@
                 </div>
 
             </div>
+
+        </div>
+
+    </div>
+
+    {{-- TABEL DATA GURU --}}
+    <div class="card custom-card mt-4">
+
+        <div class="card-header bg-primary border-0">
+            <h5 class="mb-0 text-white">
+                <i class="fas fa-users mr-2"></i>
+                Data Guru
+            </h5>
+        </div>
+
+        <div class="card-body table-responsive">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="bg-light">
+
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @forelse($guru as $item)
+
+                        <tr>
+
+                            <td>{{ $loop->iteration }}</td>
+
+                            <td>{{ $item->nama }}</td>
+
+                            <td>{{ $item->email }}</td>
+
+                            <td>
+                                <span class="badge badge-success">
+                                    {{ $item->role }}
+                                </span>
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                Data guru belum tersedia
+                            </td>
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
 
         </div>
 

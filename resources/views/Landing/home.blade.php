@@ -153,7 +153,7 @@
 
     .jurusan-box:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0,0,0,.08);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
     }
 
     @media(max-width:991px) {
@@ -540,11 +540,21 @@
 
                         </p>
 
-                        <a href="#"
-                            class="btn btn-success w-100"
-                            style="border-radius: 12px;">
+                        <a href="https://wa.me/6282267123172?text=Halo%20Admin%20SMK%20Negeri%201%20Karang%20Baru,%20saya%20ingin%20bertanya%20tentang%20aplikasi%20absensi."
+                            target="_blank"
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center"
+                            style="
+        border-radius: 14px;
+        height: 50px;
+        font-weight: 700;
+        font-size: 15px;
+        box-shadow: 0 10px 25px rgba(34,197,94,.25);
+        transition: .3s;
+    "
+                            onmouseover="this.style.transform='translateY(-2px)'"
+                            onmouseout="this.style.transform='translateY(0px)'">
 
-                            <i class="fab fa-whatsapp mr-2"></i>
+                            <i class="fab fa-whatsapp mr-2 fa-lg"></i>
 
                             Hubungi Admin
 

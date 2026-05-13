@@ -8,7 +8,7 @@
 <table class="table table-bordered">
 <tr>
     <th>No</th>
-    <th>Kelas</th>
+
     <th>Tingkat</th>
     <th>Jurusan</th> {{-- 🔥 --}}
     <th>Aksi</th>
@@ -17,7 +17,7 @@
 @foreach($data as $d)
 <tr>
 <td>{{ $loop->iteration }}</td>
-<td>{{ $d->namakelas }}</td>
+
 <td>{{ $d->tingkat }}</td>
 
 {{-- 🔥 RELASI --}}

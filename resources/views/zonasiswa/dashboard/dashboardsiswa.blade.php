@@ -142,20 +142,9 @@
                 <span class="font-weight-bold">Absensi</span>
             </a>
         </div>
+
         <div class="col-6 col-md-3 mb-4">
-            <a href="/siswa/jadwal" class="btn-menu bg-gradient-primary shadow-lg">
-                <i class="fas fa-calendar-alt fa-2x mb-3 d-block"></i>
-                <span class="font-weight-bold">Jadwal</span>
-            </a>
-        </div>
-        <div class="col-6 col-md-3 mb-4">
-            <a href="/siswa/laporan" class="btn-menu bg-gradient-danger shadow-lg">
-                <i class="fas fa-chart-line fa-2x mb-3 d-block"></i>
-                <span class="font-weight-bold">Laporan</span>
-            </a>
-        </div>
-        <div class="col-6 col-md-3 mb-4">
-            <a href="/profile" class="btn-menu bg-gradient-dark shadow-lg">
+            <a href="/siswa/profile" class="btn-menu bg-gradient-dark shadow-lg">
                 <i class="fas fa-user-cog fa-2x mb-3 d-block"></i>
                 <span class="font-weight-bold">Profil</span>
             </a>

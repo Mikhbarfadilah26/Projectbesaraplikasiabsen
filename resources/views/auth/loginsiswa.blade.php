@@ -6,8 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Siswa | SMK Negeri 1 Karang Baru</title>
 
+    {{-- GOOGLE FONT --}}
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    {{-- ADMINLTE --}}
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+
+    {{-- FONT AWESOME --}}
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
 
     <style>
@@ -17,139 +22,168 @@
             --soft-green: #ecfdf5;
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0;
             padding: 20px;
         }
 
         .login-container {
             width: 100%;
-            max-width: 900px;
-            display: flex;
-            background: #ffffff;
-            border-radius: 24px;
+            max-width: 950px;
+            background: #fff;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-            min-height: 550px;
+            display: flex;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
         }
 
-        /* Sisi Kiri - Karakter/Ilustrasi */
+        /* SIDEBAR */
         .login-sidebar {
             flex: 1;
-            background: var(--primary-green);
-            background: linear-gradient(180deg, var(--primary-green) 0%, var(--dark-green) 100%);
+            background: linear-gradient(180deg,
+                    var(--primary-green) 0%,
+                    var(--dark-green) 100%);
+            padding: 45px;
+            color: white;
+            position: relative;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            padding: 40px;
-            color: white;
+            align-items: center;
             text-align: center;
-            position: relative;
+        }
+
+        .login-sidebar::before,
+        .login-sidebar::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .login-sidebar::before {
+            width: 250px;
+            height: 250px;
+            top: -80px;
+            right: -80px;
+        }
+
+        .login-sidebar::after {
+            width: 180px;
+            height: 180px;
+            bottom: -60px;
+            left: -60px;
+            background: rgba(255,255,255,0.05);
         }
 
         .login-sidebar img {
-            width: 100%;
             max-width: 280px;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
-            margin-bottom: 20px;
+            width: 100%;
+            margin-bottom: 25px;
+            z-index: 2;
             animation: float 4s ease-in-out infinite;
+            filter: drop-shadow(0 12px 20px rgba(0,0,0,0.15));
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
         }
 
         .login-sidebar h3 {
             font-weight: 700;
             margin-bottom: 10px;
+            z-index: 2;
         }
 
         .login-sidebar p {
-            opacity: 0.9;
             font-size: 0.95rem;
+            opacity: .9;
+            line-height: 1.7;
+            z-index: 2;
         }
 
-        /* Sisi Kanan - Form */
+        /* FORM AREA */
         .login-form-area {
             flex: 1;
-            padding: 50px;
+            padding: 55px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
         .brand-logo {
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.9rem;
+            font-weight: 800;
             color: var(--dark-green);
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 35px;
+            text-align: center;
+            letter-spacing: 1px;
         }
 
         .form-title {
+            font-size: 2rem;
             font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 5px;
-            font-size: 1.75rem;
+            color: #111827;
+            margin-bottom: 10px;
         }
 
         .form-subtitle {
             color: #6b7280;
-            margin-bottom: 30px;
-            font-size: 0.9rem;
+            margin-bottom: 35px;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         .form-group label {
-            font-weight: 600;
-            color: #374151;
             font-size: 0.85rem;
+            font-weight: 700;
+            color: #374151;
             margin-bottom: 8px;
         }
 
         .form-control {
-            border-radius: 12px;
-            padding: 12px 16px;
-            height: auto;
+            border-radius: 14px;
             border: 2px solid #e5e7eb;
-            transition: all 0.2s;
-            background-color: #f9fafb;
+            background: #f9fafb;
+            padding: 14px 18px;
+            transition: .3s;
         }
 
         .form-control:focus {
             border-color: var(--primary-green);
-            background-color: #fff;
-            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+            background: #fff;
+            box-shadow: 0 0 0 5px rgba(16,185,129,0.12);
         }
 
         .btn-login {
-            background-color: var(--primary-green);
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            font-weight: 700;
-            color: #fff;
             width: 100%;
-            margin-top: 15px;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            border: none;
+            border-radius: 14px;
+            padding: 14px;
+            background: linear-gradient(135deg,
+                    var(--primary-green),
+                    var(--dark-green));
+            color: white;
+            font-weight: 700;
+            margin-top: 10px;
+            transition: .3s;
         }
 
         .btn-login:hover {
-            background-color: var(--dark-green);
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.4);
-            color: #fff;
+            box-shadow: 0 12px 20px rgba(16,185,129,0.35);
         }
 
         .back-link {
@@ -160,28 +194,36 @@
         .back-link a {
             color: #6b7280;
             text-decoration: none;
-            font-size: 0.85rem;
-            transition: 0.3s;
         }
 
-        .back-link a:hover {
-            color: var(--primary-green);
+        /* LOGO FIX */
+        .login-logo {
+            width: 95px;
+            height: 95px;
+            object-fit: contain;
+            background: transparent !important;
+            border: none;
+            filter: drop-shadow(0 8px 18px rgba(0,0,0,0.15));
+            transition: 0.3s ease;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        .login-logo:hover {
+            transform: scale(1.08);
+        }
+
+        /* RESPONSIVE */
+        @media(max-width:768px){
             .login-container {
                 flex-direction: column;
                 max-width: 450px;
             }
+
             .login-sidebar {
-                padding: 30px;
+                padding: 35px 25px;
             }
-            .login-sidebar img {
-                max-width: 150px;
-            }
+
             .login-form-area {
-                padding: 30px;
+                padding: 35px 25px;
             }
         }
     </style>
@@ -189,57 +231,76 @@
 
 <body>
 
-    <div class="login-container">
-        <!-- Sisi Kiri: Karakter & Info -->
-        <div class="login-sidebar d-none d-md-flex">
-            <!-- Gambar Karakter (Ganti URL ini dengan path gambar karakter siswa anda) -->
-            <img src="https://cdni.iconscout.com/illustration/premium/thumb/male-student-attending-online-class-illustration-download-in-svg-png-gif-file-formats--educational-learning-education-pack-people-illustrations-5381395.png" alt="Siswa Karakter">
-            <h3>Halo, Sobat SMKN 1!</h3>
-            <p>Ayo presensi hari ini dan raih prestasimu dengan kedisiplinan tinggi.</p>
-        </div>
+<div class="login-container">
 
-        <!-- Sisi Kanan: Form Login -->
-        <div class="login-form-area">
-            <div class="brand-logo">
-                <i class="fas fa-graduation-cap"></i>
-                <span>E-ABSENSI</span>
-            </div>
+    {{-- SIDEBAR --}}
+    <div class="login-sidebar d-none d-md-flex">
 
-            <h2 class="form-title">Login Siswa</h2>
-            <p class="form-subtitle">Masukkan NIS dan password untuk masuk ke akun anda.</p>
+        <h3>Halo Sobat SMKN 1 👋</h3>
 
-            <form action="{{ route('login.siswa.process') }}" method="POST">
-                @csrf
-                <div class="form-group mb-3">
-                    <label>NOMOR INDUK SISWA (NIS)</label>
-                    <div class="input-group">
-                        <input type="text" name="nis" class="form-control" placeholder="Contoh: 12345" required>
-                    </div>
-                </div>
+        <p>
+            Ayo lakukan absensi hari ini dan tingkatkan
+            kedisiplinan untuk masa depan yang lebih baik.
+        </p>
 
-                <div class="form-group mb-4">
-                    <label>PASSWORD</label>
-                    <div class="input-group">
-                        <input type="password" name="password" class="form-control" placeholder="••••••••" required>
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-login">
-                    Masuk Sekarang <i class="fas fa-arrow-right ml-2"></i>
-                </button>
-            </form>
-
-            <div class="back-link">
-                <a href="/">
-                    <i class="fas fa-chevron-left mr-1"></i> Kembali ke Beranda
-                </a>
-                <div class="mt-3">
-                    <small class="text-muted">&copy; 2026 SMK Negeri 1 Karang Baru</small>
-                </div>
-            </div>
-        </div>
     </div>
 
-</body>
+    {{-- FORM --}}
+    <div class="login-form-area">
 
+        {{-- LOGO SEKOLAH --}}
+        <div class="text-center mb-3">
+
+            <img src="{{ asset('dist/img/foto1.png') }}"
+                 alt="Logo Sekolah"
+                 class="login-logo">
+
+        </div>
+
+        <div class="brand-logo">
+            E-ABSENSI
+        </div>
+
+        <h2 class="form-title">Login Siswa</h2>
+
+        <p class="form-subtitle">
+            Masukkan NIS dan password untuk masuk ke sistem absensi siswa.
+        </p>
+
+        <form action="{{ route('login.siswa.process') }}" method="POST">
+            @csrf
+
+            <div class="form-group mb-3">
+                <label>NOMOR INDUK SISWA (NIS)</label>
+                <input type="text" name="nis" class="form-control" placeholder="Masukkan NIS" required>
+            </div>
+
+            <div class="form-group mb-4">
+                <label>PASSWORD</label>
+                <input type="password" name="password" class="form-control" placeholder="Masukkan Password" required>
+            </div>
+
+            <button type="submit" class="btn btn-login">
+                Masuk Sekarang <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+
+        </form>
+
+        <div class="back-link mt-3">
+
+            <a href="/">Kembali ke Beranda</a>
+
+            <div class="mt-3">
+                <small class="text-muted">
+                    &copy; 2026 SMK Negeri 1 Karang Baru
+                </small>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
 </html>

@@ -110,6 +110,12 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │   │   │   ├── edit.blade.php
 │   │   │   │   └── show.blade.php
 │   │   │   │
+│   │   │   ├── isiabsen/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
+│   │   │   │
 │   │   │   ├── statusabsen/ 
 │   │   │   │   ├── index.blade.php
 │   │   │   │   ├── create.blade.php
