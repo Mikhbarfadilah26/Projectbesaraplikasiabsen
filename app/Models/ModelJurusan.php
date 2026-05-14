@@ -9,11 +9,21 @@ class ModelJurusan extends Model
     protected $table = 'jurusan';
 
     protected $fillable = [
-        'namajurusan'
+        'namajurusan',
+        'icon',
+        'deskripsi',
     ];
 
-    // RELASI
-    public function kelas(){
-        return $this->hasMany(ModelKelas::class,'jurusanid');
+    /*
+    |--------------------------------------------------------------------------
+    | RELASI KE KELAS
+    |--------------------------------------------------------------------------
+    */
+    public function kelas()
+    {
+        return $this->hasMany(
+            ModelKelas::class,
+            'jurusanid'
+        );
     }
 }

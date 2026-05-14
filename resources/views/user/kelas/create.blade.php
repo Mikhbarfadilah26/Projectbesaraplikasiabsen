@@ -9,24 +9,23 @@
     <form action="{{ route('kelas.store') }}" method="POST">
         @csrf
 
+        {{-- NAMA KELAS --}}
+        <input type="text"
+               name="namakelas"
+               class="form-control mb-3"
+               placeholder="Nama Kelas"
+               required>
+
         {{-- TINGKAT --}}
-        <select name="tingkat"
-                class="form-control mb-3"
-                required>
-
+        <select name="tingkat" class="form-control mb-3" required>
             <option value="">-- Pilih Tingkat --</option>
-
             <option value="X">X</option>
             <option value="XI">XI</option>
             <option value="XII">XII</option>
-
         </select>
 
         {{-- JURUSAN --}}
-        <select name="jurusanid"
-                class="form-control mb-3"
-                required>
-
+        <select name="jurusanid" class="form-control mb-3" required>
             <option value="">-- Pilih Jurusan --</option>
 
             @foreach($jurusan as $j)
@@ -34,7 +33,6 @@
                     {{ $j->namajurusan }}
                 </option>
             @endforeach
-
         </select>
 
         <button class="btn btn-success">

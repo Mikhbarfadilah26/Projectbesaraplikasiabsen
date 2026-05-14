@@ -2,201 +2,312 @@
 
 @section('content')
 
-<div class="container-fluid">
+<section class="content-header">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="container-fluid">
 
-        <div>
+        <div class="d-flex justify-content-between align-items-center">
 
-            <h3 class="font-weight-bold mb-1">
-                Data Siswa
-            </h3>
+            <div>
+                <h1 class="font-weight-bold">
+                    Data Siswa
+                </h1>
 
-            <p class="text-muted mb-0">
-                Daftar siswa berdasarkan kelas
-            </p>
-
-        </div>
-
-        <a href="{{ route('siswa.create') }}"
-           class="btn btn-primary shadow-sm px-4 rounded-pill">
-
-            <i class="fas fa-plus-circle mr-2"></i>
-            Tambah Siswa
-
-        </a>
-
-    </div>
-
-    @if(session('success'))
-
-        <div class="alert alert-success border-0 shadow-sm rounded-lg">
-
-            {{ session('success') }}
-
-        </div>
-
-    @endif
-
-    @php
-
-        $grouped = $data->groupBy(function($item){
-
-            return ($item->kelas->tingkat ?? '-') . ' - ' .
-                   ($item->kelas->jurusan->namajurusan ?? '-');
-
-        });
-
-    @endphp
-
-    @foreach($grouped as $kelas => $siswas)
-
-    <div class="card border-0 shadow-lg rounded-xl mb-4 overflow-hidden">
-
-        <div class="card-header py-3"
-             style="background:linear-gradient(135deg,#2563eb,#1e40af);">
-
-            <div class="d-flex justify-content-between align-items-center">
-
-                <h5 class="text-white mb-0 font-weight-bold">
-
-                    <i class="fas fa-school mr-2"></i>
-                    Kelas {{ $kelas }}
-
-                </h5>
-
-                <span class="badge badge-light px-3 py-2">
-
-                    {{ $siswas->count() }} Siswa
-
-                </span>
-
+                <small class="text-muted">
+                    Manajemen data siswa sekolah
+                </small>
             </div>
 
-        </div>
+            <a href="{{ route('siswa.create') }}"
+               class="btn btn-primary shadow-sm">
 
-        <div class="card-body bg-light">
+                <i class="fas fa-plus mr-1"></i>
+                Tambah Siswa
 
-            <div class="row">
-
-                @foreach($siswas as $d)
-
-                <div class="col-lg-4 col-md-6 mb-4">
-
-                    <div class="card border-0 shadow-sm siswa-card h-100 rounded-xl">
-
-                        <div class="card-body text-center p-4">
-
-                            @if($d->foto)
-
-                                <img src="{{ Storage::url($d->foto) }}"
-                                     width="110"
-                                     height="110"
-                                     style="object-fit:cover;border-radius:50%;border:5px solid #e5e7eb;">
-
-                            @else
-
-                                <img src="{{ asset('dist/img/default.png') }}"
-                                     width="110"
-                                     height="110"
-                                     style="object-fit:cover;border-radius:50%;border:5px solid #e5e7eb;">
-
-                            @endif
-
-                            <h5 class="font-weight-bold mt-3 mb-1">
-
-                                {{ $d->nama }}
-
-                            </h5>
-
-                            <p class="text-muted mb-2">
-
-                                NIS : {{ $d->nis }}
-
-                            </p>
-
-                            <span class="badge {{ $d->jeniskelamin == 'L' ? 'badge-primary' : 'badge-danger' }} px-3 py-2 mb-3">
-
-                                {{ $d->jeniskelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
-
-                            </span>
-
-                            <div class="small text-muted mb-3">
-
-                                {{ $d->alamat ?? 'Alamat belum diisi' }}
-
-                            </div>
-
-                            <div class="d-flex justify-content-center">
-
-                                <a href="{{ route('siswa.show',$d->id) }}"
-                                   class="btn btn-info btn-sm mx-1">
-
-                                    <i class="fas fa-eye"></i>
-
-                                </a>
-
-                                <a href="{{ route('siswa.edit',$d->id) }}"
-                                   class="btn btn-warning btn-sm mx-1 text-white">
-
-                                    <i class="fas fa-edit"></i>
-
-                                </a>
-
-                                <form action="{{ route('siswa.destroy',$d->id) }}"
-                                      method="POST"
-                                      onsubmit="return confirm('Yakin hapus data ini?')">
-
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button class="btn btn-danger btn-sm mx-1">
-
-                                        <i class="fas fa-trash"></i>
-
-                                    </button>
-
-                                </form>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                @endforeach
-
-            </div>
+            </a>
 
         </div>
 
     </div>
 
-    @endforeach
+</section>
 
-</div>
+<section class="content">
 
-<style>
+    <div class="container-fluid">
 
-.rounded-xl{
-    border-radius:25px;
-}
+        {{-- ALERT SUCCESS --}}
+        @if(session('success'))
 
-.rounded-lg{
-    border-radius:15px;
-}
+            <div class="alert alert-success alert-dismissible fade show shadow-sm">
 
-.siswa-card{
-    transition:0.3s;
-}
+                <button type="button"
+                        class="close"
+                        data-dismiss="alert">
 
-.siswa-card:hover{
-    transform:translateY(-8px);
-    box-shadow:0 15px 30px rgba(0,0,0,0.1);
-}
+                    &times;
 
-</style>
+                </button>
+
+                <i class="fas fa-check-circle mr-1"></i>
+
+                {{ session('success') }}
+
+            </div>
+
+        @endif
+
+        {{-- ====================================================== --}}
+        {{-- SISWA PENDING --}}
+        {{-- ====================================================== --}}
+        <div class="card card-warning card-outline shadow-sm">
+
+            <div class="card-header border-0">
+
+                <h3 class="card-title font-weight-bold">
+
+                    <i class="fas fa-user-clock mr-1"></i>
+                   REGISTRASI SISWA
+
+                </h3>
+
+            </div>
+
+            <div class="card-body table-responsive p-0">
+
+                <table class="table table-hover table-striped text-nowrap">
+
+                    <thead class="bg-warning text-white">
+
+                        <tr>
+
+                            <th width="60">No</th>
+                            <th>NIS</th>
+                            <th>Nama</th>
+                            <th>Kelas</th>
+                            <th>Jurusan</th>
+                            <th>Status</th>
+                            <th width="220">Aksi</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @forelse($pending as $item)
+
+                            <tr>
+
+                                <td>
+                                    {{ $loop->iteration }}
+                                </td>
+
+                                <td>
+                                    {{ $item->nis }}
+                                </td>
+
+                                <td class="font-weight-bold">
+                                    {{ $item->nama }}
+                                </td>
+
+                                <td>
+                                    {{ $item->kelas->namakelas ?? '-' }}
+                                </td>
+
+                                <td>
+                                    {{ $item->kelas->jurusan->namajurusan ?? '-' }}
+                                </td>
+
+                                <td>
+
+                                    <span class="badge badge-warning px-3 py-2">
+
+                                        Pending
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <a href="{{ route('master.siswa.setujui', $item->id) }}"
+                                       class="btn btn-success btn-sm shadow-sm">
+
+                                        <i class="fas fa-check"></i>
+                                        Setujui
+
+                                    </a>
+
+                                    <a href="{{ route('master.siswa.tolak', $item->id) }}"
+                                       class="btn btn-danger btn-sm shadow-sm">
+
+                                        <i class="fas fa-times"></i>
+                                        Tolak
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+
+                                <td colspan="7"
+                                    class="text-center text-muted py-4">
+
+                                    <i class="fas fa-inbox fa-2x mb-2"></i>
+
+                                    <br>
+
+                                    Tidak ada data pending
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+        {{-- ====================================================== --}}
+        {{-- DATA SISWA AKTIF --}}
+        {{-- ====================================================== --}}
+        <div class="card card-primary card-outline shadow-sm">
+
+            <div class="card-header border-0">
+
+                <h3 class="card-title font-weight-bold">
+
+                    <i class="fas fa-user-graduate mr-1"></i>
+                    Data Siswa Aktif
+
+                </h3>
+
+            </div>
+
+            <div class="card-body table-responsive p-0">
+
+                <table class="table table-hover table-striped text-nowrap">
+
+                    <thead class="bg-primary text-white">
+
+                        <tr>
+
+                            <th width="60">No</th>
+                            <th>NIS</th>
+                            <th>Nama</th>
+                            <th>Kelas</th>
+                            <th>Jurusan</th>
+                            <th width="220">Aksi</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @forelse($data as $item)
+
+                            <tr>
+
+                                <td>
+                                    {{ $loop->iteration }}
+                                </td>
+
+                                <td>
+                                    {{ $item->nis }}
+                                </td>
+
+                                <td class="font-weight-bold">
+                                    {{ $item->nama }}
+                                </td>
+
+                                <td>
+                                    {{ $item->kelas->namakelas ?? '-' }}
+                                </td>
+
+                                <td>
+                                    {{ $item->kelas->jurusan->namajurusan ?? '-' }}
+                                </td>
+
+                                <td>
+
+                                    <a href="{{ route('siswa.show', $item->id) }}"
+                                       class="btn btn-info btn-sm shadow-sm">
+
+                                        <i class="fas fa-eye"></i>
+                                        Detail
+
+                                    </a>
+
+                                    <a href="{{ route('siswa.edit', $item->id) }}"
+                                       class="btn btn-warning btn-sm shadow-sm">
+
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+
+                                    </a>
+
+                                    <form action="{{ route('siswa.destroy', $item->id) }}"
+                                          method="POST"
+                                          class="d-inline">
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm shadow-sm"
+                                                onclick="return confirm('Hapus data siswa?')">
+
+                                            <i class="fas fa-trash"></i>
+                                            Hapus
+
+                                        </button>
+
+                                    </form>
+
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+
+                                <td colspan="6"
+                                    class="text-center text-muted py-4">
+
+                                    <i class="fas fa-database fa-2x mb-2"></i>
+
+                                    <br>
+
+                                    Belum ada data siswa
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 @endsection

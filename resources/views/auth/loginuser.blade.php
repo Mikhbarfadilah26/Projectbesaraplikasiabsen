@@ -1,456 +1,594 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.applanding')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login User | SMK Negeri 1 Karang Baru</title>
+@section('content')
 
-    <!-- GOOGLE FONT -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
 
-    <!-- ADMINLTE -->
-    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('dist/css/adminlte.min.css') }}">
 
-    <!-- FONT AWESOME -->
-    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+<link rel="stylesheet"
+    href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
 
-    <style>
-        :root {
-            --user-primary: #4f46e5;
-            --user-secondary: #1e293b;
-            --user-accent: #818cf8;
-        }
+<style>
 
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: #0f172a;
+    :root {
 
-            background-image:
-                radial-gradient(at 0% 0%,
-                rgba(79, 70, 229, 0.15) 0px,
-                transparent 50%),
+        --primary: #f59e0b;
+        --secondary: #d97706;
+        --soft: #fffbeb;
 
-                radial-gradient(at 100% 100%,
-                rgba(129, 140, 248, 0.1) 0px,
-                transparent 50%);
+    }
 
-            height: 100vh;
+    body {
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        font-family: 'Plus Jakarta Sans', sans-serif;
 
-            margin: 0;
-            padding: 20px;
-        }
+        background: linear-gradient(
+            135deg,
+            #fff7ed 0%,
+            #fef3c7 100%
+        );
+
+    }
+
+    .login-wrapper {
+
+        min-height: 100vh;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 40px 20px;
+
+    }
+
+    .user-login-card {
+
+        width: 100%;
+
+        max-width: 950px;
+
+        display: flex;
+
+        background: white;
+
+        border-radius: 28px;
+
+        overflow: hidden;
+
+        box-shadow: 0 20px 45px rgba(0,0,0,0.08);
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | LEFT SIDE
+    |--------------------------------------------------------------------------
+    */
+
+    .user-visual-side {
+
+        flex: 1.1;
+
+        background: linear-gradient(
+            180deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+        padding: 60px 50px;
+
+        color: white;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        position: relative;
+
+        overflow: hidden;
+
+    }
+
+    .user-visual-side::before {
+
+        content: '';
+
+        position: absolute;
+
+        width: 250px;
+
+        height: 250px;
+
+        border-radius: 50%;
+
+        background: rgba(255,255,255,0.10);
+
+        top: -80px;
+
+        right: -80px;
+
+    }
+
+    .user-visual-side::after {
+
+        content: '';
+
+        position: absolute;
+
+        width: 180px;
+
+        height: 180px;
+
+        border-radius: 50%;
+
+        background: rgba(255,255,255,0.06);
+
+        bottom: -60px;
+
+        left: -60px;
+
+    }
+
+    .school-identity {
+
+        position: relative;
+
+        z-index: 2;
+
+    }
+
+    .school-identity span {
+
+        font-size: 0.8rem;
+
+        letter-spacing: 2px;
+
+        font-weight: 700;
+
+        opacity: .85;
+
+        text-transform: uppercase;
+
+    }
+
+    .school-identity h3 {
+
+        font-size: 2rem;
+
+        font-weight: 800;
+
+        margin-top: 10px;
+
+        line-height: 1.3;
+
+    }
+
+    .illustration-box {
+
+        text-align: center;
+
+        margin: 50px 0;
+
+        position: relative;
+
+        z-index: 2;
+
+    }
+
+    .illustration-box i {
+
+        font-size: 110px;
+
+        opacity: .95;
+
+    }
+
+    .welcome-msg {
+
+        position: relative;
+
+        z-index: 2;
+
+    }
+
+    .welcome-msg h4 {
+
+        font-weight: 700;
+
+        margin-bottom: 12px;
+
+    }
+
+    .welcome-msg p {
+
+        line-height: 1.8;
+
+        opacity: .92;
+
+        font-size: 0.95rem;
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RIGHT SIDE
+    |--------------------------------------------------------------------------
+    */
+
+    .user-form-side {
+
+        flex: 1;
+
+        background: white;
+
+        padding: 60px 50px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+    }
+
+    .form-header {
+
+        margin-bottom: 35px;
+
+    }
+
+    .form-header h2 {
+
+        font-size: 2rem;
+
+        font-weight: 800;
+
+        color: #111827;
+
+        margin-bottom: 8px;
+
+    }
+
+    .form-header p {
+
+        color: #6b7280;
+
+        font-size: 0.95rem;
+
+        line-height: 1.7;
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | INPUT
+    |--------------------------------------------------------------------------
+    */
+
+    .input-custom {
+
+        background: #fffbeb;
+
+        border: 2px solid #fde68a;
+
+        border-radius: 14px;
+
+        padding: 14px 18px;
+
+        height: auto;
+
+        transition: .3s;
+
+    }
+
+    .input-custom:focus {
+
+        border-color: var(--primary);
+
+        background: white;
+
+        box-shadow: 0 0 0 5px rgba(245,158,11,0.15);
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | BUTTON
+    |--------------------------------------------------------------------------
+    */
+
+    .btn-user-login {
+
+        width: 100%;
+
+        border: none;
+
+        border-radius: 14px;
+
+        padding: 14px;
+
+        background: linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+        color: white;
+
+        font-weight: 700;
+
+        margin-top: 10px;
+
+        transition: .3s;
+
+    }
+
+    .btn-user-login:hover {
+
+        transform: translateY(-2px);
+
+        box-shadow: 0 12px 20px rgba(245,158,11,0.35);
+
+        color: white;
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | PASSWORD ICON
+    |--------------------------------------------------------------------------
+    */
+
+    .password-toggle {
+
+        position: absolute;
+
+        right: 18px;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        cursor: pointer;
+
+        color: #6b7280;
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | FOOTER
+    |--------------------------------------------------------------------------
+    */
+
+    .back-to-web {
+
+        text-align: center;
+
+        margin-top: 30px;
+
+    }
+
+    .back-to-web a {
+
+        color: #6b7280;
+
+        text-decoration: none;
+
+        transition: .3s;
+
+    }
+
+    .back-to-web a:hover {
+
+        color: var(--secondary);
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | RESPONSIVE
+    |--------------------------------------------------------------------------
+    */
+
+    @media(max-width:850px){
 
         .user-login-card {
-            width: 100%;
-            max-width: 950px;
 
-            display: flex;
-
-            background: rgba(255, 255, 255, 0.02);
-
-            border-radius: 30px;
-
-            overflow: hidden;
-
-            border: 1px solid rgba(255, 255, 255, 0.1);
-
-            backdrop-filter: blur(20px);
-
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        /* =========================
-           SISI KIRI
-        ========================= */
-        .user-visual-side {
-            flex: 1.2;
-
-            background: var(--user-secondary);
-
-            padding: 60px;
-
-            display: flex;
             flex-direction: column;
-            justify-content: space-between;
 
-            position: relative;
+            max-width: 450px;
 
-            overflow: hidden;
         }
 
-        .user-visual-side::after {
-            content: '';
+        .user-visual-side {
 
-            position: absolute;
+            padding: 40px 30px;
 
-            top: -50px;
-            right: -50px;
+            text-align: center;
 
-            width: 200px;
-            height: 200px;
-
-            background: var(--user-primary);
-
-            filter: blur(100px);
-
-            opacity: 0.3;
-        }
-
-        .school-identity {
-            z-index: 1;
-        }
-
-        .school-identity h3 {
-            font-weight: 800;
-
-            color: white;
-
-            letter-spacing: -1px;
-
-            font-size: 1.8rem;
-
-            margin-bottom: 5px;
-        }
-
-        .school-identity span {
-            color: var(--user-accent);
-
-            text-transform: uppercase;
-
-            font-size: 0.8rem;
-
-            font-weight: 700;
-
-            letter-spacing: 2px;
         }
 
         .illustration-box {
-            position: relative;
 
-            z-index: 1;
+            margin: 30px 0;
 
-            text-align: center;
         }
 
-        .illustration-box i {
-            font-size: 120px;
-
-            background: linear-gradient(135deg, #fff, var(--user-accent));
-
-            -webkit-background-clip: text;
-
-            -webkit-text-fill-color: transparent;
-
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
-        }
-
-        .welcome-msg {
-            z-index: 1;
-        }
-
-        .welcome-msg h4 {
-            color: white;
-
-            font-weight: 700;
-        }
-
-        .welcome-msg p {
-            color: #94a3b8;
-
-            font-size: 0.9rem;
-
-            line-height: 1.6;
-        }
-
-        /* =========================
-           SISI KANAN
-        ========================= */
         .user-form-side {
-            flex: 1;
 
-            background: white;
+            padding: 40px 30px;
 
-            padding: 60px 50px;
-
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
-        .form-header {
-            margin-bottom: 40px;
-        }
+    }
 
-        .form-header h2 {
-            font-weight: 800;
+</style>
 
-            color: #1e293b;
+<div class="login-wrapper">
 
-            margin-bottom: 8px;
-        }
+    <div class="user-login-card">
 
-        .form-header p {
-            color: #64748b;
+        <!-- LEFT -->
+        <div class="user-visual-side">
 
-            font-size: 0.9rem;
-        }
+            <div class="school-identity">
 
-        .input-custom {
-            background: #f8fafc;
+                <span>Official System</span>
 
-            border: 2px solid #f1f5f9;
+                <h3>
 
-            border-radius: 15px;
+                    SMKN 1<br>
+                    Karang Baru
 
-            padding: 14px 20px;
-
-            height: auto;
-
-            transition: 0.3s;
-
-            font-weight: 500;
-        }
-
-        .input-custom:focus {
-            background: white;
-
-            border-color: var(--user-primary);
-
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-        }
-
-        .btn-user-login {
-            background: var(--user-primary);
-
-            color: white;
-
-            border: none;
-
-            border-radius: 15px;
-
-            padding: 16px;
-
-            font-weight: 700;
-
-            width: 100%;
-
-            margin-top: 20px;
-
-            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
-
-            transition: 0.3s;
-        }
-
-        .btn-user-login:hover {
-            background: #4338ca;
-
-            transform: translateY(-2px);
-
-            box-shadow: 0 15px 25px -5px rgba(79, 70, 229, 0.5);
-
-            color: white;
-        }
-
-        .back-to-web {
-            text-align: center;
-
-            margin-top: 35px;
-        }
-
-        .back-to-web a {
-            color: #94a3b8;
-
-            text-decoration: none;
-
-            font-size: 0.85rem;
-
-            font-weight: 600;
-
-            transition: 0.3s;
-        }
-
-        .back-to-web a:hover {
-            color: var(--user-primary);
-        }
-
-        /* ICON MATA */
-        .password-toggle {
-            position: absolute;
-
-            right: 18px;
-
-            top: 50%;
-
-            transform: translateY(-50%);
-
-            cursor: pointer;
-
-            color: #64748b;
-
-            z-index: 10;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 850px) {
-
-            .user-login-card {
-                flex-direction: column;
-
-                max-width: 450px;
-            }
-
-            .user-visual-side {
-                padding: 40px;
-
-                text-align: center;
-            }
-
-            .illustration-box {
-                margin: 30px 0;
-            }
-
-            .user-form-side {
-                padding: 40px 30px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<div class="user-login-card">
-
-    <!-- =========================
-         SISI KIRI
-    ========================= -->
-    <div class="user-visual-side">
-
-        <div class="school-identity">
-
-            <span>Official System</span>
-
-            <h3>
-                SMKN 1<br>
-                Karang Baru
-            </h3>
-
-        </div>
-
-        <div class="illustration-box">
-
-            <i class="fas fa-user-shield"></i>
-
-        </div>
-
-        <div class="welcome-msg">
-
-            <h4>Dashboard Management</h4>
-
-            <p>
-                Gunakan akun terdaftar Anda untuk
-                mengelola sistem kehadiran dan data akademik.
-            </p>
-
-        </div>
-
-    </div>
-
-    <!-- =========================
-         SISI KANAN
-    ========================= -->
-    <div class="user-form-side">
-
-        <div class="form-header">
-
-            <h2>Login User</h2>
-
-            <p>
-                Selamat datang kembali,
-                silakan masuk.
-            </p>
-
-        </div>
-
-        <form action="{{ route('login.user.process') }}"
-              method="POST">
-
-            @csrf
-
-            <!-- USERNAME -->
-            <div class="form-group mb-3">
-
-                <label class="small fw-bold text-uppercase text-muted mb-2">
-                    Username
-                </label>
-
-                <input type="text"
-                       name="username"
-                       class="form-control input-custom"
-                       placeholder="Masukkan username"
-                       required>
+                </h3>
 
             </div>
 
-            <!-- PASSWORD -->
-            <div class="form-group mb-4">
+            <div class="illustration-box">
 
-                <label class="small fw-bold text-uppercase text-muted mb-2">
-                    Password
-                </label>
+                <i class="fas fa-user-shield"></i>
 
-                <div style="position: relative;">
+            </div>
 
-                    <input type="password"
-                           name="password"
-                           id="password"
-                           class="form-control input-custom"
-                           placeholder="••••••••"
-                           required>
+            <div class="welcome-msg">
 
-                    <span class="password-toggle"
-                          id="togglePassword">
+                <h4>
+                    Dashboard Management
+                </h4>
 
-                        <i class="fas fa-eye"></i>
+                <p>
+                    Gunakan akun terdaftar Anda untuk
+                    mengelola sistem kehadiran
+                    dan data akademik sekolah.
+                </p>
 
-                    </span>
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="user-form-side">
+
+            <div class="form-header">
+
+                <h2>
+
+                    Login User
+
+                </h2>
+
+                <p>
+
+                    Selamat datang kembali,
+                    silakan masuk ke dashboard.
+
+                </p>
+
+            </div>
+
+            <form
+                action="{{ route('login.user.process') }}"
+                method="POST"
+            >
+
+                @csrf
+
+                <!-- USERNAME -->
+                <div class="form-group mb-3">
+
+                    <label class="small fw-bold text-uppercase text-muted mb-2">
+
+                        Username
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        class="form-control input-custom"
+                        placeholder="Masukkan username"
+                        required
+                    >
 
                 </div>
 
-            </div>
+                <!-- PASSWORD -->
+                <div class="form-group mb-4">
 
-            <!-- BUTTON -->
-            <button type="submit"
-                    class="btn btn-user-login">
+                    <label class="small fw-bold text-uppercase text-muted mb-2">
 
-                Akses Dashboard
-                <i class="fas fa-rocket ml-2"></i>
+                        Password
 
-            </button>
+                    </label>
 
-        </form>
+                    <div style="position: relative;">
 
-        <!-- BACK -->
-        <div class="back-to-web">
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            class="form-control input-custom"
+                            placeholder="Masukkan password"
+                            required
+                        >
 
-            <a href="/">
+                        <span
+                            class="password-toggle"
+                            id="togglePassword"
+                        >
 
-                <i class="fas fa-long-arrow-alt-left mr-2"></i>
+                            <i class="fas fa-eye"></i>
 
-                Kembali ke Beranda
+                        </span>
 
-            </a>
+                    </div>
 
-            <div class="mt-4 opacity-50">
+                </div>
 
-                <small>
-                    © {{ date('Y') }}
-                    Central Authority SMKN 1 KB
-                </small>
+                <!-- BUTTON -->
+                <button
+                    type="submit"
+                    class="btn btn-user-login"
+                >
+
+                    Akses Dashboard
+
+                    <i class="fas fa-arrow-right ml-2"></i>
+
+                </button>
+
+            </form>
+
+            <!-- BACK -->
+            <div class="back-to-web">
+
+                <a href="/">
+
+                    <i class="fas fa-arrow-left mr-1"></i>
+
+                    Kembali ke Beranda
+
+                </a>
+
+                <div class="mt-3">
+
+                    <small class="text-muted">
+
+                        © {{ date('Y') }}
+                        SMK Negeri 1 Karang Baru
+
+                    </small>
+
+                </div>
 
             </div>
 
@@ -460,9 +598,6 @@
 
 </div>
 
-<!-- =========================
-     SCRIPT SHOW PASSWORD
-========================= -->
 <script>
 
     const togglePassword =
@@ -489,6 +624,4 @@
 
 </script>
 
-</body>
-
-</html>
+@endsection

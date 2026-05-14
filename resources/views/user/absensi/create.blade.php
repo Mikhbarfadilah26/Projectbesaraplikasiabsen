@@ -1,90 +1,137 @@
 @extends('layouts.appadmin')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
 
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            Tambah Absensi
-        </div>
+<div class="card shadow">
 
-        <div class="card-body">
-            <form action="{{ route('absensi.store') }}" method="POST">
+    <div class="card-header bg-success text-white">
+        Form Absensi Harian
+    </div>
+
+    <div class="card-body">
+
+        {{-- FILTER --}}
+        <form method="GET" action="{{ route('absensi.create') }}">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <label>Jurusan</label>
+                    <select name="jurusanid" class="form-control" onchange="this.form.submit()">
+                        <option value="">Semua Jurusan</option>
+                        @foreach($jurusan as $j)
+                            <option value="{{ $j->id }}"
+                                {{ request('jurusanid') == $j->id ? 'selected' : '' }}>
+                                {{ $j->namajurusan }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Kelas</label>
+                    <select name="kelasid" class="form-control" onchange="this.form.submit()">
+                        <option value="">Semua Kelas</option>
+                        @foreach($kelas as $k)
+                            <option value="{{ $k->id }}"
+                                {{ request('kelasid') == $k->id ? 'selected' : '' }}>
+                                {{ $k->namakelas }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label>Tanggal</label>
+                    <input type="date"
+                           name="tanggal"
+                           class="form-control"
+                           value="{{ request('tanggal', date('Y-m-d')) }}">
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary mt-2">
+                Filter
+            </button>
+        </form>
+
+        <hr>
+
+        {{-- FORM ABSENSI --}}
+        <form action="{{ route('absensi.store.bulk') }}" method="POST">
             @csrf
 
-            <div class="form-group">
-                <label>Siswa</label>
-                <select name="siswaid" class="form-control">
-                    @foreach($siswa as $s)
-                        <option value="{{ $s->id }}">{{ $s->nama }}</option>
+            <input type="hidden" name="kelasid" value="{{ request('kelasid') }}">
+            <input type="hidden" name="tanggal" value="{{ request('tanggal', date('Y-m-d')) }}">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="bg-dark text-white text-center">
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Siswa</th>
+                        <th>Status Absensi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach($siswa as $i => $s)
+                    @php
+                        $status = 'hadir'; // default
+                    @endphp
+
+                    <tr
+                        @if($status == 'alpha')
+                            style="background:#f8d7da"
+                        @endif
+                    >
+
+                        <td class="text-center">{{ $i+1 }}</td>
+
+                        <td>
+                            {{ $s->nama }}
+                            <input type="hidden" name="siswaid[]" value="{{ $s->id }}">
+                        </td>
+
+                        <td class="text-center">
+
+                            <label class="btn btn-success btn-sm">
+                                <input type="radio" name="status[{{ $i }}]" value="hadir" checked>
+                                Hadir
+                            </label>
+
+                            <label class="btn btn-warning btn-sm text-white">
+                                <input type="radio" name="status[{{ $i }}]" value="izin">
+                                Izin
+                            </label>
+
+                            <label class="btn btn-info btn-sm text-white">
+                                <input type="radio" name="status[{{ $i }}]" value="sakit">
+                                Sakit
+                            </label>
+
+                            <label class="btn btn-danger btn-sm">
+                                <input type="radio" name="status[{{ $i }}]" value="alpha">
+                                Alpha
+                            </label>
+
+                        </td>
+
+                    </tr>
                     @endforeach
-                </select>
-            </div>
+                </tbody>
 
-            <div class="form-group">
-                <label>Tanggal</label>
-                <input type="date" name="tanggal" class="form-control">
-            </div>
+            </table>
 
-            <div class="form-group">
-                <label>Status Masuk</label>
-                <select name="status_masuk" class="form-control">
-                    <option value="hadir">Hadir</option>
-                    <option value="izin">Izin</option>
-                    <option value="sakit">Sakit</option>
-                    <option value="alpha">Alpha</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Jam Masuk</label>
-                <input type="time" name="jam_masuk" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Status Pulang</label>
-                <select name="status_pulang" class="form-control">
-                    <option value="hadir">Hadir</option>
-                    <option value="izin">Izin</option>
-                    <option value="sakit">Sakit</option>
-                    <option value="alpha">Alpha</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Jam Pulang</label>
-                <input type="time" name="jam_pulang" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label>Tahun Ajaran</label>
-                <select name="tahunid" class="form-control">
-                    @foreach($tahun as $t)
-                        <option value="{{ $t->id }}">{{ $t->nama }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Semester</label>
-                <select name="semesterid" class="form-control">
-                    @foreach($semester as $s)
-                        <option value="{{ $s->id }}">{{ $s->nama }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <button class="btn btn-success mt-3">
-                <i class="fas fa-save"></i> Simpan
+            <button class="btn btn-success w-100">
+                Simpan Absensi
             </button>
 
-            <a href="{{ route('absensi.index') }}" class="btn btn-secondary mt-3">
-                Kembali
-            </a>
+        </form>
 
-            </form>
-        </div>
     </div>
+</div>
 
 </div>
 @endsection

@@ -128,6 +128,7 @@
                     </div>
 
                     <div>
+
                         <h2 class="welcome-title mb-1">
                             Dashboard Guru
                         </h2>
@@ -136,6 +137,7 @@
                             Selamat datang,
                             <strong>{{ auth()->user()->nama }}</strong>
                         </p>
+
                     </div>
 
                 </div>
@@ -145,7 +147,10 @@
             <div class="col-md-4 text-md-right mt-3 mt-md-0">
 
                 <h5>{{ date('d F Y') }}</h5>
-                <small>Sistem Absensi Sekolah</small>
+
+                <small>
+                    Sistem Absensi Sekolah
+                </small>
 
             </div>
 
@@ -153,10 +158,10 @@
 
     </div>
 
-    {{-- INFO BOX --}}
+    {{-- CARD STATISTIK --}}
     <div class="row">
 
-        {{-- GURU --}}
+        {{-- TOTAL GURU --}}
         <div class="col-lg-3 col-md-6 mb-4">
 
             <div class="card modern-card gradient-warning position-relative">
@@ -177,7 +182,7 @@
 
         </div>
 
-        {{-- JADWAL --}}
+        {{-- KELAS WALI --}}
         <div class="col-lg-3 col-md-6 mb-4">
 
             <div class="card modern-card gradient-info position-relative">
@@ -185,27 +190,22 @@
                 <div class="card-body">
 
                     <h5 class="font-weight-bold">
-                        Jadwal Hari Ini
+                        Kelas Wali
                     </h5>
 
-                    <h2>3</h2>
+                    <h2>
+                        {{ $kelas->namakelas ?? '-' }}
+                    </h2>
 
-                    <i class="fas fa-calendar-alt icon-bg"></i>
+                    <i class="fas fa-school icon-bg"></i>
 
-                </div>
-
-                <div class="card-footer bg-transparent border-0">
-                    <a href="/jadwal" class="text-white">
-                        Lihat Jadwal
-                        <i class="fas fa-arrow-circle-right"></i>
-                    </a>
                 </div>
 
             </div>
 
         </div>
 
-        {{-- ABSENSI --}}
+        {{-- ABSENSI HARI INI --}}
         <div class="col-lg-3 col-md-6 mb-4">
 
             <div class="card modern-card gradient-success position-relative">
@@ -216,24 +216,17 @@
                         Absensi Hari Ini
                     </h5>
 
-                    <h2>30</h2>
+                    <h2>{{ $absensiHariIni }}</h2>
 
                     <i class="fas fa-check-circle icon-bg"></i>
 
-                </div>
-
-                <div class="card-footer bg-transparent border-0">
-                    <a href="/absensi" class="text-white">
-                        Input Absensi
-                        <i class="fas fa-arrow-circle-right"></i>
-                    </a>
                 </div>
 
             </div>
 
         </div>
 
-        {{-- LAPORAN --}}
+        {{-- TOTAL SISWA --}}
         <div class="col-lg-3 col-md-6 mb-4">
 
             <div class="card modern-card gradient-danger position-relative">
@@ -241,20 +234,13 @@
                 <div class="card-body">
 
                     <h5 class="font-weight-bold">
-                        Laporan
+                        Total Siswa
                     </h5>
 
-                    <h2>10</h2>
+                    <h2>{{ $jumlahSiswa }}</h2>
 
-                    <i class="fas fa-file-alt icon-bg"></i>
+                    <i class="fas fa-users icon-bg"></i>
 
-                </div>
-
-                <div class="card-footer bg-transparent border-0">
-                    <a href="/laporan/harian" class="text-white">
-                        Lihat Laporan
-                        <i class="fas fa-arrow-circle-right"></i>
-                    </a>
                 </div>
 
             </div>
@@ -263,7 +249,72 @@
 
     </div>
 
-    {{-- CONTENT --}}
+    {{-- REKAP --}}
+    <div class="row">
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card custom-card">
+
+                <div class="card-body text-center">
+
+                    <h5 class="text-success font-weight-bold">
+                        Hadir Hari Ini
+                    </h5>
+
+                    <h1 class="font-weight-bold text-success">
+                        {{ $hadirHariIni }}
+                    </h1>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card custom-card">
+
+                <div class="card-body text-center">
+
+                    <h5 class="text-danger font-weight-bold">
+                        Alpha Hari Ini
+                    </h5>
+
+                    <h1 class="font-weight-bold text-danger">
+                        {{ $alphaHariIni }}
+                    </h1>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card custom-card">
+
+                <div class="card-body text-center">
+
+                    <h5 class="text-primary font-weight-bold">
+                        Total Data Absensi
+                    </h5>
+
+                    <h1 class="font-weight-bold text-primary">
+                        {{ $absensiHariIni }}
+                    </h1>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{-- INFORMASI & MENU --}}
     <div class="row">
 
         {{-- INFORMASI GURU --}}
@@ -272,10 +323,12 @@
             <div class="card custom-card">
 
                 <div class="card-header bg-warning border-0">
+
                     <h5 class="mb-0 text-white">
                         <i class="fas fa-info-circle mr-2"></i>
                         Informasi Guru
                     </h5>
+
                 </div>
 
                 <div class="card-body">
@@ -288,8 +341,13 @@
                         </tr>
 
                         <tr>
-                            <th>Email</th>
-                            <td>: {{ auth()->user()->email }}</td>
+                            <th>Role</th>
+                            <td>: {{ auth()->user()->role }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Kelas Wali</th>
+                            <td>: {{ $kelas->namakelas ?? '-' }}</td>
                         </tr>
 
                         <tr>
@@ -321,30 +379,30 @@
             <div class="card custom-card">
 
                 <div class="card-header bg-info border-0">
+
                     <h5 class="mb-0 text-white">
                         <i class="fas fa-bolt mr-2"></i>
                         Menu Cepat
                     </h5>
+
                 </div>
 
                 <div class="card-body text-center">
 
-                    <a href="/absensi"
+                    <a href="{{ route('absensi.index') }}"
                         class="btn btn-success quick-btn m-2">
+
                         <i class="fas fa-check-circle"></i>
-                        Absensi
+                        Input Absensi
+
                     </a>
 
-                    <a href="/jadwal"
-                        class="btn btn-primary quick-btn m-2">
-                        <i class="fas fa-calendar-alt"></i>
-                        Jadwal
-                    </a>
-
-                    <a href="/laporan/harian"
+                    <a href="{{ route('laporan.absensi') }}"
                         class="btn btn-danger quick-btn m-2">
+
                         <i class="fas fa-file-alt"></i>
                         Laporan
+
                     </a>
 
                 </div>
@@ -355,14 +413,117 @@
 
     </div>
 
-    {{-- TABEL DATA GURU --}}
+    {{-- ABSENSI TERBARU --}}
+    <div class="card custom-card mt-4">
+
+        <div class="card-header bg-success border-0">
+
+            <h5 class="mb-0 text-white">
+                <i class="fas fa-check-circle mr-2"></i>
+                Absensi Terbaru
+            </h5>
+
+        </div>
+
+        <div class="card-body table-responsive">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="bg-light">
+
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Siswa</th>
+                        <th>Tanggal</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @forelse($absensiTerbaru as $item)
+
+                        <tr>
+
+                            <td>{{ $loop->iteration }}</td>
+
+                            <td>
+                                {{ $item->siswa->nama ?? '-' }}
+                            </td>
+
+                            <td>
+                                {{ $item->tanggal }}
+                            </td>
+
+                            <td>
+
+                                @if($item->status == 'hadir')
+
+                                    <span class="badge badge-success">
+                                        Hadir
+                                    </span>
+
+                                @elseif($item->status == 'izin')
+
+                                    <span class="badge badge-warning">
+                                        Izin
+                                    </span>
+
+                                @elseif($item->status == 'sakit')
+
+                                    <span class="badge badge-info">
+                                        Sakit
+                                    </span>
+
+                                @elseif($item->status == 'cabut')
+
+                                    <span class="badge badge-dark">
+                                        Cabut
+                                    </span>
+
+                                @else
+
+                                    <span class="badge badge-danger">
+                                        Alpha
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td colspan="4" class="text-center">
+                                Belum ada data absensi
+                            </td>
+
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    {{-- DATA GURU --}}
     <div class="card custom-card mt-4">
 
         <div class="card-header bg-primary border-0">
+
             <h5 class="mb-0 text-white">
                 <i class="fas fa-users mr-2"></i>
                 Data Guru
             </h5>
+
         </div>
 
         <div class="card-body table-responsive">
@@ -374,7 +535,6 @@
                     <tr>
                         <th>No</th>
                         <th>Nama</th>
-                        <th>Email</th>
                         <th>Role</th>
                     </tr>
 
@@ -390,12 +550,12 @@
 
                             <td>{{ $item->nama }}</td>
 
-                            <td>{{ $item->email }}</td>
-
                             <td>
+
                                 <span class="badge badge-success">
                                     {{ $item->role }}
                                 </span>
+
                             </td>
 
                         </tr>
@@ -403,9 +563,11 @@
                     @empty
 
                         <tr>
-                            <td colspan="4" class="text-center">
+
+                            <td colspan="3" class="text-center">
                                 Data guru belum tersedia
                             </td>
+
                         </tr>
 
                     @endforelse

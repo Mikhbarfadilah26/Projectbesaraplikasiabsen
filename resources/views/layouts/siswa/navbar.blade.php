@@ -1,4 +1,4 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light align-items-center">
 
     {{-- LEFT --}}
     <ul class="navbar-nav align-items-center">
@@ -10,7 +10,7 @@
         </li>
 
         {{-- TEKS BERJALAN --}}
-        <li class="nav-item d-none d-md-block ml-2">
+        <li class="nav-item d-none d-md-flex align-items-center ml-2">
 
             <div class="marquee-wrapper">
 
@@ -29,15 +29,15 @@
     </ul>
 
     {{-- RIGHT --}}
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav align-items-center ml-auto">
 
         <li class="nav-item dropdown">
 
-            <a class="nav-link dropdown-toggle"
+            <a class="nav-link dropdown-toggle d-flex align-items-center"
                 data-toggle="dropdown"
                 href="#">
 
-                <i class="fas fa-user-circle"></i>
+                <i class="fas fa-user-circle mr-2"></i>
 
                 {{ auth('siswa')->user()->nama }}
             </a>
@@ -45,17 +45,16 @@
             {{-- DROPDOWN --}}
             <div class="dropdown-menu dropdown-menu-right shadow">
 
-                <div class="dropdown-item text-center">
+                <div class="dropdown-item text-center py-3">
 
                     <i class="fas fa-user-circle fa-2x text-primary mb-2"></i>
 
-                    <br>
-
-                    <strong>
+                    {{-- 🔥 PERBAIKAN: Mengganti <br> dengan elemen block (div) agar tidak merusak tinggi baris navbar --}}
+                    <div class="font-weight-bold text-dark">
                         {{ auth('siswa')->user()->nama }}
-                    </strong>
+                    </div>
 
-                    <div class="text-muted small">
+                    <div class="text-muted small mt-1">
                         {{ auth('siswa')->user()->kelas->namakelas ?? '-' }}
                     </div>
 

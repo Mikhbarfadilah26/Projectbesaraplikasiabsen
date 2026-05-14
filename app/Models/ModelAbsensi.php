@@ -3,10 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ModelSiswa;
-use App\Models\ModelTahunAjaran;
-use App\Models\ModelSemester;
-use App\Models\ModelDetailAbsensi;
 
 class ModelAbsensi extends Model
 {
@@ -14,31 +10,35 @@ class ModelAbsensi extends Model
 
     protected $fillable = [
         'siswaid',
+        'kelasid',
+        'guruid',
         'tahunid',
         'semesterid',
         'tanggal',
-        'jam_masuk',
-        'status_masuk',
-        'jam_pulang',
-        'status_pulang'
+        'status'
     ];
 
+    // ✅ RELASI SISWA
     public function siswa()
     {
         return $this->belongsTo(ModelSiswa::class, 'siswaid');
     }
 
+    // ✅ RELASI KELAS
+    public function kelas()
+    {
+        return $this->belongsTo(ModelKelas::class, 'kelasid');
+    }
+
+    // ✅ RELASI TAHUN AJARAN
     public function tahun()
     {
         return $this->belongsTo(ModelTahunAjaran::class, 'tahunid');
     }
 
+    // ✅ RELASI SEMESTER
     public function semester()
     {
         return $this->belongsTo(ModelSemester::class, 'semesterid');
-    }
-    public function detail()
-    {
-        return $this->hasMany(ModelDetailAbsensi::class, 'absensiid');
     }
 }

@@ -32,10 +32,6 @@ return new class extends Migration {
         |--------------------------------------------------------------------------
         | USERS
         |--------------------------------------------------------------------------
-        | role:
-        | - admin
-        | - guru (otomatis wali kelas)
-        |--------------------------------------------------------------------------
         */
         Schema::create('users', function (Blueprint $table) {
 
@@ -67,13 +63,6 @@ return new class extends Migration {
 
             $table->id();
 
-            /*
-            |--------------------------------------------------------------------------
-            | CONTOH:
-            | X RPL 1
-            | XI TKJ 2
-            |--------------------------------------------------------------------------
-            */
             $table->string('namakelas');
 
             $table->enum('tingkat', [
@@ -82,27 +71,9 @@ return new class extends Migration {
                 'XII'
             ]);
 
-            /*
-            |--------------------------------------------------------------------------
-            | RELASI JURUSAN
-            |--------------------------------------------------------------------------
-            */
             $table->foreignId('jurusanid')
                 ->constrained('jurusan')
                 ->cascadeOnDelete();
-
-            /*
-            |--------------------------------------------------------------------------
-            | WALI KELAS
-            |--------------------------------------------------------------------------
-            | 1 guru hanya bisa punya 1 kelas
-            |--------------------------------------------------------------------------
-            */
-            $table->foreignId('guruid')
-                ->nullable()
-                ->unique()
-                ->constrained('users')
-                ->nullOnDelete();
 
             $table->timestamps();
 
@@ -130,16 +101,60 @@ return new class extends Migration {
                 'P'
             ]);
 
-            /*
-            |--------------------------------------------------------------------------
-            | KELAS SISWA
-            |--------------------------------------------------------------------------
-            */
             $table->foreignId('kelasid')
                 ->constrained('kelas')
                 ->cascadeOnDelete();
 
             $table->text('alamat')->nullable();
+
+            $table->timestamps();
+
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | REGISTER SISWA
+        |--------------------------------------------------------------------------
+        | Pending approval admin/guru
+        |--------------------------------------------------------------------------
+        */
+        Schema::create('register_siswa', function (Blueprint $table) {
+
+            $table->id();
+
+            $table->string('nis')->unique();
+
+            $table->string('nama');
+
+            $table->string('password');
+
+            $table->enum('jeniskelamin', [
+                'L',
+                'P'
+            ]);
+
+            $table->foreignId('kelasid')
+                ->constrained('kelas')
+                ->cascadeOnDelete();
+
+            $table->text('alamat')->nullable();
+
+            /*
+            |--------------------------------------------------------------------------
+            | STATUS
+            |--------------------------------------------------------------------------
+            | pending
+            | disetujui
+            | ditolak
+            |--------------------------------------------------------------------------
+            */
+            $table->enum('status', [
+                'pending',
+                'disetujui',
+                'ditolak'
+            ])->default('pending');
+
+            $table->text('catatan')->nullable();
 
             $table->timestamps();
 
@@ -154,12 +169,6 @@ return new class extends Migration {
 
             $table->id();
 
-            /*
-            |--------------------------------------------------------------------------
-            | CONTOH:
-            | 2025/2026
-            |--------------------------------------------------------------------------
-            */
             $table->string('tahun');
 
             $table->boolean('is_active')
@@ -194,70 +203,33 @@ return new class extends Migration {
         |--------------------------------------------------------------------------
         | ABSENSI
         |--------------------------------------------------------------------------
-        | Absensi manual oleh wali kelas
-        |--------------------------------------------------------------------------
         */
         Schema::create('absensi', function (Blueprint $table) {
 
             $table->id();
 
-            /*
-            |--------------------------------------------------------------------------
-            | RELASI SISWA
-            |--------------------------------------------------------------------------
-            */
             $table->foreignId('siswaid')
                 ->constrained('siswa')
                 ->cascadeOnDelete();
 
-            /*
-            |--------------------------------------------------------------------------
-            | RELASI GURU / WALI KELAS
-            |--------------------------------------------------------------------------
-            */
             $table->foreignId('guruid')
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            /*
-            |--------------------------------------------------------------------------
-            | RELASI KELAS
-            |--------------------------------------------------------------------------
-            */
             $table->foreignId('kelasid')
                 ->constrained('kelas')
                 ->cascadeOnDelete();
 
-            /*
-            |--------------------------------------------------------------------------
-            | RELASI TAHUN AJARAN
-            |--------------------------------------------------------------------------
-            */
             $table->foreignId('tahunid')
                 ->constrained('tahunajaran')
                 ->cascadeOnDelete();
 
-            /*
-            |--------------------------------------------------------------------------
-            | RELASI SEMESTER
-            |--------------------------------------------------------------------------
-            */
             $table->foreignId('semesterid')
                 ->constrained('semester')
                 ->cascadeOnDelete();
 
-            /*
-            |--------------------------------------------------------------------------
-            | TANGGAL ABSEN
-            |--------------------------------------------------------------------------
-            */
             $table->date('tanggal');
 
-            /*
-            |--------------------------------------------------------------------------
-            | STATUS ABSENSI
-            |--------------------------------------------------------------------------
-            */
             $table->enum('status', [
 
                 'hadir',
@@ -268,18 +240,8 @@ return new class extends Migration {
 
             ])->default('hadir');
 
-            /*
-            |--------------------------------------------------------------------------
-            | KETERANGAN TAMBAHAN
-            |--------------------------------------------------------------------------
-            */
             $table->text('keterangan')->nullable();
 
-            /*
-            |--------------------------------------------------------------------------
-            | MENCEGAH ABSENSI DOUBLE
-            |--------------------------------------------------------------------------
-            */
             $table->unique([
                 'siswaid',
                 'tanggal'
@@ -323,6 +285,7 @@ return new class extends Migration {
         Schema::dropIfExists('absensi');
         Schema::dropIfExists('semester');
         Schema::dropIfExists('tahunajaran');
+        Schema::dropIfExists('register_siswa');
         Schema::dropIfExists('siswa');
         Schema::dropIfExists('kelas');
         Schema::dropIfExists('users');

@@ -1,8 +1,8 @@
 @extends('layouts.appsiswa')
 
 @section('content')
+
 <style>
-    /* Custom Styling untuk tampilan Estetik */
     .welcome-banner {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border-radius: 20px;
@@ -11,145 +11,276 @@
         margin-bottom: 30px;
         box-shadow: 0 10px 20px rgba(118, 75, 162, 0.2);
     }
-    
+
     .stat-card {
         border: none;
         border-radius: 15px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        background: #ffffff;
+        transition: 0.3s;
+        background: white;
     }
 
     .stat-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
 
     .icon-shape {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
+        width: 55px;
+        height: 55px;
+        border-radius: 15px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 24px;
-        margin-bottom: 15px;
+        font-size: 22px;
     }
 
     .btn-menu {
         border-radius: 15px;
-        padding: 20px;
+        padding: 25px;
         text-align: center;
         color: white !important;
         text-decoration: none !important;
         display: block;
-        transition: all 0.3s;
-        border: none;
+        transition: 0.3s;
     }
 
     .btn-menu:hover {
-        opacity: 0.9;
-        transform: scale(1.02);
+        transform: scale(1.03);
+        opacity: 0.95;
     }
 
-    .bg-gradient-primary { background: linear-gradient(45deg, #4e73df, #224abe); }
-    .bg-gradient-success { background: linear-gradient(45deg, #1cc88a, #13855c); }
-    .bg-gradient-warning { background: linear-gradient(45deg, #f6c23e, #dda20a); }
-    .bg-gradient-info { background: linear-gradient(45deg, #36b9cc, #258391); }
-    .bg-gradient-danger { background: linear-gradient(45deg, #e74a3b, #be2617); }
-    .bg-gradient-dark { background: linear-gradient(45deg, #5a5c69, #373840); }
+    .bg-gradient-primary {
+        background: linear-gradient(45deg, #4e73df, #224abe);
+    }
+
+    .bg-gradient-success {
+        background: linear-gradient(45deg, #1cc88a, #13855c);
+    }
+
+    .bg-gradient-warning {
+        background: linear-gradient(45deg, #f6c23e, #dda20a);
+    }
+
+    .bg-gradient-danger {
+        background: linear-gradient(45deg, #e74a3b, #be2617);
+    }
+
+    .bg-gradient-dark {
+        background: linear-gradient(45deg, #5a5c69, #373840);
+    }
 </style>
 
 <div class="container-fluid py-4">
 
-    {{-- WELCOME HEADER --}}
-    <div class="welcome-banner d-flex align-items-center justify-content-between">
+    {{-- WELCOME --}}
+    <div class="welcome-banner d-flex justify-content-between align-items-center">
+
         <div>
-            <h2 class="font-weight-bold mb-1">Semangat Belajar, {{ explode(' ', auth('siswa')->user()->nama)[0] }}! ✨</h2>
-            <p class="opacity-8 mb-0">Kamu berada di kelas <strong>{{ auth('siswa')->user()->kelas->nama ?? '-' }}</strong>. Cek aktivitasmu hari ini.</p>
+            <h2 class="font-weight-bold mb-2">
+                Halo, {{ auth('siswa')->user()->nama }}
+            </h2>
+
+            <p class="mb-0">
+                Selamat datang di dashboard absensi siswa.
+            </p>
         </div>
+
         <div class="d-none d-md-block">
-            <i class="fas fa-user-rocket fa-4x opacity-2"></i>
+            <i class="fas fa-user-graduate fa-4x opacity-50"></i>
         </div>
+
     </div>
 
-    {{-- QUICK STATS --}}
+    {{-- DATA SISWA --}}
     <div class="row">
-        {{-- Status Absen --}}
-        <div class="col-lg-4 col-md-6 mb-4">
+
+        <div class="col-md-4 mb-4">
+
             <div class="card stat-card shadow-sm p-3">
+
                 <div class="d-flex align-items-center">
-                    <div class="icon-shape {{ isset($absenHariIni) ? 'bg-light-success text-success' : 'bg-light-danger text-danger' }}" style="background-color: #f0fdf4;">
-                        <i class="fas fa-fingerprint"></i>
+
+                    <div class="icon-shape bg-light text-primary">
+                        <i class="fas fa-id-card"></i>
                     </div>
+
                     <div class="ml-3">
-                        <p class="text-sm mb-0 text-muted font-weight-bold">Status Kehadiran</p>
-                        @if(isset($absenHariIni))
-                            <h5 class="mb-0 font-weight-bold text-success">{{ $absenHariIni->status }}</h5>
-                            <small class="text-muted">Masuk: {{ $absenHariIni->jam_masuk ?? '-' }}</small>
-                        @else
-                            <h5 class="mb-0 font-weight-bold text-danger">Belum Absen</h5>
-                            <small class="text-muted">Jangan lupa absen ya!</small>
-                        @endif
+                        <small class="text-muted">
+                            NIS
+                        </small>
+
+                        <h5 class="mb-0 font-weight-bold">
+                            {{ auth('siswa')->user()->nis }}
+                        </h5>
                     </div>
+
                 </div>
+
             </div>
+
         </div>
 
-        {{-- NIS --}}
-        <div class="col-lg-4 col-md-6 mb-4">
+        <div class="col-md-4 mb-4">
+
             <div class="card stat-card shadow-sm p-3">
+
                 <div class="d-flex align-items-center">
-                    <div class="icon-shape text-primary" style="background-color: #eff6ff;">
-                        <i class="fas fa-id-badge"></i>
+
+                    <div class="icon-shape bg-light text-success">
+                        <i class="fas fa-school"></i>
                     </div>
+
                     <div class="ml-3">
-                        <p class="text-sm mb-0 text-muted font-weight-bold">Nomor Induk Siswa</p>
-                        <h5 class="mb-0 font-weight-bold text-dark">{{ auth('siswa')->user()->nis ?? '-' }}</h5>
+                        <small class="text-muted">
+                            Kelas
+                        </small>
+
+                        <h5 class="mb-0 font-weight-bold">
+                            {{ auth('siswa')->user()->kelas->namakelas ?? '-' }}
+                        </h5>
                     </div>
+
                 </div>
+
             </div>
+
         </div>
 
-        {{-- RINGKASAN KEHADIRAN --}}
-        <div class="col-lg-4 col-md-12 mb-4">
+        <div class="col-md-4 mb-4">
+
             <div class="card stat-card shadow-sm p-3">
-                <div class="d-flex justify-content-around text-center">
-                    <div>
-                        <span class="d-block text-muted small font-weight-bold text-uppercase">Hadir</span>
-                        <span class="h5 font-weight-bold text-success">{{ $hadir ?? 0 }}</span>
+
+                <div class="d-flex align-items-center">
+
+                    <div class="icon-shape bg-light text-warning">
+                        <i class="fas fa-user-check"></i>
                     </div>
-                    <div style="border-left: 1px solid #eee; height: 40px;"></div>
-                    <div>
-                        <span class="d-block text-muted small font-weight-bold text-uppercase">Izin</span>
-                        <span class="h5 font-weight-bold text-warning">{{ $izin ?? 0 }}</span>
+
+                    <div class="ml-3">
+                        <small class="text-muted">
+                            Total Kehadiran
+                        </small>
+
+                        <h5 class="mb-0 font-weight-bold">
+                            {{ $hadir ?? 0 }}
+                        </h5>
                     </div>
-                    <div style="border-left: 1px solid #eee; height: 40px;"></div>
-                    <div>
-                        <span class="d-block text-muted small font-weight-bold text-uppercase">Alfa</span>
-                        <span class="h5 font-weight-bold text-danger">{{ $alfa ?? 0 }}</span>
-                    </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
 
-    {{-- MENU NAVIGASI ESTETIK --}}
-    <h5 class="font-weight-bold mb-3 mt-2">Menu Utama</h5>
+    {{-- REKAP ABSENSI --}}
     <div class="row">
-        <div class="col-6 col-md-3 mb-4">
-            <a href="/siswa/absensi" class="btn-menu bg-gradient-success shadow-lg">
-                <i class="fas fa-camera-retro fa-2x mb-3 d-block"></i>
-                <span class="font-weight-bold">Absensi</span>
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card stat-card shadow-sm p-4 text-center">
+
+                <h6 class="text-success font-weight-bold">
+                    HADIR
+                </h6>
+
+                <h2 class="font-weight-bold text-success">
+                    {{ $hadir ?? 0 }}
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card stat-card shadow-sm p-4 text-center">
+
+                <h6 class="text-warning font-weight-bold">
+                    IZIN / SAKIT
+                </h6>
+
+                <h2 class="font-weight-bold text-warning">
+                    {{ ($izin ?? 0) + ($sakit ?? 0) }}
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card stat-card shadow-sm p-4 text-center">
+
+                <h6 class="text-danger font-weight-bold">
+                    ALPHA
+                </h6>
+
+                <h2 class="font-weight-bold text-danger">
+                    {{ $alpha ?? 0 }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{-- MENU --}}
+    <h5 class="font-weight-bold mb-3">
+        Menu Utama
+    </h5>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-4">
+
+            <a href="{{ route('siswa.riwayat') }}"
+                class="btn-menu bg-gradient-primary shadow-lg">
+
+                <i class="fas fa-history fa-2x mb-3 d-block"></i>
+
+                <span class="font-weight-bold">
+                    Riwayat Absensi
+                </span>
+
             </a>
+
         </div>
 
-        <div class="col-6 col-md-3 mb-4">
-            <a href="/siswa/profile" class="btn-menu bg-gradient-dark shadow-lg">
+        <div class="col-md-4 mb-4">
+
+            <a href="{{ route('siswa.laporan') }}"
+                class="btn-menu bg-gradient-success shadow-lg">
+
+                <i class="fas fa-file-alt fa-2x mb-3 d-block"></i>
+
+                <span class="font-weight-bold">
+                    Laporan Absensi
+                </span>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4 mb-4">
+
+            <a href="{{ route('siswa.profile') }}"
+                class="btn-menu bg-gradient-dark shadow-lg">
+
                 <i class="fas fa-user-cog fa-2x mb-3 d-block"></i>
-                <span class="font-weight-bold">Profil</span>
+
+                <span class="font-weight-bold">
+                    Profile
+                </span>
+
             </a>
+
         </div>
+
     </div>
 
 </div>
+
 @endsection

@@ -156,23 +156,6 @@
         box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
     }
 
-    @media(max-width:991px) {
-
-        .hero-wrapper {
-            text-align: center;
-            padding: 90px 0 70px;
-        }
-
-        .hero-content-inner {
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-
-        .hero-description {
-            margin: auto auto 35px;
-        }
-
-    }
 </style>
 
 {{-- HERO --}}
@@ -187,30 +170,22 @@
                 <div class="hero-content-inner">
 
                     <div class="badge-modern">
-
                         <i class="fas fa-shield-alt"></i>
-
                         Sistem Absensi Digital Modern
-
                     </div>
 
                     <h1 class="hero-title-main">
-
                         Aplikasi Absensi
-
                         <span class="text-highlight d-block">
                             SMK Negeri 1 Karang Baru
                         </span>
-
                     </h1>
 
                     <p class="hero-description mx-auto">
-
                         Kelola absensi siswa, monitoring kehadiran,
                         laporan sekolah, dan data akademik
                         secara cepat, modern, aman,
                         dan terintegrasi dalam satu platform digital.
-
                     </p>
 
                     <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
@@ -223,46 +198,6 @@
                             Login Siswa
 
                         </a>
-
-                    </div>
-
-                    <div class="row justify-content-center mt-5 text-center">
-
-                        <div class="col-4 col-md-2">
-
-                            <h3 class="font-weight-bold text-success">
-                                Fast
-                            </h3>
-
-                            <small class="text-muted">
-                                Absensi Cepat
-                            </small>
-
-                        </div>
-
-                        <div class="col-4 col-md-2">
-
-                            <h3 class="font-weight-bold text-info">
-                                Smart
-                            </h3>
-
-                            <small class="text-muted">
-                                Dashboard Modern
-                            </small>
-
-                        </div>
-
-                        <div class="col-4 col-md-2">
-
-                            <h3 class="font-weight-bold text-warning">
-                                Report
-                            </h3>
-
-                            <small class="text-muted">
-                                Laporan Otomatis
-                            </small>
-
-                        </div>
 
                     </div>
 
@@ -286,7 +221,7 @@
             {{-- LEFT --}}
             <div class="col-lg-8">
 
-                {{-- PENGUMUMAN DATABASE --}}
+                {{-- PENGUMUMAN --}}
                 <div class="card custom-card shadow-sm mb-4">
 
                     <div class="card-header card-gradient-purple p-3">
@@ -294,18 +229,13 @@
                         <div class="d-flex justify-content-between align-items-center">
 
                             <h6 class="mb-0 text-white">
-
                                 <i class="fas fa-bullhorn mr-2"></i>
-
                                 Pengumuman Terbaru
-
                             </h6>
 
                             <a href="{{ route('landing.pengumuman') }}"
                                 class="text-white">
-
                                 Lihat Semua
-
                             </a>
 
                         </div>
@@ -321,22 +251,16 @@
                             <div class="flex-grow-1">
 
                                 <small class="text-muted">
-
                                     {{ $item->created_at->format('d F Y') }}
-
                                 </small>
 
                                 <h6 class="mb-2 mt-1">
-
                                     {{ $item->judul }}
-
                                 </h6>
 
                                 <a href="{{ route('landing.pengumuman.detail',$item->id) }}"
                                     class="text-success font-weight-bold">
-
                                     Lihat Selengkapnya
-
                                 </a>
 
                             </div>
@@ -348,9 +272,7 @@
                         @empty
 
                         <div class="alert alert-light mb-0">
-
                             Belum ada pengumuman terbaru.
-
                         </div>
 
                         @endforelse
@@ -359,7 +281,7 @@
 
                 </div>
 
-                {{-- JURUSAN DATABASE --}}
+                {{-- JURUSAN --}}
                 <div class="card custom-card shadow-sm mb-4">
 
                     <div class="card-body p-4">
@@ -367,16 +289,12 @@
                         <div class="d-flex justify-content-between align-items-center mb-4">
 
                             <h5 class="font-weight-bold mb-0">
-
                                 Jurusan Sekolah
-
                             </h5>
 
                             <a href="{{ route('landing.jurusan') }}"
                                 class="text-success font-weight-bold">
-
                                 Lihat Semua
-
                             </a>
 
                         </div>
@@ -392,16 +310,12 @@
                                     <i class="fas fa-laptop-code fa-2x text-success mb-3"></i>
 
                                     <h6 class="font-weight-bold">
-
                                         {{ $item->namajurusan }}
-
                                     </h6>
 
                                     <a href="{{ route('landing.jurusan.detail',$item->id) }}"
                                         class="btn btn-outline-success btn-sm mt-3 rounded-pill">
-
                                         Detail
-
                                     </a>
 
                                 </div>
@@ -409,83 +323,6 @@
                             </div>
 
                             @endforeach
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                {{-- STATISTIK --}}
-                <div class="card custom-card shadow-sm">
-
-                    <div class="card-body p-4">
-
-                        <h6 class="font-weight-bold mb-4">
-                            Ringkasan Kehadiran Hari Ini
-                        </h6>
-
-                        <div class="row text-center">
-
-                            <div class="col-3">
-
-                                <div class="stat-circle text-success"
-                                    style="background:#dcfce7;">
-
-                                    80%
-
-                                </div>
-
-                                <small class="text-muted">
-                                    Hadir
-                                </small>
-
-                            </div>
-
-                            <div class="col-3">
-
-                                <div class="stat-circle text-warning"
-                                    style="background:#fef9c3;">
-
-                                    10%
-
-                                </div>
-
-                                <small class="text-muted">
-                                    Izin
-                                </small>
-
-                            </div>
-
-                            <div class="col-3">
-
-                                <div class="stat-circle text-info"
-                                    style="background:#e0f2fe;">
-
-                                    5%
-
-                                </div>
-
-                                <small class="text-muted">
-                                    Sakit
-                                </small>
-
-                            </div>
-
-                            <div class="col-3">
-
-                                <div class="stat-circle text-danger"
-                                    style="background:#fee2e2;">
-
-                                    5%
-
-                                </div>
-
-                                <small class="text-muted">
-                                    Alpha
-                                </small>
-
-                            </div>
 
                         </div>
 
@@ -509,16 +346,12 @@
                         </h6>
 
                         <p class="small text-secondary">
-
                             Gunakan NIS untuk masuk ke sistem
                             dan lakukan absensi tepat waktu.
-
                         </p>
 
                         <button class="btn btn-outline-light btn-sm w-100 mt-2">
-
                             Panduan Penggunaan
-
                         </button>
 
                     </div>
@@ -534,25 +367,13 @@
                         </h6>
 
                         <p class="small text-muted mb-4">
-
                             Tim IT Support siap membantu
                             jika terjadi kendala teknis.
-
                         </p>
 
-                        <a href="https://wa.me/6282267123172?text=Halo%20Admin%20SMK%20Negeri%201%20Karang%20Baru,%20saya%20ingin%20bertanya%20tentang%20aplikasi%20absensi."
+                        <a href="https://wa.me/6282267123172"
                             target="_blank"
-                            class="btn btn-success w-100 d-flex align-items-center justify-content-center"
-                            style="
-        border-radius: 14px;
-        height: 50px;
-        font-weight: 700;
-        font-size: 15px;
-        box-shadow: 0 10px 25px rgba(34,197,94,.25);
-        transition: .3s;
-    "
-                            onmouseover="this.style.transform='translateY(-2px)'"
-                            onmouseout="this.style.transform='translateY(0px)'">
+                            class="btn btn-success w-100 d-flex align-items-center justify-content-center">
 
                             <i class="fab fa-whatsapp mr-2 fa-lg"></i>
 

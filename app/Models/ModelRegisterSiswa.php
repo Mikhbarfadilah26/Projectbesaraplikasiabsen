@@ -2,25 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class ModelSiswa extends Authenticatable
+class ModelRegisterSiswa extends Model
 {
-    use Notifiable;
+    protected $table = 'register_siswa';
 
-    protected $table = 'siswa';
+    protected $fillable = [
 
-    protected $guarded = [];
-
-    protected $hidden = [
+        'nis',
+        'nama',
         'password',
-        'remember_token'
+        'jeniskelamin',
+        'kelasid',
+        'alamat',
+        'status',
+        'catatan',
+
     ];
 
     /*
     |--------------------------------------------------------------------------
-    | RELASI KE KELAS
+    | RELASI KELAS
     |--------------------------------------------------------------------------
     */
     public function kelas()

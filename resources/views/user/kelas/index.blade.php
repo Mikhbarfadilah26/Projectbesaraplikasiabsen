@@ -1,41 +1,118 @@
 @extends('layouts.appadmin')
 
 @section('content')
-<div class="container">
 
-<a href="{{ route('kelas.create') }}" class="btn btn-primary mb-3">Tambah Kelas</a>
+<section class="content-header">
+    <div class="container-fluid">
 
-<table class="table table-bordered">
-<tr>
-    <th>No</th>
+        <div class="d-flex justify-content-between align-items-center">
 
-    <th>Tingkat</th>
-    <th>Jurusan</th> {{-- 🔥 --}}
-    <th>Aksi</th>
-</tr>
+            <div>
+                <h1 class="font-weight-bold">Data Kelas</h1>
+                <small class="text-muted">Manajemen data kelas sekolah</small>
+            </div>
 
-@foreach($data as $d)
-<tr>
-<td>{{ $loop->iteration }}</td>
+            <a href="{{ route('kelas.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus mr-1"></i> Tambah Kelas
+            </a>
 
-<td>{{ $d->tingkat }}</td>
+        </div>
 
-{{-- 🔥 RELASI --}}
-<td>{{ $d->jurusan->namajurusan ?? '-' }}</td>
+    </div>
+</section>
 
-<td>
-    <a href="{{ route('kelas.edit',$d->id) }}" class="btn btn-warning btn-sm">Edit</a>
+<section class="content">
+<div class="container-fluid">
 
-    <form action="{{ route('kelas.destroy',$d->id) }}" method="POST" style="display:inline">
-        @csrf
-        @method('DELETE')
-        <button class="btn btn-danger btn-sm">Hapus</button>
-    </form>
-</td>
-</tr>
-@endforeach
+    {{-- ALERT --}}
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    @endif
 
-</table>
+    {{-- LOOP PER TINGKAT --}}
+    @foreach($kelas as $tingkat => $items)
+
+        <div class="card card-primary card-outline shadow-sm mb-4">
+
+            <div class="card-header border-0">
+                <h3 class="card-title font-weight-bold">
+                    Kelas {{ $tingkat }}
+                </h3>
+            </div>
+
+            <div class="card-body table-responsive p-0">
+
+                <table class="table table-hover table-striped text-nowrap">
+
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th width="60">No</th>
+                            <th>Nama Kelas</th>
+                            <th>Tingkat</th>
+                            <th>Jurusan</th>
+                            <th width="200">Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @forelse($items as $item)
+
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td class="font-weight-bold">{{ $item->namakelas }}</td>
+                                <td>{{ $item->tingkat }}</td>
+                                <td>{{ $item->jurusan->namajurusan ?? '-' }}</td>
+
+                                <td>
+
+                                    <a href="{{ route('kelas.edit', $item->id) }}"
+                                       class="btn btn-warning btn-sm">
+                                        Edit
+                                    </a>
+
+                                    <form action="{{ route('kelas.destroy', $item->id) }}"
+                                          method="POST"
+                                          class="d-inline">
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm"
+                                                onclick="return confirm('Hapus kelas ini?')">
+                                            Hapus
+                                        </button>
+
+                                    </form>
+
+                                </td>
+                            </tr>
+
+                        @empty
+
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-3">
+                                    Tidak ada data kelas
+                                </td>
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    @endforeach
 
 </div>
+</section>
+
 @endsection

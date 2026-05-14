@@ -2,48 +2,126 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
-use App\Models\ModelAbsensi;
-use App\Models\ModelTahunAjaran;
-use App\Models\ModelSemester;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\ModelAbsensi;
+use App\Http\Controllers\Controller;
 
 class ControllerDashboardSiswa extends Controller
 {
+
+    /*
+    |--------------------------------------------------------------------------
+    | DASHBOARD SISWA
+    |--------------------------------------------------------------------------
+    */
     public function index()
     {
+
         $siswaId = auth('siswa')->id();
+
         $hariIni = Carbon::today()->toDateString();
 
-        // Data statistik untuk dashboard
+        /*
+        |--------------------------------------------------------------------------
+        | DATA DASHBOARD
+        |--------------------------------------------------------------------------
+        */
         $data = [
-            'absenHariIni' => ModelAbsensi::where('siswaid', $siswaId)->where('tanggal', $hariIni)->first(),
-            'hadir' => ModelAbsensi::where('siswaid', $siswaId)->where('status_masuk', 'hadir')->count(),
-            'izin'  => ModelAbsensi::where('siswaid', $siswaId)->where('status_masuk', 'izin')->count(),
-            'alfa'  => ModelAbsensi::where('siswaid', $siswaId)->where('status_masuk', 'alpha')->count(),
+
+            'absenHariIni' => ModelAbsensi::where('siswaid', $siswaId)
+                ->where('tanggal', $hariIni)
+                ->first(),
+
+            'hadir' => ModelAbsensi::where('siswaid', $siswaId)
+                ->where('status', 'hadir')
+                ->count(),
+
+            'izin' => ModelAbsensi::where('siswaid', $siswaId)
+                ->where('status', 'izin')
+                ->count(),
+
+            'sakit' => ModelAbsensi::where('siswaid', $siswaId)
+                ->where('status', 'sakit')
+                ->count(),
+
+            'alpha' => ModelAbsensi::where('siswaid', $siswaId)
+                ->where('status', 'alpha')
+                ->count(),
+
+            'cabut' => ModelAbsensi::where('siswaid', $siswaId)
+                ->where('status', 'cabut')
+                ->count(),
+
         ];
 
-        return view('Zonasiswa.dashboard.dashboardsiswa', $data);
+        return view(
+            'Zonasiswa.dashboard.dashboardsiswa',
+            $data
+        );
+
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | ABSENSI HARI INI
+    |--------------------------------------------------------------------------
+    */
     public function absensi()
     {
-        $siswaId = auth('siswa')->id();
-        $absen = ModelAbsensi::where('siswaid', $siswaId)
-                            ->where('tanggal', Carbon::today()->toDateString())
-                            ->first();
 
-        return view('Zonasiswa.absensi.prosesabsen', compact('absen'));
+        $siswaId = auth('siswa')->id();
+
+        $absensi = ModelAbsensi::where('siswaid', $siswaId)
+            ->latest()
+            ->first();
+
+        return view(
+            'Zonasiswa.absensi.prosesabsen',
+            compact('absensi')
+        );
+
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | RIWAYAT ABSENSI
+    |--------------------------------------------------------------------------
+    */
     public function riwayat()
     {
-        $siswaId = auth('siswa')->id();
-        $riwayat = ModelAbsensi::where('siswaid', $siswaId)
-                                ->orderBy('tanggal', 'desc')
-                                ->get();
 
-        return view('Zonasiswa.riwayat.riwayatabsensi', compact('riwayat'));
+        $siswaId = auth('siswa')->id();
+
+        $riwayat = ModelAbsensi::where('siswaid', $siswaId)
+            ->latest()
+            ->paginate(10);
+
+        return view(
+            'Zonasiswa.riwayat.riwayatabsensi',
+            compact('riwayat')
+        );
+
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | LAPORAN ABSENSI
+    |--------------------------------------------------------------------------
+    */
+    public function laporan()
+    {
+
+        $siswaId = auth('siswa')->id();
+
+        $laporan = ModelAbsensi::where('siswaid', $siswaId)
+            ->latest()
+            ->get();
+
+        return view(
+            'Zonasiswa.laporan.index',
+            compact('laporan')
+        );
+
+    }
+
 }
