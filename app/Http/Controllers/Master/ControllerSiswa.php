@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 use App\Models\ModelSiswa;
 use App\Models\ModelKelas;
@@ -16,22 +15,27 @@ class ControllerSiswa extends Controller
 {
     public function index()
     {
-        // SISWA FINAL (yang sudah aktif)
+        // DATA SISWA AKTIF
         $data = ModelSiswa::with('kelas.jurusan')
-            ->orderBy('created_at', 'desc')
+            ->latest()
             ->get();
 
-        // REGISTER (PENDING)
+        // DATA REGISTER PENDING
         $pending = ModelRegisterSiswa::with('kelas.jurusan')
             ->where('status', 'pending')
+            ->latest()
             ->get();
 
+        // DATA DITERIMA
         $diterima = ModelRegisterSiswa::with('kelas.jurusan')
             ->where('status', 'disetujui')
+            ->latest()
             ->get();
 
+        // DATA DITOLAK
         $ditolak = ModelRegisterSiswa::with('kelas.jurusan')
             ->where('status', 'ditolak')
+            ->latest()
             ->get();
 
         return view('user.siswa.index', compact(
@@ -47,93 +51,193 @@ class ControllerSiswa extends Controller
         $kelas = ModelKelas::with('jurusan')->get();
         $jurusan = ModelJurusan::all();
 
-        return view('user.siswa.create', compact('kelas','jurusan'));
+        return view('user.siswa.create', compact(
+            'kelas',
+            'jurusan'
+        ));
     }
 
     public function store(Request $r)
     {
         $r->validate([
-            'nis' => 'required|unique:siswa,nis',
-            'nama' => 'required',
-            'password' => 'required|min:4',
-            'jeniskelamin' => 'required',
-            'kelasid' => 'required',
+            'nis'           => 'required|unique:siswa,nis',
+            'nama'          => 'required',
+            'password'      => 'required|min:4',
+            'jeniskelamin'  => 'required',
+            'kelasid'       => 'required',
+            'alamat'        => 'nullable',
+            'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        // FOTO
+        $foto = null;
+
+        if ($r->hasFile('foto')) {
+
+            $file = $r->file('foto');
+
+            $namaFile = time() . '_' . $file->getClientOriginalName();
+
+            $file->move(public_path('fotoupload/siswa'), $namaFile);
+
+            $foto = $namaFile;
+        }
+
+        // SIMPAN SISWA
         ModelSiswa::create([
-            'nis' => $r->nis,
-            'nama' => $r->nama,
-            'password' => Hash::make($r->password),
-            'jeniskelamin' => $r->jeniskelamin,
-            'kelasid' => $r->kelasid,
-            'alamat' => $r->alamat,
+            'nis'           => $r->nis,
+            'nama'          => $r->nama,
+            'password'      => Hash::make($r->password),
+            'foto'          => $foto,
+            'jeniskelamin'  => $r->jeniskelamin,
+            'kelasid'       => $r->kelasid,
+            'alamat'        => $r->alamat,
         ]);
 
-        return redirect()->route('siswa.index')
+        return redirect()
+            ->route('siswa.index')
             ->with('success', 'Siswa berhasil ditambahkan');
     }
 
     public function show($id)
     {
-        $siswa = ModelSiswa::with('kelas.jurusan')->findOrFail($id);
+        $siswa = ModelSiswa::with('kelas.jurusan')
+            ->findOrFail($id);
+
         return view('user.siswa.show', compact('siswa'));
     }
 
     public function edit($id)
     {
         $siswa = ModelSiswa::findOrFail($id);
+
         $kelas = ModelKelas::with('jurusan')->get();
 
-        return view('user.siswa.edit', compact('siswa','kelas'));
+        return view('user.siswa.edit', compact(
+            'siswa',
+            'kelas'
+        ));
     }
 
     public function update(Request $r, $id)
     {
         $siswa = ModelSiswa::findOrFail($id);
 
-        $siswa->update([
-            'nis' => $r->nis,
-            'nama' => $r->nama,
-            'jeniskelamin' => $r->jeniskelamin,
-            'kelasid' => $r->kelasid,
-            'alamat' => $r->alamat,
+        $r->validate([
+            'nis'           => 'required|unique:siswa,nis,' . $id,
+            'nama'          => 'required',
+            'jeniskelamin'  => 'required',
+            'kelasid'       => 'required',
+            'alamat'        => 'nullable',
+            'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        return redirect()->route('siswa.index')
-            ->with('success','Data siswa diupdate');
+        $data = [
+            'nis'           => $r->nis,
+            'nama'          => $r->nama,
+            'jeniskelamin'  => $r->jeniskelamin,
+            'kelasid'       => $r->kelasid,
+            'alamat'        => $r->alamat,
+        ];
+
+        // UPDATE PASSWORD JIKA DIISI
+        if ($r->password) {
+
+            $data['password'] = Hash::make($r->password);
+        }
+
+        // UPDATE FOTO
+        if ($r->hasFile('foto')) {
+
+            // HAPUS FOTO LAMA
+            if (
+                $siswa->foto &&
+                file_exists(public_path('fotoupload/siswa/' . $siswa->foto))
+            ) {
+                unlink(public_path('fotoupload/siswa/' . $siswa->foto));
+            }
+
+            $file = $r->file('foto');
+
+            $namaFile = time() . '_' . $file->getClientOriginalName();
+
+            $file->move(public_path('fotoupload/siswa'), $namaFile);
+
+            $data['foto'] = $namaFile;
+        }
+
+        $siswa->update($data);
+
+        return redirect()
+            ->route('siswa.index')
+            ->with('success', 'Data siswa berhasil diupdate');
     }
 
     public function setujui($id)
     {
         $register = ModelRegisterSiswa::findOrFail($id);
 
+        // CEK JIKA SUDAH ADA
+        $cek = ModelSiswa::where('nis', $register->nis)->first();
+
+        if ($cek) {
+
+            return back()->with('error', 'NIS sudah terdaftar');
+        }
+
         ModelSiswa::create([
-            'nis' => $register->nis,
-            'nama' => $register->nama,
-            'password' => $register->password,
-            'jeniskelamin' => $register->jeniskelamin,
-            'kelasid' => $register->kelasid,
-            'alamat' => $register->alamat,
+            'nis'           => $register->nis,
+            'nama'          => $register->nama,
+
+            // HASH PASSWORD REGISTER
+            'password'      => Hash::make($register->password),
+
+            'foto'          => $register->foto,
+            'jeniskelamin'  => $register->jeniskelamin,
+            'kelasid'       => $register->kelasid,
+            'alamat'        => $register->alamat,
         ]);
 
-        $register->update(['status' => 'disetujui']);
+        $register->update([
+            'status' => 'disetujui'
+        ]);
 
-        return back()->with('success','Siswa disetujui');
+        return back()->with(
+            'success',
+            'Siswa berhasil disetujui'
+        );
     }
 
     public function tolak($id)
     {
         ModelRegisterSiswa::findOrFail($id)
-            ->update(['status' => 'ditolak']);
+            ->update([
+                'status' => 'ditolak'
+            ]);
 
-        return back()->with('success','Siswa ditolak');
+        return back()->with(
+            'success',
+            'Siswa berhasil ditolak'
+        );
     }
 
     public function destroy($id)
     {
         $siswa = ModelSiswa::findOrFail($id);
+
+        // HAPUS FOTO
+        if (
+            $siswa->foto &&
+            file_exists(public_path('fotoupload/siswa/' . $siswa->foto))
+        ) {
+            unlink(public_path('fotoupload/siswa/' . $siswa->foto));
+        }
+
         $siswa->delete();
 
-        return back()->with('success','Siswa dihapus');
+        return back()->with(
+            'success',
+            'Siswa berhasil dihapus'
+        );
     }
 }

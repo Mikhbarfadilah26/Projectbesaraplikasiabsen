@@ -29,6 +29,7 @@ use App\Http\Controllers\Master\ControllerUser;
 use App\Http\Controllers\Master\ControllerTahunAjaran;
 use App\Http\Controllers\Master\ControllerJadwalAbsensi;
 use App\Http\Controllers\Master\ControllerPengumuman;
+use App\Http\Controllers\Master\ControllerLibur;
 
 use App\Http\Controllers\Transaksi\ControllerAbsensi;
 use App\Http\Controllers\Transaksi\ControllerDetailAbsensi;
@@ -164,14 +165,29 @@ Route::middleware(['auth:siswa'])
             ->name('siswa.absensi.store');
 
         Route::put('/absensi/update/{id}', [ControllerAbsensi::class, 'update'])
-            ->name('siswa.absensi.update');
 
-        // ✅ FIX ERROR YANG KAMU ALAMI
+            ->name('siswa.absensi.update');
+        //profile siswa
         Route::get('/profile', function () {
-            return view('zonasiswa.profile.index');
+
+            $siswa = auth()->guard('siswa')->user();
+
+            return view(
+                'zonasiswa.profile',
+                compact('siswa')
+            );
         })->name('siswa.profile');
     });
 
+
+
+/*
+|--------------------------------------------------------------------------
+|CETAK LAPORAN PRIBADI SISWA
+|--------------------------------------------------------------------------
+*/
+Route::get('/siswa/laporan/cetak', [ControllerAbsensi::class, 'cetak'])
+    ->name('cetak.laporan');
 /*
 |--------------------------------------------------------------------------
 | MASTER
@@ -190,6 +206,7 @@ Route::middleware(['auth', 'role:admin,guru'])
         Route::resource('user', ControllerUser::class);
         Route::resource('jadwalabsensi', ControllerJadwalAbsensi::class);
         Route::resource('pengumuman', ControllerPengumuman::class);
+        Route::resource('master/libur', ControllerLibur::class);
 
         /*
     |--------------------------------------------------------------------------
@@ -211,15 +228,41 @@ Route::middleware(['auth', 'role:admin,guru'])
             Route::resource('detailabsensi', ControllerDetailAbsensi::class);
         });
 
-        /*
-    |--------------------------------------------------------------------------
-    | LAPORAN
-    |--------------------------------------------------------------------------
-    */
+ /*
+|--------------------------------------------------------------------------
+| LAPORAN
+|--------------------------------------------------------------------------
+*/
 
-        Route::prefix('laporan')->group(function () {
+Route::prefix('laporan')->group(function () {
 
-            Route::get('/absensi', [ControllerLaporan::class, 'absensi'])
-                ->name('laporan.absensi');
-        });
+    // REKAP ABSENSI
+    Route::get('/absensi', [ControllerLaporan::class, 'absensi'])
+        ->name('laporan.absensi');
+
+    // LAPORAN HARIAN
+    Route::get('/harian', function () {
+        return view('user.laporan.harian');
+    })->name('laporan.absensi.harian');
+
+    // LAPORAN MINGGUAN
+    Route::get('/mingguan', function () {
+        return view('user.laporan.mingguan');
+    })->name('laporan.absensi.mingguan');
+
+    // LAPORAN BULANAN
+    Route::get('/bulanan', function () {
+        return view('user.laporan.bulanan');
+    })->name('laporan.absensi.bulanan');
+
+    // LAPORAN TAHUNAN
+    Route::get('/tahunan', function () {
+        return view('user.laporan.tahunan');
+    })->name('laporan.absensi.tahunan');
+
+    // LAPORAN SEMESTER
+    Route::get('/semester', function () {
+        return view('user.laporan.semester');
+    })->name('laporan.absensi.semester');
+});
     });

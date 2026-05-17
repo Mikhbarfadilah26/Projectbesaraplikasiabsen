@@ -6,6 +6,7 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │   │   ├── Auth/
 │   │   │   │   ├── ControllerAuthUser.php
 │   │   │   │   ├── ControllerAuthSiswa.php
+│   │   │   │   └──  ControllerRegisterSiswa.php
 │   │   │   ├── Dashboard/
 │   │   │   │   ├── ControllerDashboardAdmin.php
 │   │   │   │   ├── ControllerDashboardGuru.php
@@ -18,13 +19,20 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │   │   │   ├── ControllerTahunAjaran.php
 │   │   │   │   ├── ControllerSemester.php
 │   │   │   │   └── ControllerStatusAbsen.php  
+│   │   │   │   └── ControllerPengumuman.php  
+│   │   │   │
 │   │   │   ├── Transaksi/
-│   │   │   │   ├── ControllerAbsensi.php
-│   │   │   │   └── ControllerDetailAbsensi.php
+│   │   │   │   └──ControllerAbsensi.php
+│   │   │   │
+│   │   │   │
 │   │   │   ├── Laporan/
 │   │   │   │   └── ControllerLaporan.php
+│   │   │   │
+│   │   │   │
 │   │   │   ├── ZonaSiswa/
 │   │   │   │   └── ControllerZonaSiswa.php
+│   │   │   │
+│   │   │   │
 │   │   │   └── Landing/
 │   │   │       └── ControllerLanding.php
 │   │   └── Middleware/
@@ -33,14 +41,15 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │
 │   ├── Models/
 │   │   ├── ModelUser.php
+│   │   ├── Model.php
 │   │   ├── ModelJurusan.php
 │   │   ├── ModelKelas.php
 │   │   ├── ModelSiswa.php
 │   │   ├── ModelTahunAjaran.php
 │   │   ├── ModelSemester.php
-│   │   ├── ModelStatusAbsen.php 
-│   │   ├── ModelAbsensi.php
-│   │   └── ModelDetailAbsensi.php
+│   │   └── ModelAbsensi.php
+│   │   └── ModelRegisterSiswa.php
+│   │   
 │   └── Providers/ ...
 │
 ├── database/
@@ -80,23 +89,12 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │   │ 
 │   │   │ 
 │   │   ├── guru/   
-│   │   │   ├── jurusan/
-│   │   │   │   ├── index.blade.php
-│   │   │   │   ├── create.blade.php
-│   │   │   │   ├── edit.blade.php
-│   │   │   │   └── show.blade.php
-│   │   │   │
 │   │   │   ├── kelas/
 │   │   │   │   ├── index.blade.php
 │   │   │   │   ├── create.blade.php
 │   │   │   │   ├── edit.blade.php
 │   │   │   │   └── show.blade.php
-│   │   │   │
-│   │   │   ├── siswa/
-│   │   │   │   ├── index.blade.php
-│   │   │   │   ├── create.blade.php
-│   │   │   │   ├── edit.blade.php
-│   │   │   │   └── show.blade.php   
+│   │   │   │   
 │   │   │   │
 │   │   │   ├── tahunajaran/
 │   │   │   │   ├── index.blade.php
@@ -110,24 +108,13 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │   │   │   ├── edit.blade.php
 │   │   │   │   └── show.blade.php
 │   │   │   │
-│   │   │   ├── isiabsen/
-│   │   │   │   ├── index.blade.php
-│   │   │   │   ├── create.blade.php
-│   │   │   │   ├── edit.blade.php
-│   │   │   │   └── show.blade.php
+│   │   │   ├── inputabsen/
+│   │   │   │   ├── index.blade.php (halaman defaultny)
+│   │   │   │   └── create.blade.php  (menginput absen siswa)
 │   │   │   │
-│   │   │   ├── statusabsen/ 
-│   │   │   │   ├── index.blade.php
-│   │   │   │   ├── create.blade.php
-│   │   │   │   ├── edit.blade.php
-│   │   │   │   └── show.blade.php
-│   │   │   │
-│   │   │   ├── absensi/
-│   │   │   │   ├── index.blade.php
-│   │   │   │   └── create.blade.php
-│   │   │   │
-│   │   │   └── detailAbsensi/ 
+│   │   │   └── laporan/ 
 │   │   │       └── index.blade.php
+│   │   │       └──cetakpdf.blade.php
 │   │   │     
 │   │   ├── user/
 │   │   │   ├── dashboard/
@@ -163,6 +150,12 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │   │   │   ├── create.blade.php
 │   │   │   │   ├── edit.blade.php
 │   │   │   │   └── show.blade.php
+│   │   │   │ 
+│   │   │   ├── pengumuman/
+│   │   │   │   ├── index.blade.php
+│   │   │   │   ├── create.blade.php
+│   │   │   │   ├── edit.blade.php
+│   │   │   │   └── show.blade.php
 │   │   │   │
 │   │   │   ├── semester/
 │   │   │   │   ├── index.blade.php
@@ -170,25 +163,16 @@ ABSENSISISWASMKIKHBARFADILLAH/
 │   │   │   │   ├── edit.blade.php
 │   │   │   │   └── show.blade.php
 │   │   │   │
-│   │   │   ├── statusabsen/ 
-│   │   │   │   ├── index.blade.php
-│   │   │   │   ├── create.blade.php
-│   │   │   │   ├── edit.blade.php
-│   │   │   │   └── show.blade.php
 │   │   │   │
-│   │   │   ├── absensi/
-│   │   │   │   ├── index.blade.php
-│   │   │   │   └── create.blade.php
 │   │   │   │
-│   │   │   └── detailAbsensi/ 
+│   │   │   └── rekapan data absen/ 
 │   │   │       └── index.blade.php
+│   │   │       └── cetakpdf.blade.php
 │   │   │     
 │   │   │
 │   │   ├── Zonasiswa/
 │   │   │   ├── dashboard/
 │   │   │   │   └── dashboardsiswa.blade.php
-│   │   │   ├── absensi/
-│   │   │   │   └── prosesabsen.blade.php
 │   │   │   └── riwayat/
 │   │   │       └── riwayatabsensi.blade.php
 │   │   │

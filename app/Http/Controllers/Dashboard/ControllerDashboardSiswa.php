@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Carbon\Carbon;
+use App\Models\ModelLibur;
 use App\Models\ModelAbsensi;
 use App\Http\Controllers\Controller;
 
@@ -21,15 +22,11 @@ class ControllerDashboardSiswa extends Controller
 
         $hariIni = Carbon::today()->toDateString();
 
-        /*
-        |--------------------------------------------------------------------------
-        | DATA DASHBOARD
-        |--------------------------------------------------------------------------
-        */
         $data = [
 
             'absenHariIni' => ModelAbsensi::where('siswaid', $siswaId)
-                ->where('tanggal', $hariIni)
+                ->whereDate('tanggal', $hariIni)
+                ->latest()
                 ->first(),
 
             'hadir' => ModelAbsensi::where('siswaid', $siswaId)
@@ -93,7 +90,7 @@ class ControllerDashboardSiswa extends Controller
         $siswaId = auth('siswa')->id();
 
         $riwayat = ModelAbsensi::where('siswaid', $siswaId)
-            ->latest()
+            ->orderBy('tanggal', 'desc')
             ->paginate(10);
 
         return view(
@@ -105,7 +102,7 @@ class ControllerDashboardSiswa extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | LAPORAN ABSENSI
+    | LAPORAN ABSENSI SISWA
     |--------------------------------------------------------------------------
     */
     public function laporan()
@@ -113,13 +110,181 @@ class ControllerDashboardSiswa extends Controller
 
         $siswaId = auth('siswa')->id();
 
-        $laporan = ModelAbsensi::where('siswaid', $siswaId)
-            ->latest()
-            ->get();
+        /*
+        |--------------------------------------------------------------------------
+        | QUERY SISWA LOGIN SAJA
+        |--------------------------------------------------------------------------
+        */
+        $query = ModelAbsensi::with([
+                'guru',
+                'siswa.kelas.jurusan'
+            ])
+            ->where('siswaid', $siswaId);
 
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER TANGGAL
+        |--------------------------------------------------------------------------
+        */
+        if (request('tanggal')) {
+
+            $query->whereDate(
+                'tanggal',
+                request('tanggal')
+            );
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER STATUS
+        |--------------------------------------------------------------------------
+        */
+        if (request('status')) {
+
+            $query->where(
+                'status',
+                request('status')
+            );
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | DATA LAPORAN
+        |--------------------------------------------------------------------------
+        | Ambil hanya 1 data per tanggal
+        */
+        $laporan = $query
+            ->orderBy('tanggal', 'desc')
+            ->get()
+            ->unique('tanggal')
+            ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | DATA LIBUR
+        |--------------------------------------------------------------------------
+        */
+        $libur = null;
+
+        if (request('tanggal')) {
+
+            $libur = ModelLibur::whereDate(
+                    'tanggal',
+                    request('tanggal')
+                )
+                ->where('aktif', 1)
+                ->first();
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | RETURN VIEW
+        |--------------------------------------------------------------------------
+        */
         return view(
             'Zonasiswa.laporan.index',
-            compact('laporan')
+            compact(
+                'laporan',
+                'libur'
+            )
+        );
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CETAK LAPORAN SISWA
+    |--------------------------------------------------------------------------
+    */
+    public function cetak()
+    {
+
+        $siswaId = auth('siswa')->id();
+
+        /*
+        |--------------------------------------------------------------------------
+        | QUERY CETAK
+        |--------------------------------------------------------------------------
+        | Hanya siswa yang login
+        */
+        $query = ModelAbsensi::with([
+                'siswa.kelas.jurusan',
+                'guru'
+            ])
+            ->where('siswaid', $siswaId);
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER TANGGAL
+        |--------------------------------------------------------------------------
+        */
+        if (request('tanggal')) {
+
+            $query->whereDate(
+                'tanggal',
+                request('tanggal')
+            );
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER STATUS
+        |--------------------------------------------------------------------------
+        */
+        if (request('status')) {
+
+            $query->where(
+                'status',
+                request('status')
+            );
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | DATA CETAK
+        |--------------------------------------------------------------------------
+        | 1 tanggal hanya tampil 1 data
+        */
+        $absensi = $query
+            ->orderBy('tanggal', 'desc')
+            ->get()
+            ->unique('tanggal')
+            ->values();
+
+        /*
+        |--------------------------------------------------------------------------
+        | DATA LIBUR
+        |--------------------------------------------------------------------------
+        */
+        $libur = null;
+
+        if (request('tanggal')) {
+
+            $libur = ModelLibur::whereDate(
+                    'tanggal',
+                    request('tanggal')
+                )
+                ->where('aktif', 1)
+                ->first();
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | RETURN VIEW
+        |--------------------------------------------------------------------------
+        */
+        return view(
+            'Zonasiswa.cetaklaporan',
+            compact(
+                'absensi',
+                'libur'
+            )
         );
 
     }

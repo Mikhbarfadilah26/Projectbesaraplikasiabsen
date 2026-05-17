@@ -9,7 +9,7 @@
         <div class="d-flex justify-content-between align-items-center">
 
             <div>
-                <h1 class="font-weight-bold">
+                <h1 class="font-weight-bold mb-1">
                     Data Siswa
                 </h1>
 
@@ -36,7 +36,7 @@
 
     <div class="container-fluid">
 
-        {{-- ALERT SUCCESS --}}
+        {{-- ALERT --}}
         @if(session('success'))
 
             <div class="alert alert-success alert-dismissible fade show shadow-sm">
@@ -57,9 +57,9 @@
 
         @endif
 
-        {{-- ====================================================== --}}
-        {{-- SISWA PENDING --}}
-        {{-- ====================================================== --}}
+        {{-- ===================================================== --}}
+        {{-- REGISTRASI SISWA --}}
+        {{-- ===================================================== --}}
         <div class="card card-warning card-outline shadow-sm">
 
             <div class="card-header border-0">
@@ -67,7 +67,7 @@
                 <h3 class="card-title font-weight-bold">
 
                     <i class="fas fa-user-clock mr-1"></i>
-                   REGISTRASI SISWA
+                    Registrasi Siswa
 
                 </h3>
 
@@ -75,7 +75,7 @@
 
             <div class="card-body table-responsive p-0">
 
-                <table class="table table-hover table-striped text-nowrap">
+                <table class="table table-hover table-striped text-nowrap mb-0">
 
                     <thead class="bg-warning text-white">
 
@@ -99,13 +99,9 @@
 
                             <tr>
 
-                                <td>
-                                    {{ $loop->iteration }}
-                                </td>
+                                <td>{{ $loop->iteration }}</td>
 
-                                <td>
-                                    {{ $item->nis }}
-                                </td>
+                                <td>{{ $item->nis }}</td>
 
                                 <td class="font-weight-bold">
                                     {{ $item->nama }}
@@ -122,9 +118,7 @@
                                 <td>
 
                                     <span class="badge badge-warning px-3 py-2">
-
                                         Pending
-
                                     </span>
 
                                 </td>
@@ -158,10 +152,6 @@
                                 <td colspan="7"
                                     class="text-center text-muted py-4">
 
-                                    <i class="fas fa-inbox fa-2x mb-2"></i>
-
-                                    <br>
-
                                     Tidak ada data pending
 
                                 </td>
@@ -178,133 +168,194 @@
 
         </div>
 
-        {{-- ====================================================== --}}
-        {{-- DATA SISWA AKTIF --}}
-        {{-- ====================================================== --}}
-        <div class="card card-primary card-outline shadow-sm">
+        {{-- ===================================================== --}}
+        {{-- DATA SISWA PER KELAS --}}
+        {{-- ===================================================== --}}
 
-            <div class="card-header border-0">
+        @php
+            $grouped = $data->groupBy(function ($item) {
+                return ($item->kelas->jurusan->namajurusan ?? '-') . ' - ' .
+                       ($item->kelas->namakelas ?? '-');
+            });
+        @endphp
 
-                <h3 class="card-title font-weight-bold">
+        @forelse($grouped as $kelas => $items)
 
-                    <i class="fas fa-user-graduate mr-1"></i>
-                    Data Siswa Aktif
+            <div class="card card-primary card-outline shadow-sm">
 
-                </h3>
+                {{-- HEADER CARD --}}
+                <div class="card-header border-0">
 
-            </div>
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
 
-            <div class="card-body table-responsive p-0">
+                        <h3 class="card-title font-weight-bold mb-2 mb-md-0">
 
-                <table class="table table-hover table-striped text-nowrap">
+                            <i class="fas fa-users mr-1"></i>
 
-                    <thead class="bg-primary text-white">
+                            {{ $kelas }}
 
-                        <tr>
+                        </h3>
 
-                            <th width="60">No</th>
-                            <th>NIS</th>
-                            <th>Nama</th>
-                            <th>Kelas</th>
-                            <th>Jurusan</th>
-                            <th width="220">Aksi</th>
+                        <div>
 
-                        </tr>
+                            <span class="badge badge-primary px-3 py-2"
+                                  style="font-size:14px;">
 
-                    </thead>
+                                Total :
+                                {{ $items->count() }} Siswa
 
-                    <tbody>
+                            </span>
 
-                        @forelse($data as $item)
+                        </div>
 
-                            <tr>
+                    </div>
 
-                                <td>
-                                    {{ $loop->iteration }}
-                                </td>
+                </div>
 
-                                <td>
-                                    {{ $item->nis }}
-                                </td>
+                {{-- BODY --}}
+                <div class="card-body table-responsive p-0">
 
-                                <td class="font-weight-bold">
-                                    {{ $item->nama }}
-                                </td>
+                    <table class="table table-hover table-striped text-nowrap mb-0">
 
-                                <td>
-                                    {{ $item->kelas->namakelas ?? '-' }}
-                                </td>
-
-                                <td>
-                                    {{ $item->kelas->jurusan->namajurusan ?? '-' }}
-                                </td>
-
-                                <td>
-
-                                    <a href="{{ route('siswa.show', $item->id) }}"
-                                       class="btn btn-info btn-sm shadow-sm">
-
-                                        <i class="fas fa-eye"></i>
-                                        Detail
-
-                                    </a>
-
-                                    <a href="{{ route('siswa.edit', $item->id) }}"
-                                       class="btn btn-warning btn-sm shadow-sm">
-
-                                        <i class="fas fa-edit"></i>
-                                        Edit
-
-                                    </a>
-
-                                    <form action="{{ route('siswa.destroy', $item->id) }}"
-                                          method="POST"
-                                          class="d-inline">
-
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="submit"
-                                                class="btn btn-danger btn-sm shadow-sm"
-                                                onclick="return confirm('Hapus data siswa?')">
-
-                                            <i class="fas fa-trash"></i>
-                                            Hapus
-
-                                        </button>
-
-                                    </form>
-
-                                </td>
-
-                            </tr>
-
-                        @empty
+                        <thead class="bg-primary text-white">
 
                             <tr>
 
-                                <td colspan="6"
-                                    class="text-center text-muted py-4">
-
-                                    <i class="fas fa-database fa-2x mb-2"></i>
-
-                                    <br>
-
-                                    Belum ada data siswa
-
-                                </td>
+                                <th width="60">No</th>
+                                <th>NIS</th>
+                                <th>Nama Siswa</th>
+                                <th width="170">Jenis Kelamin</th>
+                                <th width="220">Aksi</th>
 
                             </tr>
 
-                        @endforelse
+                        </thead>
 
-                    </tbody>
+                        <tbody>
 
-                </table>
+                            @foreach($items as $item)
+
+                                <tr>
+
+                                    <td>
+                                        {{ $loop->iteration }}
+                                    </td>
+
+                                    <td>
+                                        {{ $item->nis }}
+                                    </td>
+
+                                    <td class="font-weight-bold">
+
+                                        {{ $item->nama }}
+
+                                    </td>
+
+                                    <td>
+
+                                        @if($item->jeniskelamin == 'L')
+
+                                            <span class="badge d-inline-flex justify-content-center align-items-center"
+                                                  style="
+                                                    background:#17a2b8;
+                                                    color:white;
+                                                    width:120px;
+                                                    height:35px;
+                                                    font-size:13px;
+                                                    border-radius:8px;
+                                                  ">
+
+                                                Laki-Laki
+
+                                            </span>
+
+                                        @else
+
+                                            <span class="badge d-inline-flex justify-content-center align-items-center"
+                                                  style="
+                                                    background:#e83e8c;
+                                                    color:white;
+                                                    width:120px;
+                                                    height:35px;
+                                                    font-size:13px;
+                                                    border-radius:8px;
+                                                  ">
+
+                                                Perempuan
+
+                                            </span>
+
+                                        @endif
+
+                                    </td>
+
+                                    <td>
+
+                                        <a href="{{ route('siswa.show', $item->id) }}"
+                                           class="btn btn-info btn-sm shadow-sm">
+
+                                            <i class="fas fa-eye"></i>
+                                            Detail
+
+                                        </a>
+
+                                        <a href="{{ route('siswa.edit', $item->id) }}"
+                                           class="btn btn-warning btn-sm shadow-sm">
+
+                                            <i class="fas fa-edit"></i>
+                                            Edit
+
+                                        </a>
+
+                                        <form action="{{ route('siswa.destroy', $item->id) }}"
+                                              method="POST"
+                                              class="d-inline">
+
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit"
+                                                    class="btn btn-danger btn-sm shadow-sm"
+                                                    onclick="return confirm('Hapus data siswa?')">
+
+                                                <i class="fas fa-trash"></i>
+                                                Hapus
+
+                                            </button>
+
+                                        </form>
+
+                                    </td>
+
+                                </tr>
+
+                            @endforeach
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 
-        </div>
+        @empty
+
+            <div class="card shadow-sm">
+
+                <div class="card-body text-center text-muted py-5">
+
+                    <i class="fas fa-database fa-3x mb-3"></i>
+
+                    <h5>
+                        Belum ada data siswa
+                    </h5>
+
+                </div>
+
+            </div>
+
+        @endforelse
 
     </div>
 

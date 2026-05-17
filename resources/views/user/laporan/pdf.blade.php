@@ -3,120 +3,186 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Laporan Absensi Siswa</title>
+
+    <title>
+        Laporan Absensi Siswa
+    </title>
 
     <style>
-        body{
-            font-family: "Times New Roman", serif;
-            font-size: 12px;
-            color: #000;
-            margin: 25px;
+        @page {
+            margin: 20px 25px;
         }
 
+        body{
+            font-family: "Times New Roman", serif;
+            font-size: 11px;
+            color:#000;
+
+            /* SUPAYA FOOTER TTD NEMPEL BAWAH */
+            position: relative;
+            min-height: 100%;
+        }
+
+        /* =========================
+           KOP SURAT
+        ==========================*/
         .kop-wrapper{
-            width: 100%;
-            border-bottom: 3px solid #000;
-            padding-bottom: 10px;
-            margin-bottom: 25px;
+            width:100%;
+            border-bottom:3px solid #000;
+            padding-bottom:10px;
+            margin-bottom:20px;
         }
 
         .kop-table{
-            width: 100%;
-            border: none;
+            width:100%;
+            border:none;
         }
 
         .kop-table td{
-            border: none;
-            vertical-align: middle;
+            border:none;
+            vertical-align:middle;
         }
 
         .logo{
-            width: 90px;
+            width:80px;
         }
 
         .kop-text{
-            text-align: center;
+            text-align:center;
         }
 
         .kop-text h1{
-            margin: 0;
-            font-size: 22px;
-            font-weight: bold;
+            margin:0;
+            font-size:28px;
+            font-weight:bold;
         }
 
         .kop-text h2{
-            margin: 3px 0;
-            font-size: 18px;
+            margin:0;
+            font-size:18px;
+            font-weight:bold;
         }
 
         .kop-text p{
-            margin: 2px 0;
-            font-size: 12px;
+            margin:2px 0;
+            font-size:12px;
         }
 
+        /* =========================
+           JUDUL
+        ==========================*/
         .judul{
-            text-align: center;
-            margin-top: 30px;
-            margin-bottom: 20px;
+            text-align:center;
+            margin-top:20px;
+            margin-bottom:20px;
         }
 
         .judul h3{
-            margin: 0;
-            font-size: 18px;
-            text-transform: uppercase;
+            margin:0;
+            font-size:20px;
+            text-transform:uppercase;
         }
 
         .judul p{
-            margin-top: 5px;
-            font-size: 13px;
+            margin-top:5px;
+            font-size:13px;
         }
 
+        /* =========================
+           TABLE
+        ==========================*/
         table{
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
+            width:100%;
+            border-collapse:collapse;
         }
 
-        table th,
-        table td{
-            border: 1px solid #000;
-            padding: 8px;
-            font-size: 12px;
+        .table-data{
+            table-layout:fixed;
         }
 
-        table th{
-            background: #f2f2f2;
-            text-align: center;
+        .table-data th,
+        .table-data td{
+            border:1px solid #000;
+            padding:6px 5px;
+            font-size:11px;
+            word-wrap:break-word;
+        }
+
+        .table-data th{
+            background:#f2f2f2;
+            text-align:center;
+            font-weight:bold;
         }
 
         .text-center{
-            text-align: center;
+            text-align:center;
         }
 
+        .text-left{
+            text-align:left;
+        }
+
+        /* =========================
+           UKURAN KOLOM
+        ==========================*/
+        .col-no{
+            width:5%;
+        }
+
+        .col-nama{
+            width:24%;
+        }
+
+        .col-nis{
+            width:10%;
+        }
+
+        .col-kelas{
+            width:15%;
+        }
+
+        .col-jurusan{
+            width:12%;
+        }
+
+        .col-tanggal{
+            width:18%;
+        }
+
+        .col-status{
+            width:16%;
+        }
+
+        /* =========================
+           FOOTER
+        ==========================*/
         .footer{
-            margin-top: 60px;
-            width: 100%;
+            position: fixed;
+            bottom: 20px;
+            left: 25px;
+            right: 25px;
+            width: auto;
         }
 
         .footer-table{
-            width: 100%;
-            border: none;
+            width:100%;
+            border:none;
         }
 
         .footer-table td{
-            border: none;
-            text-align: center;
-            vertical-align: top;
-        }
-
-        .ttd{
-            margin-top: 80px;
-            font-weight: bold;
-            text-decoration: underline;
+            border:none;
+            text-align:center;
+            vertical-align:top;
         }
 
         .jabatan{
-            margin-bottom: 5px;
+            margin-bottom:80px;
+            font-size:12px;
+        }
+
+        .ttd{
+            font-weight:bold;
+            text-decoration:underline;
         }
     </style>
 
@@ -124,28 +190,31 @@
 
 <body>
 
-    {{-- KOP SURAT --}}
+    {{-- =========================
+         KOP SURAT
+    ========================== --}}
     <div class="kop-wrapper">
 
         <table class="kop-table">
 
             <tr>
 
-                <td width="100">
+                <td width="15%">
 
-                    {{-- LOGO SEKOLAH --}}
-          
-              <img src="{{ public_path('dist/img/sekolah.png') }}"
-     class="logo">
-
+                    <img src="{{ public_path('dist/img/sekolah.png') }}"
+                        class="logo">
 
                 </td>
 
-                <td class="kop-text">
+                <td width="85%" class="kop-text">
 
-                    <h2>PEMERINTAH KABUPATEN ACEH</h2>
+                    <h2>
+                        PEMERINTAH KABUPATEN ACEH
+                    </h2>
 
-                    <h1>SMK NEGERI 1 KARANG BARU</h1>
+                    <h1>
+                        SMK NEGERI 1 KARANG BARU
+                    </h1>
 
                     <p>
                         Jl. Pendidikan No. 1 Karang Baru
@@ -163,10 +232,14 @@
 
     </div>
 
-    {{-- JUDUL --}}
+    {{-- =========================
+         JUDUL
+    ========================== --}}
     <div class="judul">
 
-        <h3>Laporan Absensi Siswa</h3>
+        <h3>
+            LAPORAN ABSENSI SISWA
+        </h3>
 
         <p>
             Tahun Ajaran {{ date('Y') }}
@@ -174,19 +247,43 @@
 
     </div>
 
-    {{-- TABEL --}}
-    <table>
+    {{-- =========================
+         TABEL
+    ========================== --}}
+    <table class="table-data">
 
         <thead>
 
             <tr>
-                <th width="40">No</th>
-                <th>Nama Siswa</th>
-                <th>NIS</th>
-                <th>Kelas</th>
-                <th>Jurusan</th>
-                <th>Tanggal</th>
-                <th>Status</th>
+
+                <th class="col-no">
+                    No
+                </th>
+
+                <th class="col-nama">
+                    Nama Siswa
+                </th>
+
+                <th class="col-nis">
+                    NIS
+                </th>
+
+                <th class="col-kelas">
+                    Kelas
+                </th>
+
+                <th class="col-jurusan">
+                    Jurusan
+                </th>
+
+                <th class="col-tanggal">
+                    Tanggal
+                </th>
+
+                <th class="col-status">
+                    Status
+                </th>
+
             </tr>
 
         </thead>
@@ -195,47 +292,59 @@
 
             @forelse($data as $d)
 
-            <tr>
+                <tr>
 
-                <td class="text-center">
-                    {{ $loop->iteration }}
-                </td>
+                    <td class="text-center">
+                        {{ $loop->iteration }}
+                    </td>
 
-                <td>
-                    {{ $d->siswa->nama }}
-                </td>
+                    <td class="text-left">
+                        {{ $d->siswa->nama ?? '-' }}
+                    </td>
 
-                <td class="text-center">
-                    {{ $d->siswa->nis }}
-                </td>
+                    <td class="text-center">
+                        {{ $d->siswa->nis ?? '-' }}
+                    </td>
 
-                <td class="text-center">
-                    {{ $d->siswa->kelas->tingkat ?? '-' }}
-                </td>
+                    <td class="text-center">
+                        {{ $d->kelas->namakelas ?? '-' }}
+                    </td>
 
-                <td>
-                    {{ $d->siswa->kelas->jurusan->namajurusan ?? '-' }}
-                </td>
+                    <td class="text-center">
+                        {{ $d->kelas->jurusan->namajurusan ?? '-' }}
+                    </td>
 
-                <td class="text-center">
-                    {{ \Carbon\Carbon::parse($d->tanggal)->translatedFormat('d F Y') }}
-                </td>
+                    <td class="text-center">
+                        {{ \Carbon\Carbon::parse($d->tanggal)->translatedFormat('d M Y') }}
+                    </td>
 
-                <td class="text-center">
-                    {{ ucfirst($d->status_masuk) }}
-                </td>
+                    <td class="text-center">
 
-            </tr>
+                        @if($d->status == 'hadir')
+                            HADIR
+                        @elseif($d->status == 'izin')
+                            IZIN
+                        @elseif($d->status == 'sakit')
+                            SAKIT
+                        @else
+                            ALPHA
+                        @endif
+
+                    </td>
+
+                </tr>
 
             @empty
 
-            <tr>
+                <tr>
 
-                <td colspan="7" class="text-center">
-                    Data absensi tidak tersedia
-                </td>
+                    <td colspan="7" class="text-center">
 
-            </tr>
+                        Data absensi tidak tersedia
+
+                    </td>
+
+                </tr>
 
             @endforelse
 
@@ -243,7 +352,9 @@
 
     </table>
 
-    {{-- TANDA TANGAN --}}
+    {{-- =========================
+         FOOTER TTD
+    ========================== --}}
     <div class="footer">
 
         <table class="footer-table">
@@ -252,35 +363,47 @@
 
                 <td width="50%">
 
-                    <p class="jabatan">
+                    <div class="jabatan">
+
                         Mengetahui,
                         <br>
                         Kepala Sekolah
-                    </p>
 
-                    <div class="ttd">
-                        Drs. Ahmad Muslim, M.Pd
                     </div>
 
-                    <p>
+                    <div class="ttd">
+
+                        Fahmi Putra, S.pd
+
+                    </div>
+
+                    <div>
+
                         NIP. 19680505 199003 1 003
-                    </p>
+
+                    </div>
 
                 </td>
 
                 <td width="50%">
 
-                    <p class="jabatan">
-                        Bidang Kesiswaan
-                    </p>
+                    <div class="jabatan">
 
-                    <div class="ttd">
-                        Endang Lestari, S.Pd
+                        Bidang Kesiswaan
+
                     </div>
 
-                    <p>
+                    <div class="ttd">
+
+                        Fajar Dharma Syaputra, S.Pd
+
+                    </div>
+
+                    <div>
+
                         NIP. 19711013 199403 2 005
-                    </p>
+
+                    </div>
 
                 </td>
 

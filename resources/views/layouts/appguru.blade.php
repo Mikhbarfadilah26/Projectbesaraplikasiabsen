@@ -30,11 +30,11 @@
         {{-- NAVBAR --}}
         @include('layouts.guru.navbar')
 
-     {{-- Ubah ini --}}
-@include('layouts.guru.sidebar')
+        {{-- Ubah ini --}}
+        @include('layouts.guru.sidebar')
 
-{{-- Menjadi ini --}}
-@include('layouts.admin.sidebar')
+        {{-- Menjadi ini --}}
+        @include('layouts.admin.sidebar')
         {{-- CONTENT --}}
         <div class="content-wrapper">
 

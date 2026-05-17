@@ -3,202 +3,199 @@
 @section('content')
 
 <style>
-    :root{
-        --primary:#4f46e5;
-        --secondary:#7c3aed;
-        --success:#10b981;
-        --warning:#f59e0b;
-        --info:#0ea5e9;
-        --danger:#ef4444;
-        --dark:#0f172a;
-        --light:#f8fafc;
+    :root {
+        --primary: #4f46e5;
+        --secondary: #7c3aed;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --info: #0ea5e9;
+        --danger: #ef4444;
+        --dark: #0f172a;
+        --light: #f8fafc;
     }
 
-    body{
+    body {
         background: #f1f5f9;
     }
 
-    .laporan-header{
-        background: linear-gradient(135deg,var(--primary),var(--secondary));
+    .laporan-header {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
         border-radius: 24px;
         padding: 28px;
         color: white;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 15px 40px rgba(79,70,229,.25);
+        box-shadow: 0 15px 40px rgba(79, 70, 229, .25);
     }
 
-    .laporan-header::before{
-        content:'';
-        position:absolute;
-        width:300px;
-        height:300px;
-        background: rgba(255,255,255,.08);
-        border-radius:50%;
-        top:-120px;
-        right:-120px;
+    .laporan-header::before {
+        content: '';
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: rgba(255, 255, 255, .08);
+        border-radius: 50%;
+        top: -120px;
+        right: -120px;
     }
 
-    .laporan-card{
-        border:none;
-        border-radius:22px;
-        overflow:hidden;
-        background:white;
-        box-shadow: 0 10px 35px rgba(15,23,42,.07);
+    .laporan-card {
+        border: none;
+        border-radius: 22px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 10px 35px rgba(15, 23, 42, .07);
     }
 
-    .laporan-card .card-body{
+    .laporan-card .card-body {
         padding: 25px;
     }
 
-    .modern-input{
-        height:48px;
-        border-radius:14px;
-        border:1px solid #e2e8f0;
-        box-shadow:none !important;
-        transition:.2s;
+    .modern-input {
+        height: 48px;
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        box-shadow: none !important;
+        transition: .2s;
     }
 
-    .modern-input:focus{
+    .modern-input:focus {
         border-color: var(--primary);
     }
 
-    .modern-btn{
-        height:48px;
-        border:none;
-        border-radius:14px;
-        font-weight:600;
-        transition:.2s;
+    .modern-btn {
+        height: 48px;
+        border: none;
+        border-radius: 14px;
+        font-weight: 600;
+        transition: .2s;
     }
 
-    .modern-btn:hover{
+    .modern-btn:hover {
         transform: translateY(-2px);
     }
 
-    .stat-card{
-        border-radius:22px;
-        padding:24px;
-        color:white;
-        position:relative;
-        overflow:hidden;
-        box-shadow:0 10px 25px rgba(0,0,0,.08);
+    .stat-card {
+        border-radius: 22px;
+        padding: 24px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
     }
 
-    .stat-card::before{
-        content:'';
-        position:absolute;
-        width:120px;
-        height:120px;
-        border-radius:50%;
-        background:rgba(255,255,255,.12);
-        top:-40px;
-        right:-30px;
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .12);
+        top: -40px;
+        right: -30px;
     }
 
-    .stat-card h2{
-        font-weight:800;
-        margin:0;
+    .stat-card h2 {
+        font-weight: 800;
+        margin: 0;
+        font-size: 35px;
     }
 
-    .stat-card p{
-        margin:0;
-        opacity:.9;
+    .stat-card p {
+        margin: 0;
+        opacity: .9;
+        font-size: 15px;
     }
 
-    .bg-hadir{
-        background:linear-gradient(135deg,#10b981,#059669);
+    .bg-hadir {
+        background: linear-gradient(135deg, #10b981, #059669);
     }
 
-    .bg-izin{
-        background:linear-gradient(135deg,#f59e0b,#d97706);
+    .bg-izin {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
     }
 
-    .bg-sakit{
-        background:linear-gradient(135deg,#0ea5e9,#0284c7);
+    .bg-sakit {
+        background: linear-gradient(135deg, #0ea5e9, #0284c7);
     }
 
-    .bg-alpha{
-        background:linear-gradient(135deg,#ef4444,#dc2626);
+    .bg-alpha {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
     }
 
-    .modern-table{
-        margin-bottom:0;
+    .modern-table {
+        margin-bottom: 0;
     }
 
-    .modern-table thead{
-        background:#f8fafc;
+    .modern-table thead {
+        background: #f8fafc;
     }
 
-    .modern-table thead th{
-        border:none;
-        color:#334155;
-        font-size:14px;
-        font-weight:700;
-        padding:18px 16px;
+    .modern-table thead th {
+        border: none;
+        color: #334155;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 18px 16px;
         white-space: nowrap;
     }
 
-    .modern-table tbody td{
-        vertical-align:middle;
-        border-top:1px solid #f1f5f9;
-        padding:16px;
-        color:#334155;
+    .modern-table tbody td {
+        vertical-align: middle;
+        border-top: 1px solid #f1f5f9;
+        padding: 16px;
+        color: #334155;
     }
 
-    .modern-table tbody tr:hover{
-        background:#f8fafc;
+    .modern-table tbody tr:hover {
+        background: #f8fafc;
     }
 
-    .badge-modern{
-        padding:8px 14px;
-        border-radius:30px;
-        font-size:12px;
-        font-weight:700;
+    .badge-modern {
+        padding: 8px 14px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 700;
     }
 
-    .badge-hadir{
-        background:#dcfce7;
-        color:#166534;
+    .badge-hadir {
+        background: #dcfce7;
+        color: #166534;
     }
 
-    .badge-telat{
-        background:#fef3c7;
-        color:#92400e;
+    .badge-izin {
+        background: #fef3c7;
+        color: #92400e;
     }
 
-    .badge-izin{
-        background:#fde68a;
-        color:#92400e;
+    .badge-sakit {
+        background: #dbeafe;
+        color: #1d4ed8;
     }
 
-    .badge-sakit{
-        background:#dbeafe;
-        color:#1d4ed8;
+    .badge-alpha {
+        background: #fee2e2;
+        color: #991b1b;
     }
 
-    .badge-alpha{
-        background:#fee2e2;
-        color:#991b1b;
+    .kelas-badge {
+        display: inline-block;
+        padding: 7px 14px;
+        border-radius: 12px;
+        background: #eef2ff;
+        color: #4338ca;
+        font-weight: 700;
+        font-size: 13px;
     }
 
-    .kelas-badge{
-        display:inline-block;
-        padding:7px 14px;
-        border-radius:12px;
-        background:#eef2ff;
-        color:#4338ca;
-        font-weight:700;
-        font-size:13px;
+    .empty-state {
+        padding: 70px 20px;
     }
 
-    .empty-state{
-        padding:70px 20px;
-    }
-
-    .empty-state i{
-        font-size:55px;
-        color:#cbd5e1;
-        margin-bottom:15px;
+    .empty-state i {
+        font-size: 55px;
+        color: #cbd5e1;
+        margin-bottom: 15px;
     }
 
     @media print {
@@ -206,35 +203,35 @@
         .main-sidebar,
         .main-header,
         .main-footer,
-        .no-print{
-            display:none !important;
+        .no-print {
+            display: none !important;
         }
 
         .content-wrapper,
         .content,
-        .container-fluid{
-            margin:0 !important;
-            padding:0 !important;
+        .container-fluid {
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
         .laporan-card,
-        .laporan-header{
-            box-shadow:none !important;
-            border:none !important;
+        .laporan-header {
+            box-shadow: none !important;
+            border: none !important;
         }
 
-        body{
-            background:white !important;
+        body {
+            background: white !important;
         }
 
-        table{
-            width:100%;
-            border-collapse:collapse;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
         table th,
-        table td{
-            border:1px solid #000 !important;
+        table td {
+            border: 1px solid #000 !important;
         }
     }
 </style>
@@ -247,6 +244,7 @@
         <div class="d-flex justify-content-between align-items-center flex-wrap">
 
             <div>
+
                 <h2 class="font-weight-bold mb-2">
                     <i class="fas fa-chart-line mr-2"></i>
                     Laporan Absensi Siswa
@@ -255,6 +253,7 @@
                 <p class="mb-0 opacity-75">
                     Rekap data kehadiran siswa berdasarkan tanggal dan kelas
                 </p>
+
             </div>
 
             <div class="mt-3 mt-md-0 no-print">
@@ -291,7 +290,9 @@
 
                 <div class="row">
 
-                    <div class="col-md-4 mb-3">
+                    {{-- TANGGAL --}}
+                    <div class="col-md-3 mb-3">
+
                         <label class="font-weight-bold">
                             Tanggal
                         </label>
@@ -300,9 +301,12 @@
                             name="tanggal"
                             value="{{ request('tanggal') }}"
                             class="form-control modern-input">
+
                     </div>
 
-                    <div class="col-md-5 mb-3">
+                    {{-- KELAS --}}
+                    <div class="col-md-3 mb-3">
+
                         <label class="font-weight-bold">
                             Kelas
                         </label>
@@ -316,20 +320,58 @@
 
                             @foreach($kelas as $k)
 
-                            <option value="{{ $k->id }}"
-                                {{ request('kelasid') == $k->id ? 'selected' : '' }}>
+                                <option value="{{ $k->id }}"
+                                    {{ request('kelasid') == $k->id ? 'selected' : '' }}>
 
-                                {{ $k->tingkat }}
-                                -
-                                {{ $k->jurusan->namajurusan ?? '-' }}
+                                    {{ $k->namakelas }}
 
-                            </option>
+                                </option>
 
                             @endforeach
 
                         </select>
+
                     </div>
 
+                    {{-- STATUS --}}
+                    <div class="col-md-3 mb-3">
+
+                        <label class="font-weight-bold">
+                            Status
+                        </label>
+
+                        <select name="status"
+                            class="form-control modern-input">
+
+                            <option value="">
+                                -- Semua Status --
+                            </option>
+
+                            <option value="hadir"
+                                {{ request('status') == 'hadir' ? 'selected' : '' }}>
+                                Hadir
+                            </option>
+
+                            <option value="izin"
+                                {{ request('status') == 'izin' ? 'selected' : '' }}>
+                                Izin
+                            </option>
+
+                            <option value="sakit"
+                                {{ request('status') == 'sakit' ? 'selected' : '' }}>
+                                Sakit
+                            </option>
+
+                            <option value="alpha"
+                                {{ request('status') == 'alpha' ? 'selected' : '' }}>
+                                Alpha
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    {{-- BUTTON --}}
                     <div class="col-md-3 mb-3 d-flex align-items-end">
 
                         <button class="btn btn-primary modern-btn btn-block">
@@ -357,7 +399,7 @@
             <div class="stat-card bg-hadir">
 
                 <h2>{{ $rekap['hadir'] ?? 0 }}</h2>
-                <p>Hadir</p>
+                <p>Total Hadir</p>
 
             </div>
 
@@ -368,7 +410,7 @@
             <div class="stat-card bg-izin">
 
                 <h2>{{ $rekap['izin'] ?? 0 }}</h2>
-                <p>Izin</p>
+                <p>Total Izin</p>
 
             </div>
 
@@ -379,7 +421,7 @@
             <div class="stat-card bg-sakit">
 
                 <h2>{{ $rekap['sakit'] ?? 0 }}</h2>
-                <p>Sakit</p>
+                <p>Total Sakit</p>
 
             </div>
 
@@ -390,7 +432,7 @@
             <div class="stat-card bg-alpha">
 
                 <h2>{{ $rekap['alpha'] ?? 0 }}</h2>
-                <p>Alpha</p>
+                <p>Total Alpha</p>
 
             </div>
 
@@ -408,14 +450,15 @@
                 <thead>
 
                     <tr>
+
                         <th>No</th>
                         <th>Nama Siswa</th>
                         <th>NIS</th>
                         <th>Kelas</th>
                         <th>Jurusan</th>
                         <th>Tanggal</th>
-                        <th>Jam Masuk</th>
                         <th>Status</th>
+
                     </tr>
 
                 </thead>
@@ -431,63 +474,54 @@
                         </td>
 
                         <td class="font-weight-bold">
-                            {{ $d->siswa->nama }}
+                            {{ $d->siswa->nama ?? '-' }}
                         </td>
 
                         <td>
-                            {{ $d->siswa->nis }}
+                            {{ $d->siswa->nis ?? '-' }}
                         </td>
 
-                        {{-- LOGIKA KELAS BARU --}}
+                        {{-- KELAS --}}
                         <td>
 
                             <span class="kelas-badge">
 
-                                {{ $d->siswa->kelas->tingkat ?? '-' }}
+                                {{ $d->kelas->namakelas ?? '-' }}
 
                             </span>
 
                         </td>
 
+                        {{-- JURUSAN --}}
                         <td>
 
-                            {{ $d->siswa->kelas->jurusan->namajurusan ?? '-' }}
+                            {{ $d->kelas->jurusan->namajurusan ?? '-' }}
 
                         </td>
 
+                        {{-- TANGGAL --}}
                         <td>
 
                             {{ \Carbon\Carbon::parse($d->tanggal)->translatedFormat('d F Y') }}
 
                         </td>
 
+                        {{-- STATUS --}}
                         <td>
 
-                            {{ $d->jam_masuk ?? '-' }}
-
-                        </td>
-
-                        <td>
-
-                            @if($d->status_masuk == 'hadir')
+                            @if($d->status == 'hadir')
 
                                 <span class="badge-modern badge-hadir">
                                     Hadir
                                 </span>
 
-                            @elseif($d->status_masuk == 'telat')
-
-                                <span class="badge-modern badge-telat">
-                                    Telat
-                                </span>
-
-                            @elseif($d->status_masuk == 'izin')
+                            @elseif($d->status == 'izin')
 
                                 <span class="badge-modern badge-izin">
                                     Izin
                                 </span>
 
-                            @elseif($d->status_masuk == 'sakit')
+                            @elseif($d->status == 'sakit')
 
                                 <span class="badge-modern badge-sakit">
                                     Sakit
@@ -509,7 +543,7 @@
 
                     <tr>
 
-                        <td colspan="8">
+                        <td colspan="7">
 
                             <div class="empty-state text-center">
 
