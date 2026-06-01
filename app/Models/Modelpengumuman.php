@@ -9,10 +9,22 @@ class ModelPengumuman extends Model
 {
     protected $table = 'pengumuman';
 
-    protected $guarded = [];
+    protected $fillable = [
+
+        'userid',
+        'judul',
+        'isi',
+        'foto',
+        'tanggal',
+        'is_active'
+
+    ];
 
     public function user()
     {
-        return $this->belongsTo(ModelUser::class, 'userid');
+        return $this->belongsTo(
+            ModelUser::class,
+            'userid'
+        );
     }
 }

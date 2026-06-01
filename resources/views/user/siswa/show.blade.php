@@ -12,21 +12,21 @@
 
                 {{-- HEADER --}}
                 <div class="card-header text-center py-5"
-                     style="background: linear-gradient(135deg, #2563eb, #1e40af);">
+                    style="background: linear-gradient(135deg, #2563eb, #1e40af);">
 
                     @if($siswa->foto)
 
-                        <img src="{{ Storage::url($siswa->foto) }}"
-                             width="150"
-                             height="150"
-                             style="object-fit:cover;border-radius:50%;border:5px solid white;">
+                    <img src="{{ Storage::url($siswa->foto) }}"
+                        width="150"
+                        height="150"
+                        style="object-fit:cover;border-radius:50%;border:5px solid white;">
 
                     @else
 
-                        <img src="{{ asset('dist/img/default.png') }}"
-                             width="150"
-                             height="150"
-                             style="object-fit:cover;border-radius:50%;border:5px solid white;">
+                    <img src="{{ asset('dist/img/default.png') }}"
+                        width="150"
+                        height="150"
+                        style="object-fit:cover;border-radius:50%;border:5px solid white;">
 
                     @endif
 
@@ -74,7 +74,33 @@
                             </div>
 
                         </div>
+                        <div class="col-md-6 mb-4">
 
+                            <div class="info-box">
+
+                                <label>Nama Orang Tua</label>
+
+                                <h5>
+                                    {{ $siswa->nama_ortu ?? '-' }}
+                                </h5>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+
+                            <div class="info-box">
+
+                                <label>WhatsApp Orang Tua</label>
+
+                                <h5>
+                                    {{ $siswa->wa_ortu ?? '-' }}
+                                </h5>
+
+                            </div>
+
+                        </div>
                         <div class="col-12">
 
                             <div class="info-box">
@@ -94,7 +120,7 @@
                     <div class="mt-4 text-center">
 
                         <a href="{{ route('siswa.edit', $siswa->id) }}"
-                           class="btn btn-warning px-4 text-white">
+                            class="btn btn-warning px-4 text-white">
 
                             <i class="fas fa-edit mr-1"></i>
                             Edit
@@ -102,7 +128,7 @@
                         </a>
 
                         <a href="{{ route('siswa.index') }}"
-                           class="btn btn-secondary px-4">
+                            class="btn btn-secondary px-4">
 
                             <i class="fas fa-arrow-left mr-1"></i>
                             Kembali
@@ -122,7 +148,6 @@
 </div>
 
 <style>
-
     .rounded-xl {
         border-radius: 25px;
     }
@@ -146,7 +171,6 @@
         margin: 0;
         color: #0f172a;
     }
-
 </style>
 
 @endsection

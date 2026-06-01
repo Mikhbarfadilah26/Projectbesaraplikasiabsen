@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ asset('dist/css/custom.css') }}">
 </head>
 
-<body class="layout-top-nav">
+<body class="layout-top-nav layout-navbar-fixed">
 
     <div class="wrapper">
 

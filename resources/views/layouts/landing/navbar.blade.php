@@ -37,9 +37,6 @@
                             <a href="/jadwalumum" class="nav-link {{ request()->is('jadwalumum') ? 'active-menu' : '' }}">Jadwal</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="/informasi" class="nav-link {{ request()->is('informasi') ? 'active-menu' : '' }}">Informasi</a>
-                        </li>
 
                         <li class="nav-item">
                             <a href="/kontak" class="nav-link {{ request()->is('kontak') ? 'active-menu' : '' }}">Kontak</a>

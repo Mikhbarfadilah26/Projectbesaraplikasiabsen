@@ -10,6 +10,9 @@ use App\Models\ModelSiswa;
 use App\Models\ModelKelas;
 use App\Models\ModelJurusan;
 use App\Models\ModelRegisterSiswa;
+use App\Exports\SiswaExport;
+use App\Imports\SiswaImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ControllerSiswa extends Controller
 {
@@ -49,6 +52,7 @@ class ControllerSiswa extends Controller
     public function create()
     {
         $kelas = ModelKelas::with('jurusan')->get();
+
         $jurusan = ModelJurusan::all();
 
         return view('user.siswa.create', compact(
@@ -65,10 +69,13 @@ class ControllerSiswa extends Controller
             'password'      => 'required|min:4',
             'jeniskelamin'  => 'required',
             'kelasid'       => 'required',
+
+            'nama_ortu'     => 'nullable',
+            'wa_ortu'       => 'nullable',
+
             'alamat'        => 'nullable',
             'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-
         // FOTO
         $foto = null;
 
@@ -91,14 +98,51 @@ class ControllerSiswa extends Controller
             'foto'          => $foto,
             'jeniskelamin'  => $r->jeniskelamin,
             'kelasid'       => $r->kelasid,
+
+            'nama_ortu'     => $r->nama_ortu,
+            'wa_ortu'       => $r->wa_ortu,
+
             'alamat'        => $r->alamat,
         ]);
-
         return redirect()
             ->route('siswa.index')
             ->with('success', 'Siswa berhasil ditambahkan');
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | IMPORT EXCEL SISWA
+    |--------------------------------------------------------------------------
+    */
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        Excel::import(
+            new SiswaImport,
+            $request->file('file')
+        );
+
+        return back()->with(
+            'success',
+            'Data siswa berhasil diimport'
+        );
+    }
+ /*
+    |--------------------------------------------------------------------------
+    | EKSPORT EXCEL SISWA
+    |--------------------------------------------------------------------------
+    */
+    public function export()
+{
+    return Excel::download(
+        new SiswaExport,
+        'data-siswa.xlsx'
+    );
+}
     public function show($id)
     {
         $siswa = ModelSiswa::with('kelas.jurusan')
@@ -122,21 +166,27 @@ class ControllerSiswa extends Controller
     public function update(Request $r, $id)
     {
         $siswa = ModelSiswa::findOrFail($id);
-
         $r->validate([
             'nis'           => 'required|unique:siswa,nis,' . $id,
             'nama'          => 'required',
             'jeniskelamin'  => 'required',
             'kelasid'       => 'required',
+
+            'nama_ortu'     => 'nullable',
+            'wa_ortu'       => 'nullable',
+
             'alamat'        => 'nullable',
             'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-
         $data = [
             'nis'           => $r->nis,
             'nama'          => $r->nama,
             'jeniskelamin'  => $r->jeniskelamin,
             'kelasid'       => $r->kelasid,
+
+            'nama_ortu'     => $r->nama_ortu,
+            'wa_ortu'       => $r->wa_ortu,
+
             'alamat'        => $r->alamat,
         ];
 

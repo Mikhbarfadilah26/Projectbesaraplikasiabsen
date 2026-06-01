@@ -1,70 +1,70 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4"
-    style="
-        background: linear-gradient(180deg, #1f2a44 0%, #0b0f1a 100%);
-        border-right: none;
-    ">
 
-    {{-- BRAND / LOGO --}}
-    <a href="/siswa/dashboard"
-        class="brand-link text-center"
-        style="
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.03);
-            padding: 18px 10px;
-        ">
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-        {{-- ICON LOGO --}}
-        <div style="font-size: 28px; margin-bottom: 5px;">
-            🎓
-        </div>
+    {{-- LOGO (Mengikuti Standar Layout Admin) --}}
+    <a href="{{ route('siswa.dashboard') }}"
+        class="brand-link d-flex align-items-center justify-content-center"
+        style="height: 72px;">
 
-        <span class="brand-text font-weight-bold"
+        {{-- ICON --}}
+        <div class="d-flex align-items-center justify-content-center mr-2"
             style="
-                letter-spacing: 2px;
-                font-size: 14px;
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                background: linear-gradient(135deg, #007bff, #6610f2);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.25);
             ">
 
-            <span style="color:#00c6ff;">SISWA</span>
-            <span style="color:#ffffff;">PANEL</span>
+            <i class="fas fa-graduation-cap text-white"
+                style="font-size: 18px;"></i>
 
-        </span>
+        </div>
 
-        <div style="font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 2px;">
-            Absensi & Laporan
+        {{-- TEXT --}}
+        <div class="text-left">
+
+            <span class="brand-text font-weight-bold text-white d-block"
+                style="
+                    font-size: 15px;
+                    letter-spacing: 1px;
+                    line-height: 1.1;
+                ">
+
+                DASHBOARD SISWA
+
+            </span>
+
+            <small style="
+                    color: rgba(255,255,255,0.7);
+                    font-size: 11px;
+                    letter-spacing: 1px;
+                ">
+
+                ABSENSI & LAPORAN
+
+            </small>
+
         </div>
 
     </a>
 
-    <div class="sidebar">
+    {{-- SIDEBAR MENU --}}
+    <div class="sidebar pt-3">
+        <nav class="mt-2">
 
-        <nav class="mt-3">
-
-            <ul class="nav nav-pills nav-sidebar flex-column"
-                data-widget="treeview"
-                role="menu"
+            <ul class="nav nav-pills nav-sidebar flex-column" 
+                data-widget="treeview" 
+                role="menu" 
                 data-accordion="false">
 
-                {{-- HEADER --}}
-                <li class="nav-header text-uppercase"
-                    style="
-                        font-size: 11px;
-                        color: rgba(255,255,255,0.4);
-                        padding-left: 18px;
-                        margin-bottom: 10px;
-                        letter-spacing: 1px;
-                    ">
-
-                    MENU UTAMA
-
-                </li>
-
                 {{-- DASHBOARD --}}
-                <li class="nav-item mb-1">
+                <li class="nav-item">
 
                     <a href="{{ route('siswa.dashboard') }}"
                         class="nav-link {{ request()->is('siswa/dashboard') ? 'active' : '' }}">
 
-                        <i class="nav-icon fas fa-home {{ request()->is('siswa/dashboard') ? 'text-white' : 'text-info' }}"></i>
+                        <i class="nav-icon fas fa-home"></i>
 
                         <p>Dashboard</p>
 
@@ -72,13 +72,13 @@
 
                 </li>
 
-                {{-- LAPORAN --}}
-                <li class="nav-item mb-1">
+                {{-- LAPORAN ABSENSI --}}
+                <li class="nav-item">
 
                     <a href="{{ route('siswa.laporan') }}"
-                        class="nav-link {{ request()->is('siswa/laporan') ? 'active' : '' }}">
+                        class="nav-link {{ request()->is('siswa/laporan*') ? 'active' : '' }}">
 
-                        <i class="nav-icon fas fa-file-alt {{ request()->is('siswa/laporan') ? 'text-white' : 'text-success' }}"></i>
+                        <i class="nav-icon fas fa-file-alt"></i>
 
                         <p>Laporan Absensi</p>
 
@@ -89,45 +89,7 @@
             </ul>
 
         </nav>
-
     </div>
 
 </aside>
-<style>
 
-/* ACTIVE MENU */
-.nav-sidebar .nav-item .nav-link.active {
-    background: linear-gradient(90deg, #00c6ff, #0072ff) !important;
-    color: #fff !important;
-    border-radius: 10px;
-    margin: 0 10px;
-    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.25);
-}
-
-/* HOVER EFFECT */
-.nav-sidebar .nav-item .nav-link {
-    border-radius: 10px;
-    margin: 0 10px;
-    transition: 0.25s ease;
-    color: rgba(255,255,255,0.8);
-}
-
-.nav-sidebar .nav-item .nav-link:hover {
-    background: rgba(255,255,255,0.08) !important;
-    transform: translateX(6px);
-    color: #fff !important;
-}
-
-/* ICON STYLE */
-.nav-sidebar .nav-item .nav-link i {
-    width: 22px;
-    text-align: center;
-}
-
-/* BRAND ANIMATION */
-.brand-link:hover {
-    opacity: 0.95;
-    transition: 0.3s;
-}
-
-</style>

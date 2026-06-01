@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Services\WhatsappService;
+
 use App\Models\ModelAbsensi;
 use App\Models\ModelSiswa;
 use App\Models\ModelKelas;
@@ -13,6 +15,7 @@ use App\Models\ModelJurusan;
 use App\Models\ModelTahunAjaran;
 use App\Models\ModelSemester;
 use App\Models\ModelLibur;
+
 use Carbon\Carbon;
 
 class ControllerAbsensi extends Controller
@@ -25,12 +28,6 @@ class ControllerAbsensi extends Controller
 
     public function index(Request $request)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | DATA MASTER
-        |--------------------------------------------------------------------------
-        */
-
         $jurusan = ModelJurusan::orderBy(
             'namajurusan',
             'asc'
@@ -136,11 +133,12 @@ class ControllerAbsensi extends Controller
         */
 
         $sudahDiabsen = false;
+
         /*
-|--------------------------------------------------------------------------
-| CEK HARI LIBUR / MINGGU
-|--------------------------------------------------------------------------
-*/
+        |--------------------------------------------------------------------------
+        | CEK HARI LIBUR
+        |--------------------------------------------------------------------------
+        */
 
         $hariLibur = false;
 
@@ -149,12 +147,13 @@ class ControllerAbsensi extends Controller
         if ($request->tanggal) {
 
             $tanggal = Carbon::parse($request->tanggal);
+            
 
             /*
-    |--------------------------------------------------------------------------
-    | CEK HARI MINGGU
-    |--------------------------------------------------------------------------
-    */
+            |--------------------------------------------------------------------------
+            | CEK HARI MINGGU
+            |--------------------------------------------------------------------------
+            */
 
             if ($tanggal->dayOfWeek == Carbon::SUNDAY) {
 
@@ -164,10 +163,10 @@ class ControllerAbsensi extends Controller
             }
 
             /*
-    |--------------------------------------------------------------------------
-    | CEK TABEL LIBUR
-    |--------------------------------------------------------------------------
-    */
+            |--------------------------------------------------------------------------
+            | CEK TABEL LIBUR
+            |--------------------------------------------------------------------------
+            */
 
             $libur = ModelLibur::whereDate(
                 'tanggal',
@@ -185,6 +184,12 @@ class ControllerAbsensi extends Controller
                 $keteranganLibur = $libur->keterangan;
             }
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CEK SUDAH ABSEN SEMUA
+        |--------------------------------------------------------------------------
+        */
 
         if ($siswa->count() > 0) {
 
@@ -208,18 +213,18 @@ class ControllerAbsensi extends Controller
         |--------------------------------------------------------------------------
         */
 
-       return view(
-    'user.absensi.index',
-    compact(
-        'jurusan',
-        'kelas',
-        'siswa',
-        'absensi',
-        'sudahDiabsen',
-        'hariLibur',
-        'keteranganLibur'
-    )
-);
+        return view(
+            'user.absensi.index',
+            compact(
+                'jurusan',
+                'kelas',
+                'siswa',
+                'absensi',
+                'sudahDiabsen',
+                'hariLibur',
+                'keteranganLibur'
+            )
+        );
     }
 
     /*
@@ -289,30 +294,35 @@ class ControllerAbsensi extends Controller
         |--------------------------------------------------------------------------
         */
 
-       $siswa = $query
-    ->orderBy('nama', 'asc')
-    ->get();
+        $siswa = $query
 
-$absensi = collect();
+            ->orderBy(
+                'nama',
+                'asc'
+            )
 
-$sudahDiabsen = false;
+            ->get();
 
-$hariLibur = false;
+        $absensi = collect();
 
-$keteranganLibur = null;
+        $sudahDiabsen = false;
 
-return view(
-    'user.absensi.create',
-    compact(
-        'jurusan',
-        'kelas',
-        'siswa',
-        'absensi',
-        'sudahDiabsen',
-        'hariLibur',
-        'keteranganLibur'
-    )
-);
+        $hariLibur = false;
+
+        $keteranganLibur = null;
+
+        return view(
+            'user.absensi.create',
+            compact(
+                'jurusan',
+                'kelas',
+                'siswa',
+                'absensi',
+                'sudahDiabsen',
+                'hariLibur',
+                'keteranganLibur'
+            )
+        );
     }
 
     /*
@@ -361,7 +371,7 @@ return view(
 
         /*
         |--------------------------------------------------------------------------
-        | JIKA SUDAH ADA
+        | JIKA SUDAH ABSEN
         |--------------------------------------------------------------------------
         */
 
@@ -407,12 +417,28 @@ return view(
 
         foreach ($request->siswaid as $siswaid) {
 
-            $datasiswa = ModelSiswa::find($siswaid);
+            $datasiswa = ModelSiswa::with('kelas')
+                ->find($siswaid);
 
             if (!$datasiswa) {
 
                 continue;
             }
+
+            /*
+            |--------------------------------------------------------------------------
+            | STATUS
+            |--------------------------------------------------------------------------
+            */
+
+            $status = $request->status[$siswaid]
+                ?? 'hadir';
+
+            /*
+            |--------------------------------------------------------------------------
+            | SIMPAN ABSENSI
+            |--------------------------------------------------------------------------
+            */
 
             ModelAbsensi::create([
 
@@ -428,10 +454,60 @@ return view(
 
                 'tanggal' => $request->tanggal,
 
-                'status' => $request->status[$siswaid]
-                    ?? 'hadir',
+                'status' => $status,
 
             ]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | FORMAT TANGGAL
+            |--------------------------------------------------------------------------
+            */
+
+            $tanggal = Carbon::parse(
+                $request->tanggal
+            )->translatedFormat('d F Y');
+
+            /*
+            |--------------------------------------------------------------------------
+            | KIRIM WHATSAPP
+            |--------------------------------------------------------------------------
+            */
+
+            if ($datasiswa->wa_ortu) {
+
+                $pesan = "📢 *ABSENSI SISWA*\n\n";
+
+                $pesan .= "Assalamu'alaikum Wr. Wb.\n\n";
+
+                $pesan .= "Kami informasikan kehadiran siswa:\n\n";
+
+                $pesan .= "👤 {$datasiswa->nama}\n";
+
+                $pesan .= "🏫 {$datasiswa->kelas->namakelas}\n";
+
+                $pesan .= "📅 {$tanggal}\n";
+
+                $pesan .= "📌 Status : *" . strtoupper($status) . "*\n\n";
+
+                $pesan .= "Terima kasih.\n";
+
+                $pesan .= "SMK Negeri 1 Karang Baru";
+
+                /*
+                |--------------------------------------------------------------------------
+                | KIRIM KE WHATSAPP
+                |--------------------------------------------------------------------------
+                */
+
+                WhatsappService::kirim(
+
+                    $datasiswa->wa_ortu,
+
+                    $pesan
+
+                );
+            }
         }
 
         /*
@@ -454,13 +530,13 @@ return view(
 
             ->with(
                 'success',
-                'Absensi berhasil disimpan'
+                'Absensi berhasil disimpan & WhatsApp terkirim'
             );
     }
 
     /*
     |--------------------------------------------------------------------------
-    | HALAMAN LAPORAN
+    | LAPORAN ABSENSI
     |--------------------------------------------------------------------------
     */
 
@@ -532,7 +608,7 @@ return view(
 
         /*
         |--------------------------------------------------------------------------
-        | DATA ABSENSI
+        | AMBIL DATA
         |--------------------------------------------------------------------------
         */
 

@@ -3,53 +3,53 @@
 @section('content')
 
 <style>
-    body{
+    body {
         background: #f4f6f9;
     }
 
-    .welcome-banner{
+    .welcome-banner {
         background: linear-gradient(135deg, #4f46e5, #7c3aed);
         border-radius: 25px;
         padding: 35px;
         color: white;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 15px 35px rgba(79,70,229,0.25);
+        box-shadow: 0 15px 35px rgba(79, 70, 229, 0.25);
     }
 
-    .welcome-banner::before{
+    .welcome-banner::before {
         content: '';
         position: absolute;
         right: -40px;
         top: -40px;
         width: 180px;
         height: 180px;
-        background: rgba(255,255,255,0.1);
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 50%;
     }
 
-    .welcome-banner::after{
+    .welcome-banner::after {
         content: '';
         position: absolute;
         bottom: -60px;
         right: 80px;
         width: 140px;
         height: 140px;
-        background: rgba(255,255,255,0.08);
+        background: rgba(255, 255, 255, 0.08);
         border-radius: 50%;
     }
 
-    .welcome-title{
+    .welcome-title {
         font-size: 32px;
         font-weight: 700;
     }
 
-    .welcome-subtitle{
+    .welcome-subtitle {
         opacity: .9;
         font-size: 15px;
     }
 
-    .stat-card{
+    .stat-card {
         border: none;
         border-radius: 22px;
         transition: .3s;
@@ -58,12 +58,12 @@
         position: relative;
     }
 
-    .stat-card:hover{
+    .stat-card:hover {
         transform: translateY(-7px);
-        box-shadow: 0 18px 30px rgba(0,0,0,0.08);
+        box-shadow: 0 18px 30px rgba(0, 0, 0, 0.08);
     }
 
-    .icon-box{
+    .icon-box {
         width: 65px;
         height: 65px;
         border-radius: 20px;
@@ -73,7 +73,7 @@
         font-size: 24px;
     }
 
-    .menu-card{
+    .menu-card {
         border-radius: 25px;
         padding: 35px 25px;
         text-align: center;
@@ -85,70 +85,70 @@
         overflow: hidden;
     }
 
-    .menu-card:hover{
+    .menu-card:hover {
         transform: translateY(-8px) scale(1.02);
         color: white;
     }
 
-    .menu-card i{
+    .menu-card i {
         font-size: 45px;
         margin-bottom: 18px;
     }
 
-    .menu-card::before{
+    .menu-card::before {
         content: '';
         position: absolute;
         width: 130px;
         height: 130px;
-        background: rgba(255,255,255,0.08);
+        background: rgba(255, 255, 255, 0.08);
         border-radius: 50%;
         top: -50px;
         right: -40px;
     }
 
-    .gradient-blue{
+    .gradient-blue {
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     }
 
-    .gradient-green{
+    .gradient-green {
         background: linear-gradient(135deg, #10b981, #047857);
     }
 
-    .gradient-dark{
+    .gradient-dark {
         background: linear-gradient(135deg, #374151, #111827);
     }
 
-    .mini-card{
+    .mini-card {
         border-radius: 22px;
         border: none;
         overflow: hidden;
         transition: .3s;
     }
 
-    .mini-card:hover{
+    .mini-card:hover {
         transform: translateY(-5px);
     }
 
-    .number{
+    .number {
         font-size: 34px;
         font-weight: 700;
     }
 
-    .section-title{
+    .section-title {
         font-size: 22px;
         font-weight: 700;
         color: #1f2937;
     }
 
-    .glass{
-        background: rgba(255,255,255,0.15);
+    .glass {
+        background: rgba(255, 255, 255, 0.15);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255,255,255,0.15);
+        border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 20px;
         padding: 15px 20px;
     }
 
-    .alert-modern{
+    .alert-modern {
         border-radius: 22px;
         border: none;
         overflow: hidden;
@@ -159,98 +159,194 @@
 
     {{-- ALERT ABSENSI --}}
     @php
-        $absensiHariIni = \App\Models\ModelAbsensi::where('siswaid', auth('siswa')->id())
-            ->whereDate('tanggal', now()->toDateString())
-            ->first();
+
+    use Carbon\Carbon;
+
+    $today = now()->toDateString();
+
+    $hariIni = Carbon::now();
+
+    $hariLibur = false;
+
+    $keteranganLibur = null;
+
+    /*
+    |--------------------------------------------------------------------------
+    | CEK HARI MINGGU
+    |--------------------------------------------------------------------------
+    */
+
+    if ($hariIni->dayOfWeek == Carbon::SUNDAY) {
+
+    $hariLibur = true;
+
+    $keteranganLibur = 'Hari Minggu';
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CEK TANGGAL MERAH / LIBUR
+    |--------------------------------------------------------------------------
+    */
+
+    $libur = \App\Models\ModelLibur::whereDate(
+    'tanggal',
+    $today
+    )
+
+    ->where('aktif', true)
+
+    ->first();
+
+    if ($libur) {
+
+    $hariLibur = true;
+
+    $keteranganLibur = $libur->keterangan;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | ABSENSI HARI INI
+    |--------------------------------------------------------------------------
+    */
+
+    $absensiHariIni = \App\Models\ModelAbsensi::where(
+    'siswaid',
+    auth('siswa')->id()
+    )
+
+    ->whereDate(
+    'tanggal',
+    $today
+    )
+
+    ->first();
+
     @endphp
 
-    @if($absensiHariIni)
 
-        <div class="alert alert-success alert-modern shadow-sm mb-4">
+    @if($hariLibur)
 
-            <div class="d-flex align-items-center">
+    <div class="alert alert-danger alert-modern shadow-sm mb-4">
 
-                <div class="mr-3">
-                    <i class="fas fa-check-circle fa-3x"></i>
-                </div>
+        <div class="d-flex align-items-center">
+
+            <div class="mr-3">
+                <i class="fas fa-calendar-times fa-3x"></i>
+            </div>
+
+            <div>
+
+                <h5 class="font-weight-bold mb-1">
+                    Hari Libur
+                </h5>
 
                 <div>
 
-                    <h5 class="font-weight-bold mb-1">
-                        Absensi Hari Ini Sudah Diinput
-                    </h5>
+                    Hari ini tidak ada absensi karena:
 
-                    <div>
-                        Status kehadiran Anda hari ini :
+                    <span class="badge badge-light px-3 py-2">
 
-                        @if($absensiHariIni->status == 'hadir')
+                        {{ $keteranganLibur }}
 
-                            <span class="badge badge-success px-3 py-2">
-                                HADIR
-                            </span>
-
-                        @elseif($absensiHariIni->status == 'izin')
-
-                            <span class="badge badge-warning px-3 py-2">
-                                IZIN
-                            </span>
-
-                        @elseif($absensiHariIni->status == 'sakit')
-
-                            <span class="badge badge-info px-3 py-2">
-                                SAKIT
-                            </span>
-
-                        @elseif($absensiHariIni->status == 'alpha')
-
-                            <span class="badge badge-danger px-3 py-2">
-                                ALPHA
-                            </span>
-
-                        @elseif($absensiHariIni->status == 'cabut')
-
-                            <span class="badge badge-dark px-3 py-2">
-                                CABUT
-                            </span>
-
-                        @endif
-
-                    </div>
+                    </span>
 
                 </div>
 
             </div>
 
         </div>
+
+    </div>
+
+    @elseif($absensiHariIni)
+
+    <div class="alert alert-success alert-modern shadow-sm mb-4">
+
+        <div class="d-flex align-items-center">
+
+            <div class="mr-3">
+                <i class="fas fa-check-circle fa-3x"></i>
+            </div>
+
+            <div>
+
+                <h5 class="font-weight-bold mb-1">
+                    Absensi Hari Ini Sudah Diinput
+                </h5>
+
+                <div>
+
+                    Status kehadiran Anda hari ini :
+
+                    @if($absensiHariIni->status == 'hadir')
+
+                    <span class="badge badge-success px-3 py-2">
+                        HADIR
+                    </span>
+
+                    @elseif($absensiHariIni->status == 'izin')
+
+                    <span class="badge badge-warning px-3 py-2">
+                        IZIN
+                    </span>
+
+                    @elseif($absensiHariIni->status == 'sakit')
+
+                    <span class="badge badge-info px-3 py-2">
+                        SAKIT
+                    </span>
+
+                    @elseif($absensiHariIni->status == 'alpha')
+
+                    <span class="badge badge-danger px-3 py-2">
+                        ALPHA
+                    </span>
+
+                    @elseif($absensiHariIni->status == 'cabut')
+
+                    <span class="badge badge-dark px-3 py-2">
+                        CABUT
+                    </span>
+
+                    @endif
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
     @else
 
-        <div class="alert alert-warning alert-modern shadow-sm mb-4">
+    <div class="alert alert-warning alert-modern shadow-sm mb-4">
 
-            <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center">
 
-                <div class="mr-3">
-                    <i class="fas fa-exclamation-triangle fa-3x"></i>
-                </div>
+            <div class="mr-3">
+                <i class="fas fa-exclamation-triangle fa-3x"></i>
+            </div>
+
+            <div>
+
+                <h5 class="font-weight-bold mb-1">
+                    Absensi Hari Ini Belum Diinput
+                </h5>
 
                 <div>
-
-                    <h5 class="font-weight-bold mb-1">
-                        Absensi Hari Ini Belum Diinput
-                    </h5>
-
-                    <div>
-                        Guru belum menginput absensi Anda hari ini.
-                    </div>
-
+                    Guru belum menginput absensi Anda hari ini.
                 </div>
 
             </div>
 
         </div>
 
-    @endif
+    </div>
 
+    @endif
     {{-- WELCOME --}}
     <div class="welcome-banner mb-4">
 
@@ -500,5 +596,116 @@
     </div>
 
 </div>
+{{-- =========================================
+     SUARA NOTIF ABSENSI
+========================================= --}}
+
+@if(!$hariLibur)
+
+{{-- AUDIO --}}
+@if($absensiHariIni)
+
+<audio id="notifAudio" preload="auto" loop>
+    <source src="{{ asset('audio/sudahabsen.mp3') }}" type="audio/mpeg">
+</audio>
+
+@else
+
+<audio id="notifAudio" preload="auto" loop>
+    <source src="{{ asset('audio/belumabsen.mp3') }}" type="audio/mpeg">
+</audio>
+
+@endif
+{{-- BUTTON CONTROL AUDIO --}}
+<div style="
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+    ">
+
+    <button
+        id="toggleAudioBtn"
+        class="btn btn-dark shadow-lg rounded-pill px-4 py-2">
+
+        <i class="fas fa-volume-up me-1"></i>
+        Matikan Suara
+
+    </button>
+
+</div>
+
+<script>
+    window.addEventListener('load', function() {
+
+        let audio = document.getElementById('notifAudio');
+
+        let tombol = document.getElementById('toggleAudioBtn');
+
+        /*
+        |--------------------------------------------------
+        | AUTO PLAY
+        |--------------------------------------------------
+        */
+
+        setTimeout(() => {
+
+            audio.volume = 1;
+
+            audio.play().catch(function(error) {
+
+                console.log('Autoplay diblok browser');
+
+            });
+
+        }, 1000);
+
+        /*
+        |--------------------------------------------------
+        | TOGGLE AUDIO
+        |--------------------------------------------------
+        */
+
+        tombol.addEventListener('click', function() {
+
+            // JIKA AUDIO SEDANG MENYALA
+            if (!audio.muted) {
+
+                // MATIKAN SUARA (MUTE)
+                audio.muted = true;
+
+                tombol.innerHTML = `
+                    <i class="fas fa-volume-xmark me-1"></i>
+                    Nyalakan Suara
+                `;
+
+                // WARNA HIJAU = AUDIO MATI
+                tombol.classList.remove('btn-dark');
+                tombol.classList.add('btn-success');
+
+            } else {
+
+                // HIDUPKAN SUARA
+                audio.muted = false;
+
+                // PASTIKAN AUDIO TETAP PLAY
+                audio.play();
+
+                tombol.innerHTML = `
+                    <i class="fas fa-volume-high me-1"></i>
+                    Matikan Suara
+                `;
+
+                // WARNA HITAM = AUDIO HIDUP
+                tombol.classList.remove('btn-success');
+                tombol.classList.add('btn-dark');
+
+            }
+
+        });
+
+    });
+</script>
+@endif
 
 @endsection

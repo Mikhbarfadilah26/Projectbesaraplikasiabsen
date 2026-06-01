@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ asset('dist/css/custom.css') }}">
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
 
     <div class="wrapper">
 
@@ -31,9 +31,7 @@
         <div class="content-wrapper">
 
             <section class="content p-3">
-
                 @yield('content')
-
             </section>
 
         </div>

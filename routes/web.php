@@ -35,7 +35,43 @@ use App\Http\Controllers\Transaksi\ControllerAbsensi;
 use App\Http\Controllers\Transaksi\ControllerDetailAbsensi;
 
 use App\Http\Controllers\Laporan\ControllerLaporan;
+use App\Services\WhatsappService;
+use App\Models\ModelSiswa;
+/*
+|--------------------------------------------------------------------------
+| EKSPORT & IMPORT DATA SISWA
+|--------------------------------------------------------------------------
+*/
 
+Route::post('/siswa/import', [ControllerSiswa::class, 'import'])
+    ->name('siswa.import');
+Route::get('/siswa/export', [ControllerSiswa::class, 'export'])->name('siswa.export');
+
+/*
+|--------------------------------------------------------------------------
+| NO WA 
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/test-wa', function () {
+
+    $siswa = ModelSiswa::whereNotNull('wa_ortu')->first();
+
+    if (!$siswa) {
+        return 'Tidak ada siswa yang punya nomor WA';
+    }
+
+    $nomor = preg_replace('/^0/', '62', $siswa->wa_ortu);
+
+    $pesan = "Halo wali dari {$siswa->nama}, ini test WhatsApp dari sistem absensi.";
+
+    $respon = WhatsappService::kirim(
+        $nomor,
+        $pesan
+    );
+
+    return $respon->body();
+});
 /*
 |--------------------------------------------------------------------------
 | LANDING
@@ -54,7 +90,6 @@ Route::controller(ControllerLanding::class)->group(function () {
     Route::get('/pengumuman/detail/{id}', 'detailPengumuman')->name('landing.pengumuman.detail');
 
     Route::get('/jadwalumum', 'jadwalUmum')->name('landing.jadwal');
-    Route::get('/informasi', 'informasi')->name('landing.informasi');
     Route::get('/kontak', 'kontak')->name('landing.kontak');
 });
 
@@ -228,41 +263,48 @@ Route::middleware(['auth', 'role:admin,guru'])
             Route::resource('detailabsensi', ControllerDetailAbsensi::class);
         });
 
- /*
+        /*
 |--------------------------------------------------------------------------
 | LAPORAN
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('laporan')->group(function () {
+        Route::prefix('laporan')->group(function () {
 
-    // REKAP ABSENSI
-    Route::get('/absensi', [ControllerLaporan::class, 'absensi'])
-        ->name('laporan.absensi');
+            // REKAP ABSENSI
+            Route::get(
+                '/absensi',
+                [ControllerLaporan::class, 'absensi']
+            )->name('laporan.absensi');
 
-    // LAPORAN HARIAN
-    Route::get('/harian', function () {
-        return view('user.laporan.harian');
-    })->name('laporan.absensi.harian');
+            // HARIAN
+            Route::get(
+                '/harian',
+                [ControllerLaporan::class, 'harian']
+            )->name('laporan.absensi.harian');
 
-    // LAPORAN MINGGUAN
-    Route::get('/mingguan', function () {
-        return view('user.laporan.mingguan');
-    })->name('laporan.absensi.mingguan');
+            // MINGGUAN
+            Route::get(
+                '/mingguan',
+                [ControllerLaporan::class, 'mingguan']
+            )->name('laporan.absensi.mingguan');
 
-    // LAPORAN BULANAN
-    Route::get('/bulanan', function () {
-        return view('user.laporan.bulanan');
-    })->name('laporan.absensi.bulanan');
+            // BULANAN
+            Route::get(
+                '/bulanan',
+                [ControllerLaporan::class, 'bulanan']
+            )->name('laporan.absensi.bulanan');
 
-    // LAPORAN TAHUNAN
-    Route::get('/tahunan', function () {
-        return view('user.laporan.tahunan');
-    })->name('laporan.absensi.tahunan');
+            // TAHUNAN
+            Route::get(
+                '/tahunan',
+                [ControllerLaporan::class, 'tahunan']
+            )->name('laporan.absensi.tahunan');
 
-    // LAPORAN SEMESTER
-    Route::get('/semester', function () {
-        return view('user.laporan.semester');
-    })->name('laporan.absensi.semester');
-});
+            // SEMESTER
+            Route::get(
+                '/semester',
+                [ControllerLaporan::class, 'semester']
+            )->name('laporan.absensi.semester');
+        });
     });

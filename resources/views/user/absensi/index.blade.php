@@ -121,6 +121,74 @@
         font-weight: bold;
 
     }
+
+    /* =========================================
+   ALERT ABSENSI MODERN
+==========================================*/
+
+    .alert-absensi-modern {
+
+        border-radius: 18px;
+        padding: 18px 22px;
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
+        animation: pulseAlert 2s infinite;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
+    }
+
+    .alert-absensi-modern::before {
+
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100px;
+        width: 80px;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: skewX(-20deg);
+        animation: shine 2.5s infinite;
+
+    }
+
+    .alert-belum {
+
+        background: linear-gradient(135deg, #f59e0b, #facc15);
+        color: #111;
+
+    }
+
+    .alert-telat {
+
+        background: linear-gradient(135deg, #dc2626, #ef4444);
+        color: white;
+
+    }
+
+    @keyframes shine {
+
+        100% {
+            left: 120%;
+        }
+
+    }
+
+    @keyframes pulseAlert {
+
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.01);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+
+    }
 </style>
 
 <div class="container-fluid">
@@ -153,7 +221,109 @@
 
     </div>
 
-    {{-- ALERT --}}
+
+    {{-- ALERT PENGINGAT ABSENSI --}}
+    @php
+
+    $hariIni = \Carbon\Carbon::parse(request('tanggal') ?? date('Y-m-d'));
+
+    $isMinggu = $hariIni->dayOfWeek == 0;
+
+    $jamSekarang = now()->format('H:i');
+
+    // TELAT JIKA LEWAT JAM 10
+    $telatAbsen = $jamSekarang >= '10:00';
+
+    @endphp
+
+    @if(
+    request('kelasid') &&
+    request('tanggal') &&
+    !$sudahDiabsen &&
+    !$hariLibur &&
+    !$isMinggu
+    )
+
+    <div class="alert-absensi-modern {{ $telatAbsen ? 'alert-telat' : 'alert-belum' }}">
+
+        <div class="d-flex align-items-center">
+
+            <div class="mr-3">
+
+                <i class="fas fa-bell fa-3x"></i>
+
+            </div>
+
+            <div>
+
+                <h5 class="mb-1 font-weight-bold">
+
+                    🚨 Ayo lakukan absensi sekarang
+
+                </h5>
+
+                <div>
+
+                    Kelas ini belum melakukan absensi tanggal
+
+                    <strong>
+                        {{ \Carbon\Carbon::parse(request('tanggal'))->format('d-m-Y') }}
+                    </strong>
+
+                </div>
+
+                @if($telatAbsen)
+
+                <small>
+
+                    ⚠ Sudah lewat jam 10:00 WIB,
+                    segera lakukan absensi sekarang.
+
+                </small>
+
+                @else
+
+                <small>
+
+                    ⏰ Jangan sampai lupa melakukan absensi hari ini.
+
+                </small>
+
+                @endif
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{-- SUARA + POPUP --}}
+    <audio id="notifAbsen">
+
+        <source
+            src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"
+            type="audio/mpeg">
+
+    </audio>
+
+    <script>
+        window.addEventListener('load', function() {
+
+            setTimeout(() => {
+
+                alert('🚨 Kelas ini belum diabsen hari ini!');
+
+            }, 700);
+
+            const audio = document.getElementById('notifAbsen');
+
+            audio.play().catch(() => {});
+
+        });
+    </script>
+
+    @endif
+
     @if(session('success'))
 
     <div class="alert alert-success">

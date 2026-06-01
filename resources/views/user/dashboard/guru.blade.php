@@ -1,97 +1,166 @@
 @extends('layouts.appguru')
-
 @section('title', 'Dashboard Guru')
-
 @section('content')
 
 <style>
 
     body{
-        background: #f4f6f9;
+        background: #eef2ff;
     }
 
     .dashboard-header{
-        background: linear-gradient(135deg,#f59e0b,#ea580c);
-        border-radius: 18px;
-        padding: 30px;
+        background: linear-gradient(135deg,#4f46e5,#7c3aed);
+        border-radius: 24px;
+        padding: 35px;
         color: white;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        box-shadow: 0 15px 35px rgba(79,70,229,0.25);
     }
 
     .dashboard-header::before{
         content: '';
         position: absolute;
-        width: 250px;
-        height: 250px;
+        width: 300px;
+        height: 300px;
         border-radius: 50%;
         background: rgba(255,255,255,0.08);
-        top: -100px;
-        right: -100px;
+        top: -120px;
+        right: -120px;
     }
 
     .dashboard-header::after{
         content: '';
         position: absolute;
-        width: 180px;
-        height: 180px;
+        width: 220px;
+        height: 220px;
         border-radius: 50%;
         background: rgba(255,255,255,0.05);
-        bottom: -80px;
-        left: -80px;
+        bottom: -100px;
+        left: -100px;
     }
 
     .welcome-title{
-        font-size: 30px;
+        font-size: 32px;
         font-weight: 700;
     }
 
     .teacher-avatar{
-        width: 75px;
-        height: 75px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(10px);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 30px;
+        font-size: 34px;
+        border: 2px solid rgba(255,255,255,0.2);
     }
 
     .small-box{
-        border-radius: 16px;
+        border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        position: relative;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        transition: .3s;
+    }
+
+    .small-box:hover{
+        transform: translateY(-5px);
+    }
+
+    .small-box .inner{
+        padding: 25px;
+        color: white;
+    }
+
+    .small-box h3{
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    .small-box p{
+        font-size: 15px;
+        opacity: .9;
     }
 
     .small-box .icon{
-        top: 15px;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 55px;
+        opacity: .15;
+        color: white;
+    }
+
+    .bg-purple{
+        background: linear-gradient(135deg,#6366f1,#4f46e5);
+    }
+
+    .bg-blue{
+        background: linear-gradient(135deg,#0ea5e9,#2563eb);
+    }
+
+    .bg-green{
+        background: linear-gradient(135deg,#10b981,#059669);
+    }
+
+    .bg-pink{
+        background: linear-gradient(135deg,#ec4899,#db2777);
+    }
+
+    .bg-darkblue{
+        background: linear-gradient(135deg,#334155,#1e293b);
     }
 
     .card-modern{
         border: none;
-        border-radius: 16px;
+        border-radius: 20px;
         overflow: hidden;
-        box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        background: white;
     }
 
     .card-header{
         border-bottom: none !important;
+        padding: 18px 22px;
     }
 
     .table th{
         font-weight: 700;
+        border-top: none !important;
+    }
+
+    .table td{
+        vertical-align: middle;
     }
 
     .quick-btn{
-        border-radius: 12px;
-        padding: 12px 18px;
+        border-radius: 14px;
+        padding: 13px 22px;
         font-weight: 600;
         transition: .3s;
+        border: none;
+        color: white !important;
     }
 
     .quick-btn:hover{
-        transform: translateY(-2px);
+        transform: translateY(-3px);
+    }
+
+    .btn-purple{
+        background: linear-gradient(135deg,#6366f1,#4f46e5);
+    }
+
+    .btn-pink{
+        background: linear-gradient(135deg,#ec4899,#db2777);
+    }
+
+    .badge-modern{
+        padding: 8px 14px;
+        border-radius: 30px;
+        font-size: 12px;
     }
 
 </style>
@@ -150,9 +219,9 @@
     <div class="row">
 
         {{-- TOTAL GURU --}}
-        <div class="col-lg-3 col-md-6 col-12">
+        <div class="col-lg-3 col-md-6 mb-4">
 
-            <div class="small-box bg-warning">
+            <div class="small-box bg-purple">
 
                 <div class="inner">
 
@@ -175,9 +244,9 @@
         </div>
 
         {{-- TOTAL SISWA --}}
-        <div class="col-lg-3 col-md-6 col-12">
+        <div class="col-lg-3 col-md-6 mb-4">
 
-            <div class="small-box bg-success">
+            <div class="small-box bg-blue">
 
                 <div class="inner">
 
@@ -199,10 +268,10 @@
 
         </div>
 
-        {{-- ABSENSI HARI INI --}}
-        <div class="col-lg-3 col-md-6 col-12">
+        {{-- ABSENSI --}}
+        <div class="col-lg-3 col-md-6 mb-4">
 
-            <div class="small-box bg-info">
+            <div class="small-box bg-green">
 
                 <div class="inner">
 
@@ -225,9 +294,9 @@
         </div>
 
         {{-- HADIR --}}
-        <div class="col-lg-3 col-md-6 col-12">
+        <div class="col-lg-3 col-md-6 mb-4">
 
-            <div class="small-box bg-danger">
+            <div class="small-box bg-pink">
 
                 <div class="inner">
 
@@ -254,11 +323,13 @@
     {{-- REKAP --}}
     <div class="row">
 
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
 
             <div class="card card-modern">
 
                 <div class="card-body text-center">
+
+                    <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
 
                     <h5 class="font-weight-bold text-success">
                         Hadir
@@ -274,11 +345,13 @@
 
         </div>
 
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
 
             <div class="card card-modern">
 
                 <div class="card-body text-center">
+
+                    <i class="fas fa-times-circle fa-2x text-danger mb-3"></i>
 
                     <h5 class="font-weight-bold text-danger">
                         Alpha
@@ -294,11 +367,13 @@
 
         </div>
 
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
 
             <div class="card card-modern">
 
                 <div class="card-body text-center">
+
+                    <i class="fas fa-file-alt fa-2x text-primary mb-3"></i>
 
                     <h5 class="font-weight-bold text-primary">
                         Total Absensi
@@ -306,6 +381,28 @@
 
                     <h1 class="font-weight-bold text-primary">
                         {{ $absensiHariIni }}
+                    </h1>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card card-modern">
+
+                <div class="card-body text-center">
+
+                    <i class="fas fa-school fa-2x text-dark mb-3"></i>
+
+                    <h5 class="font-weight-bold text-dark">
+                        Kelas Aktif
+                    </h5>
+
+                    <h1 class="font-weight-bold text-dark">
+                        {{ $jumlahKelas ?? 0 }}
                     </h1>
 
                 </div>
@@ -324,7 +421,7 @@
 
             <div class="card card-modern h-100">
 
-                <div class="card-header bg-warning text-white">
+                <div class="card-header bg-purple text-white">
 
                     <h5 class="mb-0">
 
@@ -384,7 +481,7 @@
                             <td>
 
                                 :
-                                <span class="badge badge-success px-3 py-2">
+                                <span class="badge badge-success badge-modern">
                                     Aktif
                                 </span>
 
@@ -405,7 +502,7 @@
 
             <div class="card card-modern h-100">
 
-                <div class="card-header bg-info text-white">
+                <div class="card-header bg-darkblue text-white">
 
                     <h5 class="mb-0">
 
@@ -421,7 +518,7 @@
                     <div>
 
                         <a href="{{ route('absensi.index') }}"
-                           class="btn btn-success quick-btn m-2">
+                           class="btn quick-btn btn-purple m-2">
 
                             <i class="fas fa-check-circle mr-1"></i>
                             Input Absensi
@@ -429,7 +526,7 @@
                         </a>
 
                         <a href="{{ route('laporan.absensi') }}"
-                           class="btn btn-danger quick-btn m-2">
+                           class="btn quick-btn btn-pink m-2">
 
                             <i class="fas fa-file-alt mr-1"></i>
                             Laporan
@@ -449,7 +546,7 @@
     {{-- ABSENSI TERBARU --}}
     <div class="card card-modern mb-4">
 
-        <div class="card-header bg-success text-white">
+        <div class="card-header bg-green text-white">
 
             <h5 class="mb-0">
 
@@ -510,31 +607,31 @@
 
                                 @if($item->status == 'hadir')
 
-                                    <span class="badge badge-success px-3 py-2">
+                                    <span class="badge badge-success badge-modern">
                                         Hadir
                                     </span>
 
                                 @elseif($item->status == 'izin')
 
-                                    <span class="badge badge-warning px-3 py-2">
+                                    <span class="badge badge-warning badge-modern">
                                         Izin
                                     </span>
 
                                 @elseif($item->status == 'sakit')
 
-                                    <span class="badge badge-info px-3 py-2">
+                                    <span class="badge badge-info badge-modern">
                                         Sakit
                                     </span>
 
                                 @elseif($item->status == 'cabut')
 
-                                    <span class="badge badge-dark px-3 py-2">
+                                    <span class="badge badge-dark badge-modern">
                                         Cabut
                                     </span>
 
                                 @else
 
-                                    <span class="badge badge-danger px-3 py-2">
+                                    <span class="badge badge-danger badge-modern">
                                         Alpha
                                     </span>
 

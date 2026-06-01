@@ -4,180 +4,315 @@
 
 <div class="container">
 
-    <div class="card shadow-sm border-0">
+    {{-- ALERT --}}
+    @if(session('success'))
 
-        <div class="card-header bg-primary text-white">
+    <div class="alert alert-success alert-dismissible fade show shadow-sm">
 
-            <h4 class="mb-0 font-weight-bold">
-                <i class="fas fa-user-plus mr-2"></i>
-                Tambah Siswa
-            </h4>
+        <button type="button"
+            class="close"
+            data-dismiss="alert">
 
-        </div>
+            &times;
 
-        <div class="card-body">
+        </button>
 
-            <form action="{{ route('siswa.store') }}"
-                  method="POST"
-                  enctype="multipart/form-data">
+        <i class="fas fa-check-circle mr-1"></i>
 
-                @csrf
+        {{ session('success') }}
 
-                {{-- FOTO --}}
-                <div class="form-group">
+    </div>
 
-                    <label class="font-weight-bold">
-                        Foto
-                    </label>
+    @endif
 
-                    <input type="file"
-                           name="foto"
-                           class="form-control custom-input">
+    <div class="row">
 
-                </div>
+        {{-- ===================================================== --}}
+        {{-- FORM TAMBAH SISWA --}}
+        {{-- ===================================================== --}}
+        <div class="col-lg-7">
 
-                {{-- NIS --}}
-                <div class="form-group">
+            <div class="card shadow-sm border-0">
 
-                    <label class="font-weight-bold">
-                        NIS
-                    </label>
+                <div class="card-header bg-primary text-white">
 
-                    <input type="text"
-                           name="nis"
-                           class="form-control custom-input"
-                           placeholder="Masukkan NIS"
-                           required>
+                    <h4 class="mb-0 font-weight-bold">
+
+                        <i class="fas fa-user-plus mr-2"></i>
+
+                        Tambah Siswa
+
+                    </h4>
 
                 </div>
 
-                {{-- NAMA --}}
-                <div class="form-group">
+                <div class="card-body">
 
-                    <label class="font-weight-bold">
-                        Nama Siswa
-                    </label>
+                    <form action="{{ route('siswa.store') }}"
+                        method="POST"
+                        enctype="multipart/form-data">
 
-                    <input type="text"
-                           name="nama"
-                           class="form-control custom-input"
-                           placeholder="Masukkan Nama Siswa"
-                           required>
+                        @csrf
 
-                </div>
+                        {{-- FOTO --}}
+                        <div class="form-group">
 
-                {{-- PASSWORD --}}
-                <div class="form-group">
+                            <label class="font-weight-bold">
+                                Foto
+                            </label>
 
-                    <label class="font-weight-bold">
-                        Password
-                    </label>
-
-                    <div class="input-group">
-
-                        <input type="password"
-                               name="password"
-                               id="password"
-                               class="form-control custom-input"
-                               placeholder="Masukkan Password"
-                               required>
-
-                        <div class="input-group-append">
-
-                            <button type="button"
-                                    class="btn btn-outline-secondary"
-                                    id="togglePassword">
-
-                                <i class="fas fa-eye"></i>
-
-                            </button>
+                            <input type="file"
+                                name="foto"
+                                class="form-control custom-input">
 
                         </div>
 
-                    </div>
+                        {{-- NIS --}}
+                        <div class="form-group">
+
+                            <label class="font-weight-bold">
+                                NIS
+                            </label>
+
+                            <input type="text"
+                                name="nis"
+                                class="form-control custom-input"
+                                placeholder="Masukkan NIS"
+                                required>
+
+                        </div>
+
+                        {{-- NAMA --}}
+                        <div class="form-group">
+
+                            <label class="font-weight-bold">
+                                Nama Siswa
+                            </label>
+
+                            <input type="text"
+                                name="nama"
+                                class="form-control custom-input"
+                                placeholder="Masukkan Nama Siswa"
+                                required>
+
+                        </div>
+
+                        {{-- PASSWORD --}}
+                        <div class="form-group">
+
+                            <label class="font-weight-bold">
+                                Password
+                            </label>
+
+                            <div class="input-group">
+
+                                <input type="password"
+                                    name="password"
+                                    id="password"
+                                    class="form-control custom-input"
+                                    placeholder="Masukkan Password"
+                                    required>
+
+                                <div class="input-group-append">
+
+                                    <button type="button"
+                                        class="btn btn-outline-secondary"
+                                        id="togglePassword">
+
+                                        <i class="fas fa-eye"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {{-- JENIS KELAMIN --}}
+                        <div class="form-group">
+
+                            <label class="font-weight-bold">
+                                Jenis Kelamin
+                            </label>
+
+                            <select name="jeniskelamin"
+                                class="form-control custom-input"
+                                required>
+
+                                <option value="">
+                                    Pilih Jenis Kelamin
+                                </option>
+
+                                <option value="L">
+                                    Laki-laki
+                                </option>
+
+                                <option value="P">
+                                    Perempuan
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        {{-- KELAS --}}
+                        <div class="form-group">
+
+                            <label class="font-weight-bold">
+                                Kelas
+                            </label>
+
+                            <select name="kelasid"
+                                class="form-control custom-input"
+                                required>
+
+                                <option value="">
+                                    Pilih Kelas
+                                </option>
+
+                                @foreach($kelas as $k)
+
+                                <option value="{{ $k->id }}">
+
+                                    {{ $k->namakelas }}
+
+                                </option>
+
+                                @endforeach
+
+                            </select>
+
+                        </div>
+                        {{-- NAMA ORANG TUA --}}
+                        <div class="form-group">
+
+                            <label class="font-weight-bold">
+                                Nama Orang Tua
+                            </label>
+
+                            <input type="text"
+                                name="nama_ortu"
+                                class="form-control custom-input"
+                                placeholder="Masukkan Nama Orang Tua">
+
+                        </div>
+
+                        {{-- NOMOR WA ORANG TUA --}}
+                        <div class="form-group">
+
+                            <label class="font-weight-bold">
+                                Nomor WhatsApp Orang Tua
+                            </label>
+
+                            <input type="text"
+                                name="wa_ortu"
+                                class="form-control custom-input"
+                                placeholder="Contoh : 6281234567890">
+
+                        </div>
+
+                        {{-- ALAMAT --}}
+                        <div class="form-group">
+
+                            <label class="font-weight-bold">
+                                Alamat
+                            </label>
+
+                            <textarea name="alamat"
+                                class="form-control custom-input"
+                                rows="4"
+                                placeholder="Masukkan alamat siswa"></textarea>
+
+                        </div>
+
+                        {{-- BUTTON --}}
+                        <button type="submit"
+                            class="btn btn-primary px-4 shadow-sm">
+
+                            <i class="fas fa-save mr-1"></i>
+                            Simpan
+
+                        </button>
+
+                    </form>
 
                 </div>
 
-                {{-- JENIS KELAMIN --}}
-                <div class="form-group">
+            </div>
 
-                    <label class="font-weight-bold">
-                        Jenis Kelamin
-                    </label>
+        </div>
 
-                    <select name="jeniskelamin"
-                            class="form-control custom-input"
-                            required>
+        {{-- ===================================================== --}}
+        {{-- IMPORT EXCEL --}}
+        {{-- ===================================================== --}}
+        <div class="col-lg-5">
 
-                        <option value="">
-                            Pilih Jenis Kelamin
-                        </option>
+            <div class="card shadow-sm border-0">
 
-                        <option value="L">
-                            Laki-laki
-                        </option>
+                <div class="card-header bg-success text-white">
 
-                        <option value="P">
-                            Perempuan
-                        </option>
+                    <h4 class="mb-0 font-weight-bold">
 
-                    </select>
+                        <i class="fas fa-file-excel mr-2"></i>
+
+                        Import Excel Siswa
+
+                    </h4>
 
                 </div>
 
-                {{-- KELAS --}}
-                <div class="form-group">
+                <div class="card-body">
 
-                    <label class="font-weight-bold">
-                        Kelas
-                    </label>
+                    <form
+                        action="{{ route('siswa.import') }}"
+                        method="POST"
+                        enctype="multipart/form-data">
 
-                    <select name="kelasid"
-                            class="form-control custom-input"
-                            required>
+                        @csrf
 
-                        <option value="">
-                            Pilih Kelas
-                        </option>
+                        <div class="form-group">
 
-                        @foreach($kelas as $k)
+                            <label class="font-weight-bold">
 
-                            <option value="{{ $k->id }}">
+                                Upload File Excel
 
-                                {{ $k->namakelas }}
+                            </label>
 
-                            </option>
+                            <input
+                                type="file"
+                                name="file"
+                                class="form-control custom-input"
+                                accept=".xlsx,.xls"
+                                required>
 
-                        @endforeach
+                        </div>
 
-                    </select>
+                        <div class="alert alert-info">
+
+                            <strong>Format Excel:</strong>
+
+                            <hr>
+
+                            nis | nama | jeniskelamin | kelasid | alamat
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-success btn-block shadow-sm">
+
+                            <i class="fas fa-file-import mr-1"></i>
+
+                            Import Data Siswa
+
+                        </button>
+
+                    </form>
 
                 </div>
 
-                {{-- ALAMAT --}}
-                <div class="form-group">
-
-                    <label class="font-weight-bold">
-                        Alamat
-                    </label>
-
-                    <textarea name="alamat"
-                              class="form-control custom-input"
-                              rows="4"
-                              placeholder="Masukkan alamat siswa"></textarea>
-
-                </div>
-
-                {{-- BUTTON --}}
-                <button type="submit"
-                        class="btn btn-primary px-4 shadow-sm">
-
-                    <i class="fas fa-save mr-1"></i>
-                    Simpan
-
-                </button>
-
-            </form>
+            </div>
 
         </div>
 
@@ -186,54 +321,50 @@
 </div>
 
 <style>
-
-    .custom-input{
+    .custom-input {
         border-radius: 12px;
         border: 1px solid #dcdcdc;
         transition: all 0.25s ease;
         box-shadow: none;
     }
 
-    .custom-input:focus{
+    .custom-input:focus {
         border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.15);
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
         transform: scale(1.01);
     }
 
-    .card{
+    .card {
         border-radius: 18px;
         overflow: hidden;
     }
 
-    .btn{
+    .btn {
         border-radius: 10px;
     }
-
 </style>
 
 <script>
-
     const togglePassword =
         document.getElementById('togglePassword');
 
     const password =
         document.getElementById('password');
 
-    togglePassword.addEventListener('click', function () {
+    togglePassword.addEventListener('click', function() {
 
         const type =
-            password.getAttribute('type') === 'password'
-            ? 'text'
-            : 'password';
+            password.getAttribute('type') === 'password' ?
+            'text' :
+            'password';
 
         password.setAttribute('type', type);
 
         this.innerHTML =
-            type === 'password'
-            ? '<i class="fas fa-eye"></i>'
-            : '<i class="fas fa-eye-slash"></i>';
+            type === 'password' ?
+            '<i class="fas fa-eye"></i>' :
+            '<i class="fas fa-eye-slash"></i>';
     });
-
 </script>
 
 @endsection

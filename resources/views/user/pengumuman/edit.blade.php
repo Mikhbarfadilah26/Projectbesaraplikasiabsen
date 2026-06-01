@@ -7,26 +7,53 @@
     <h3>Edit Pengumuman</h3>
 
     <form action="{{ route('pengumuman.update', $pengumuman->id) }}"
-        method="POST">
+        method="POST"
+        enctype="multipart/form-data">
 
         @csrf
         @method('PUT')
 
         <div class="mb-3">
+
             <label>Judul</label>
 
             <input type="text"
                 name="judul"
                 value="{{ $pengumuman->judul }}"
                 class="form-control">
+
         </div>
 
         <div class="mb-3">
+
+            <label>Foto</label>
+
+            <input type="file"
+                name="foto"
+                class="form-control">
+
+        </div>
+
+        @if($pengumuman->foto)
+
+        <div class="mb-3">
+
+            <img src="{{ asset('storage/' . $pengumuman->foto) }}"
+                width="150"
+                class="img-thumbnail">
+
+        </div>
+
+        @endif
+
+        <div class="mb-3">
+
             <label>Isi</label>
 
             <textarea name="isi"
                 rows="6"
                 class="form-control">{{ $pengumuman->isi }}</textarea>
+
         </div>
 
         <button class="btn btn-primary">

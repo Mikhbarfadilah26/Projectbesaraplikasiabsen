@@ -83,6 +83,34 @@
 
     .text-highlight {
         color: var(--primary-green);
+        min-height: 90px;
+        display: block;
+    }
+    .hero-description {
+    font-size: 1.1rem;
+    color: var(--text-slate);
+
+    max-width: 780px;
+
+    line-height: 1.9;
+
+    margin-bottom: 35px;
+
+    text-align: center;
+}
+
+    /* EFFECT TYPING */
+    .typing-text::after {
+        content: '|';
+        animation: blink 0.8s infinite;
+        color: #22c55e;
+        margin-left: 3px;
+    }
+
+    @keyframes blink {
+        50% {
+            opacity: 0;
+        }
     }
 
     .hero-description {
@@ -155,7 +183,6 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
     }
-
 </style>
 
 {{-- HERO --}}
@@ -176,17 +203,18 @@
 
                     <h1 class="hero-title-main">
                         Aplikasi Absensi
-                        <span class="text-highlight d-block">
+
+                        <span class="text-highlight typing-text" id="typingText">
                             SMK Negeri 1 Karang Baru
                         </span>
                     </h1>
+<p class="hero-description mx-auto">
+    Kelola absensi siswa, monitoring kehadiran, laporan sekolah,
+    dan data akademik secara cepat, modern, aman, serta
+    terintegrasi dalam satu platform digital.
+    
+</p>
 
-                    <p class="hero-description mx-auto">
-                        Kelola absensi siswa, monitoring kehadiran,
-                        laporan sekolah, dan data akademik
-                        secara cepat, modern, aman,
-                        dan terintegrasi dalam satu platform digital.
-                    </p>
 
                     <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
 
@@ -211,6 +239,71 @@
 
 </section>
 
+<script>
+    const texts = [
+        "SMK Negeri 1 Karang Baru",
+        "Sistem Absensi Modern",
+        "Platform Sekolah Digital",
+        "Monitoring Kehadiran Siswa",
+        "Absensi Cepat & Aman"
+    ];
+
+    let count = 0;
+    let index = 0;
+    let currentText = '';
+    let letter = '';
+
+    function type() {
+
+        if (count === texts.length) {
+            count = 0;
+        }
+
+        currentText = texts[count];
+
+        letter = currentText.slice(0, ++index);
+
+        document.getElementById('typingText').textContent = letter;
+
+        if (letter.length === currentText.length) {
+
+            setTimeout(() => {
+
+                erase();
+
+            }, 1800);
+
+        } else {
+
+            setTimeout(type, 90);
+
+        }
+
+    }
+
+    function erase() {
+
+        letter = currentText.slice(0, --index);
+
+        document.getElementById('typingText').textContent = letter;
+
+        if (letter.length === 0) {
+
+            count++;
+
+            setTimeout(type, 400);
+
+        } else {
+
+            setTimeout(erase, 40);
+
+        }
+
+    }
+
+    type();
+</script>
+
 {{-- CONTENT --}}
 <section class="content-section">
 
@@ -222,64 +315,245 @@
             <div class="col-lg-8">
 
                 {{-- PENGUMUMAN --}}
-                <div class="card custom-card shadow-sm mb-4">
+                <div class="card custom-card shadow-sm mb-4 border-0 rounded-4 overflow-hidden">
 
-                    <div class="card-header card-gradient-purple p-3">
+                    {{-- HEADER --}}
+                    <div class="card-header card-gradient-purple p-3 border-0">
 
                         <div class="d-flex justify-content-between align-items-center">
 
-                            <h6 class="mb-0 text-white">
+                            <h5 class="mb-0 text-white font-weight-bold">
+
                                 <i class="fas fa-bullhorn mr-2"></i>
                                 Pengumuman Terbaru
-                            </h6>
+
+                            </h5>
 
                             <a href="{{ route('landing.pengumuman') }}"
-                                class="text-white">
+                                class="text-white font-weight-bold text-decoration-none">
+
                                 Lihat Semua
+                                <i class="fas fa-arrow-right ml-1"></i>
+
                             </a>
 
                         </div>
 
                     </div>
 
-                    <div class="card-body p-4">
+                    {{-- BODY --}}
+                    <div class="card-body p-4 bg-white">
 
-                        @forelse($pengumumanHome as $item)
+                        @if($pengumumanHome->count() > 0)
 
-                        <div class="d-flex align-items-center mb-3 p-3 border-left border-success border-4 bg-light rounded">
+                        <div id="carouselPengumuman"
+                            class="carousel slide"
+                            data-ride="carousel">
 
-                            <div class="flex-grow-1">
+                            <div class="carousel-inner">
 
-                                <small class="text-muted">
-                                    {{ $item->created_at->format('d F Y') }}
-                                </small>
+                                @foreach($pengumumanHome as $key => $item)
 
-                                <h6 class="mb-2 mt-1">
-                                    {{ $item->judul }}
-                                </h6>
+                                <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
 
-                                <a href="{{ route('landing.pengumuman.detail',$item->id) }}"
-                                    class="text-success font-weight-bold">
-                                    Lihat Selengkapnya
-                                </a>
+                                    <div class="row align-items-center">
+
+                                        {{-- FOTO --}}
+                                        <div class="col-md-5 mb-3 mb-md-0">
+
+                                            @if($item->foto)
+
+                                            <img src="{{ asset('storage/' . $item->foto) }}"
+                                                class="img-fluid rounded-4 shadow-sm w-100"
+                                                style="
+                                    height:260px;
+                                    object-fit:cover;
+                                ">
+
+                                            @else
+
+                                            <div class="bg-light rounded-4 d-flex align-items-center justify-content-center"
+                                                style="
+                                    height:260px;
+                                ">
+
+                                                <div class="text-center text-muted">
+
+                                                    <i class="fas fa-image fa-3x mb-2"></i>
+
+                                                    <p class="mb-0">
+                                                        Tidak ada foto
+                                                    </p>
+
+                                                </div>
+
+                                            </div>
+
+                                            @endif
+
+                                        </div>
+
+                                        {{-- KONTEN --}}
+                                        <div class="col-md-7">
+
+                                            {{-- TANGGAL --}}
+                                            <div class="mb-3">
+
+                                                <span class="badge badge-light px-3 py-2 shadow-sm">
+
+                                                    <i class="fas fa-calendar-alt text-primary mr-1"></i>
+
+                                                    {{ $item->created_at->format('d F Y') }}
+
+                                                </span>
+
+                                            </div>
+
+                                            {{-- JUDUL --}}
+                                            <h3 class="font-weight-bold text-dark mb-3">
+
+                                                {{ $item->judul }}
+
+                                            </h3>
+
+                                            {{-- ISI --}}
+                                            <p class="text-muted mb-4"
+                                                style="
+                                    min-height:90px;
+                                    overflow:hidden;
+                                    display:-webkit-box;
+                                    -webkit-line-clamp:4;
+                                    -webkit-box-orient:vertical;
+                                ">
+
+                                                {{ Str::limit(strip_tags($item->isi), 220) }}
+
+                                            </p>
+
+                                            {{-- FOOTER --}}
+                                            <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+                                                <div class="mb-2 mb-md-0">
+
+                                                    <i class="fas fa-user-circle text-secondary mr-1"></i>
+
+                                                    <small class="text-muted">
+
+                                                        {{ $item->user->nama ?? 'Admin Sekolah' }}
+
+                                                    </small>
+
+                                                </div>
+
+                                                <a href="{{ route('landing.pengumuman.detail', $item->id) }}"
+                                                    class="btn btn-success rounded-pill px-4 shadow-sm">
+
+                                                    Baca Detail
+
+                                                </a>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                @endforeach
 
                             </div>
 
-                            <i class="fas fa-chevron-right text-muted"></i>
+                            {{-- PREV --}}
+                            <a class="carousel-control-prev"
+                                href="#carouselPengumuman"
+                                role="button"
+                                data-slide="prev">
+
+                                <span class="custom-arrow">
+
+                                    <i class="fas fa-chevron-left"></i>
+
+                                </span>
+
+                            </a>
+
+                            {{-- NEXT --}}
+                            <a class="carousel-control-next"
+                                href="#carouselPengumuman"
+                                role="button"
+                                data-slide="next">
+
+                                <span class="custom-arrow">
+
+                                    <i class="fas fa-chevron-right"></i>
+
+                                </span>
+
+                            </a>
 
                         </div>
 
-                        @empty
+                        @else
 
-                        <div class="alert alert-light mb-0">
+                        <div class="alert alert-light mb-0 rounded-4">
+
+                            <i class="fas fa-info-circle mr-2"></i>
+
                             Belum ada pengumuman terbaru.
+
                         </div>
 
-                        @endforelse
+                        @endif
 
                     </div>
 
                 </div>
+
+                <style>
+                    .card-gradient-purple {
+                        background: linear-gradient(135deg, #7c3aed, #4f46e5);
+                    }
+
+                    .custom-arrow {
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 50%;
+                        background: white;
+                        color: #4f46e5;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 18px;
+                        box-shadow: 0 5px 15px rgba(0, 0, 0, .15);
+                    }
+
+                    .carousel-control-prev,
+                    .carousel-control-next {
+                        width: 8%;
+                        opacity: 1;
+                    }
+
+                    .carousel-control-prev {
+                        left: -20px;
+                    }
+
+                    .carousel-control-next {
+                        right: -20px;
+                    }
+
+                    @media(max-width:768px) {
+
+                        .carousel-control-prev {
+                            left: 0;
+                        }
+
+                        .carousel-control-next {
+                            right: 0;
+                        }
+
+                    }
+                </style>
 
                 {{-- JURUSAN --}}
                 <div class="card custom-card shadow-sm mb-4">
@@ -365,7 +639,6 @@
                         <h6 class="font-weight-bold">
                             Butuh Bantuan?
                         </h6>
-
                         <p class="small text-muted mb-4">
                             Tim IT Support siap membantu
                             jika terjadi kendala teknis.

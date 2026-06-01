@@ -6,9 +6,10 @@
 
     <div class="container-fluid">
 
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
 
-            <div>
+            <div class="mb-2">
+
                 <h1 class="font-weight-bold mb-1">
                     Data Siswa
                 </h1>
@@ -16,6 +17,7 @@
                 <small class="text-muted">
                     Manajemen data siswa sekolah
                 </small>
+
             </div>
 
             <a href="{{ route('siswa.create') }}"
@@ -36,7 +38,7 @@
 
     <div class="container-fluid">
 
-        {{-- ALERT --}}
+        {{-- ALERT SUCCESS --}}
         @if(session('success'))
 
             <div class="alert alert-success alert-dismissible fade show shadow-sm">
@@ -57,17 +59,129 @@
 
         @endif
 
+        {{-- ALERT ERROR --}}
+        @if(session('error'))
+
+            <div class="alert alert-danger alert-dismissible fade show shadow-sm">
+
+                <button type="button"
+                        class="close"
+                        data-dismiss="alert">
+
+                    &times;
+
+                </button>
+
+                <i class="fas fa-times-circle mr-1"></i>
+
+                {{ session('error') }}
+
+            </div>
+
+        @endif
+
+{{-- ===================================================== --}}
+{{-- IMPORT EXPORT EXCEL --}}
+{{-- ===================================================== --}}
+<div class="card shadow-sm border-0 mb-4">
+
+    <div class="card-header bg-success text-white">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+            <h5 class="mb-0 font-weight-bold">
+
+                <i class="fas fa-file-excel mr-1"></i>
+                Import / Export Excel Siswa
+
+            </h5>
+
+            {{-- BUTTON EXPORT --}}
+            <a href="{{ route('siswa.export') }}"
+               class="btn btn-light btn-sm shadow-sm">
+
+                <i class="fas fa-download mr-1"></i>
+                Export Excel
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="card-body">
+
+        <form action="{{ route('siswa.import') }}"
+              method="POST"
+              enctype="multipart/form-data">
+
+            @csrf
+
+            <div class="row align-items-end">
+
+                <div class="col-md-8 mb-2">
+
+                    <label class="font-weight-bold">
+                        Upload File Excel
+                    </label>
+
+                    <input type="file"
+                           name="file"
+                           class="form-control"
+                           accept=".xlsx,.xls"
+                           required>
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <button type="submit"
+                            class="btn btn-success btn-block">
+
+                        <i class="fas fa-upload mr-1"></i>
+                        Import Excel
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+        <div class="alert alert-info mt-3 mb-0">
+
+            <strong>Sistem Import:</strong>
+
+            <hr>
+
+            • Download template dari tombol Export Excel <br>
+
+            • Edit data siswa di file Excel <br>
+
+            • Upload kembali file tersebut <br>
+
+            • NIS lama otomatis dilewati <br>
+
+            • Hanya siswa baru yang ditambahkan
+
+        </div>
+
+    </div>
+
+</div>
+
         {{-- ===================================================== --}}
         {{-- REGISTRASI SISWA --}}
         {{-- ===================================================== --}}
-        <div class="card card-warning card-outline shadow-sm">
+        <div class="card card-warning card-outline shadow-sm mb-4">
 
             <div class="card-header border-0">
 
                 <h3 class="card-title font-weight-bold">
 
                     <i class="fas fa-user-clock mr-1"></i>
-                    Registrasi Siswa
+                    Registrasi Siswa Pending
 
                 </h3>
 
@@ -86,6 +200,8 @@
                             <th>Nama</th>
                             <th>Kelas</th>
                             <th>Jurusan</th>
+                            <th>Nama Ortu</th>
+                            <th>WA Ortu</th>
                             <th>Status</th>
                             <th width="220">Aksi</th>
 
@@ -99,9 +215,13 @@
 
                             <tr>
 
-                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    {{ $loop->iteration }}
+                                </td>
 
-                                <td>{{ $item->nis }}</td>
+                                <td>
+                                    {{ $item->nis }}
+                                </td>
 
                                 <td class="font-weight-bold">
                                     {{ $item->nama }}
@@ -116,9 +236,19 @@
                                 </td>
 
                                 <td>
+                                    {{ $item->nama_ortu ?? '-' }}
+                                </td>
+
+                                <td>
+                                    {{ $item->wa_ortu ?? '-' }}
+                                </td>
+
+                                <td>
 
                                     <span class="badge badge-warning px-3 py-2">
+
                                         Pending
+
                                     </span>
 
                                 </td>
@@ -149,7 +279,7 @@
 
                             <tr>
 
-                                <td colspan="7"
+                                <td colspan="9"
                                     class="text-center text-muted py-4">
 
                                     Tidak ada data pending
@@ -169,21 +299,27 @@
         </div>
 
         {{-- ===================================================== --}}
-        {{-- DATA SISWA PER KELAS --}}
+        {{-- GROUP DATA SISWA --}}
         {{-- ===================================================== --}}
 
         @php
+
             $grouped = $data->groupBy(function ($item) {
-                return ($item->kelas->jurusan->namajurusan ?? '-') . ' - ' .
-                       ($item->kelas->namakelas ?? '-');
+
+                return
+                    ($item->kelas->jurusan->namajurusan ?? '-') .
+                    ' - ' .
+                    ($item->kelas->namakelas ?? '-');
+
             });
+
         @endphp
 
         @forelse($grouped as $kelas => $items)
 
-            <div class="card card-primary card-outline shadow-sm">
+            <div class="card card-primary card-outline shadow-sm mb-4">
 
-                {{-- HEADER CARD --}}
+                {{-- HEADER --}}
                 <div class="card-header border-0">
 
                     <div class="d-flex justify-content-between align-items-center flex-wrap">
@@ -196,17 +332,13 @@
 
                         </h3>
 
-                        <div>
+                        <span class="badge badge-primary px-3 py-2"
+                              style="font-size:14px;">
 
-                            <span class="badge badge-primary px-3 py-2"
-                                  style="font-size:14px;">
+                            Total :
+                            {{ $items->count() }} Siswa
 
-                                Total :
-                                {{ $items->count() }} Siswa
-
-                            </span>
-
-                        </div>
+                        </span>
 
                     </div>
 
@@ -224,6 +356,8 @@
                                 <th width="60">No</th>
                                 <th>NIS</th>
                                 <th>Nama Siswa</th>
+                                <th>Nama Ortu</th>
+                                <th>WA Ortu</th>
                                 <th width="170">Jenis Kelamin</th>
                                 <th width="220">Aksi</th>
 
@@ -246,24 +380,31 @@
                                     </td>
 
                                     <td class="font-weight-bold">
-
                                         {{ $item->nama }}
+                                    </td>
 
+                                    <td>
+                                        {{ $item->nama_ortu ?? '-' }}
+                                    </td>
+
+                                    <td>
+                                        {{ $item->wa_ortu ?? '-' }}
                                     </td>
 
                                     <td>
 
                                         @if($item->jeniskelamin == 'L')
 
-                                            <span class="badge d-inline-flex justify-content-center align-items-center"
-                                                  style="
+                                            <span
+                                                class="badge d-inline-flex justify-content-center align-items-center"
+                                                style="
                                                     background:#17a2b8;
                                                     color:white;
                                                     width:120px;
                                                     height:35px;
                                                     font-size:13px;
                                                     border-radius:8px;
-                                                  ">
+                                                ">
 
                                                 Laki-Laki
 
@@ -271,15 +412,16 @@
 
                                         @else
 
-                                            <span class="badge d-inline-flex justify-content-center align-items-center"
-                                                  style="
+                                            <span
+                                                class="badge d-inline-flex justify-content-center align-items-center"
+                                                style="
                                                     background:#e83e8c;
                                                     color:white;
                                                     width:120px;
                                                     height:35px;
                                                     font-size:13px;
                                                     border-radius:8px;
-                                                  ">
+                                                ">
 
                                                 Perempuan
 
