@@ -509,6 +509,8 @@
         action="{{ route('absensi.store') }}">
 
         @csrf
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
 
         {{-- TABLE --}}
         <div class="card shadow-sm">
@@ -827,5 +829,56 @@
     // SAAT HALAMAN LOAD
     window.addEventListener('load', filterKelas);
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
 
+        if (!navigator.geolocation) {
+
+            alert('Browser tidak mendukung GPS');
+            return;
+
+        }
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                document.getElementById('latitude').value =
+                    position.coords.latitude;
+
+                document.getElementById('longitude').value =
+                    position.coords.longitude;
+
+                console.log(
+                    'Latitude:',
+                    position.coords.latitude
+                );
+
+                console.log(
+                    'Longitude:',
+                    position.coords.longitude
+                );
+
+            },
+
+            function(error) {
+
+                alert(
+                    'GPS harus diaktifkan untuk melakukan absensi'
+                );
+
+                console.log(error);
+
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+
+        );
+
+    });
+</script>
 @endsection

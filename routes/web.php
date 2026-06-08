@@ -33,6 +33,7 @@ use App\Http\Controllers\Master\ControllerLibur;
 
 use App\Http\Controllers\Transaksi\ControllerAbsensi;
 use App\Http\Controllers\Transaksi\ControllerDetailAbsensi;
+use App\Http\Controllers\Laporan\ControllerKoreksiAbsensi;
 
 use App\Http\Controllers\Laporan\ControllerLaporan;
 use App\Services\WhatsappService;
@@ -263,6 +264,21 @@ Route::middleware(['auth', 'role:admin,guru'])
             Route::resource('detailabsensi', ControllerDetailAbsensi::class);
         });
 
+        /*
+|--------------------------------------------------------------------------
+| KOREKSI ABSENSI
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/koreksi-absensi',
+    [ControllerKoreksiAbsensi::class, 'index']
+)->name('koreksi.absensi.index');
+
+Route::post(
+    '/koreksi-absensi/update/{id}',
+    [ControllerKoreksiAbsensi::class, 'update']
+)->name('koreksi.absensi.update');
         /*
 |--------------------------------------------------------------------------
 | LAPORAN

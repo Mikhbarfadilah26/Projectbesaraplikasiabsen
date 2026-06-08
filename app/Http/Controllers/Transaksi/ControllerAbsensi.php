@@ -335,21 +335,56 @@ class ControllerAbsensi extends Controller
     {
         /*
         |--------------------------------------------------------------------------
-        | VALIDASI
+        | VALIDASI INPUT DATA & LOKASI
         |--------------------------------------------------------------------------
         */
 
         $request->validate([
-
-            'siswaid' => 'required|array',
-
-            'tanggal' => 'required|date',
-
-            'kelasid' => 'required',
-
-            'status' => 'required|array',
-
+            'siswaid'   => 'required|array',
+            'tanggal'   => 'required|date',
+            'kelasid'   => 'required',
+            'status'    => 'required|array',
+            'latitude'  => 'required', // Wajib dikirim dari blade via Geolocation API
+            'longitude' => 'required', // Wajib dikirim dari blade via Geolocation API
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDASI RADIUS LOKASI (MAKSIMAL 500 METER)
+        |--------------------------------------------------------------------------
+        */
+
+        // Koordinat Sekolah (SMK Negeri 1 Karang Baru) yang kamu berikan
+        $latitudeSekolah  = 4.2982975;
+        $longitudeSekolah = 98.040155;
+
+        // Koordinat Guru yang dikirim dari form blade
+        $latitudeGuru  = $request->latitude;
+        $longitudeGuru = $request->longitude;
+
+        // Hitung jarak menggunakan formula Haversine
+        $earthRadius = 6371000; // Jari-jari bumi dalam satuan METER
+
+        $latDelta = deg2rad($latitudeGuru - $latitudeSekolah);
+        $lonDelta = deg2rad($longitudeGuru - $longitudeSekolah);
+
+        $a = sin($latDelta / 2) * sin($latDelta / 2) +
+             cos(deg2rad($latitudeSekolah)) * cos(deg2rad($latitudeGuru)) *
+             sin($lonDelta / 2) * sin($lonDelta / 2);
+        
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $jarak = $earthRadius * $c; // Hasil akhir dalam meter
+
+        // Jika jarak guru ke sekolah lebih dari 500 meter, batalkan absensi
+        if ($jarak > 500) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'Gagal! Anda berada di luar radius sekolah (' . round($jarak) . ' meter dari sekolah). Absensi hanya dapat dilakukan di area sekolah.'
+                );
+        }
 
         /*
         |--------------------------------------------------------------------------

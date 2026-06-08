@@ -69,6 +69,9 @@
         border-radius: 14px;
         font-weight: 600;
         transition: .2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .modern-btn:hover {
@@ -198,8 +201,19 @@
         margin-bottom: 15px;
     }
 
-    @media print {
+    /* Pembungkus tombol flex agar tidak patah keluar jalur */
+    .action-button-group {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+    }
 
+    .action-button-group .btn {
+        flex: 1;
+        white-space: nowrap;
+    }
+
+    @media print {
         .main-sidebar,
         .main-header,
         .main-footer,
@@ -240,217 +254,130 @@
 
     {{-- HEADER --}}
     <div class="laporan-header mb-4">
-
         <div class="d-flex justify-content-between align-items-center flex-wrap">
-
             <div>
-
                 <h2 class="font-weight-bold mb-2">
                     <i class="fas fa-chart-line mr-2"></i>
                     Laporan Absensi Siswa
                 </h2>
-
                 <p class="mb-0 opacity-75">
                     Rekap data kehadiran siswa berdasarkan tanggal dan kelas
                 </p>
-
             </div>
 
             <div class="mt-3 mt-md-0 no-print">
-
                 <a href="{{ route('laporan.absensi') }}?export=pdf"
                     target="_blank"
                     class="btn btn-light modern-btn px-4">
-
                     <i class="fas fa-file-pdf text-danger mr-1"></i>
                     Export PDF
-
                 </a>
 
                 <button onclick="window.print()"
                     class="btn btn-dark modern-btn px-4 ml-2">
-
                     <i class="fas fa-print mr-1"></i>
                     Print
-
                 </button>
-
             </div>
-
         </div>
-
     </div>
 
     {{-- FILTER --}}
     <div class="card laporan-card no-print mb-4">
-
         <div class="card-body">
-
             <form method="GET">
-
                 <div class="row">
-
                     {{-- TANGGAL --}}
                     <div class="col-md-3 mb-3">
-
-                        <label class="font-weight-bold">
-                            Tanggal
-                        </label>
-
+                        <label class="font-weight-bold">Tanggal</label>
                         <input type="date"
                             name="tanggal"
                             value="{{ request('tanggal') }}"
                             class="form-control modern-input">
-
                     </div>
 
                     {{-- KELAS --}}
                     <div class="col-md-3 mb-3">
-
-                        <label class="font-weight-bold">
-                            Kelas
-                        </label>
-
+                        <label class="font-weight-bold">Kelas</label>
                         <select name="kelasid"
                             class="form-control modern-input">
-
-                            <option value="">
-                                -- Semua Kelas --
-                            </option>
-
+                            <option value="">-- Semua Kelas --</option>
                             @foreach($kelas as $k)
-
                                 <option value="{{ $k->id }}"
                                     {{ request('kelasid') == $k->id ? 'selected' : '' }}>
-
                                     {{ $k->namakelas }}
-
                                 </option>
-
                             @endforeach
-
                         </select>
-
                     </div>
 
                     {{-- STATUS --}}
                     <div class="col-md-3 mb-3">
-
-                        <label class="font-weight-bold">
-                            Status
-                        </label>
-
+                        <label class="font-weight-bold">Status</label>
                         <select name="status"
                             class="form-control modern-input">
-
-                            <option value="">
-                                -- Semua Status --
-                            </option>
-
-                            <option value="hadir"
-                                {{ request('status') == 'hadir' ? 'selected' : '' }}>
-                                Hadir
-                            </option>
-
-                            <option value="izin"
-                                {{ request('status') == 'izin' ? 'selected' : '' }}>
-                                Izin
-                            </option>
-
-                            <option value="sakit"
-                                {{ request('status') == 'sakit' ? 'selected' : '' }}>
-                                Sakit
-                            </option>
-
-                            <option value="alpha"
-                                {{ request('status') == 'alpha' ? 'selected' : '' }}>
-                                Alpha
-                            </option>
-
+                            <option value="">-- Semua Status --</option>
+                            <option value="hadir" {{ request('status') == 'hadir' ? 'selected' : '' }}>Hadir</option>
+                            <option value="izin" {{ request('status') == 'izin' ? 'selected' : '' }}>Izin</option>
+                            <option value="sakit" {{ request('status') == 'sakit' ? 'selected' : '' }}>Sakit</option>
+                            <option value="alpha" {{ request('status') == 'alpha' ? 'selected' : '' }}>Alpha</option>
                         </select>
-
                     </div>
 
-                    {{-- BUTTON --}}
+                    {{-- BUTTONS (DI-PERBAIKI DISINI) --}}
                     <div class="col-md-3 mb-3 d-flex align-items-end">
+                        <div class="action-button-group">
+                            <button type="submit" class="btn btn-primary modern-btn">
+                                <i class="fas fa-search mr-1"></i> Filter Data
+                            </button>
 
-                        <button class="btn btn-primary modern-btn btn-block">
-
-                            <i class="fas fa-search mr-1"></i>
-                            Filter Data
-
-                        </button>
-
+                            <a href="{{ route('koreksi.absensi.index') }}" class="btn btn-warning modern-btn">
+                                <i class="fas fa-edit mr-1"></i> Koreksi
+                            </a>
+                        </div>
                     </div>
-
                 </div>
-
             </form>
-
         </div>
-
     </div>
 
     {{-- REKAP --}}
     <div class="row no-print mb-4">
-
         <div class="col-md-3 mb-3">
-
             <div class="stat-card bg-hadir">
-
                 <h2>{{ $rekap['hadir'] ?? 0 }}</h2>
                 <p>Total Hadir</p>
-
             </div>
-
         </div>
 
         <div class="col-md-3 mb-3">
-
             <div class="stat-card bg-izin">
-
                 <h2>{{ $rekap['izin'] ?? 0 }}</h2>
                 <p>Total Izin</p>
-
             </div>
-
         </div>
 
         <div class="col-md-3 mb-3">
-
             <div class="stat-card bg-sakit">
-
                 <h2>{{ $rekap['sakit'] ?? 0 }}</h2>
                 <p>Total Sakit</p>
-
             </div>
-
         </div>
 
         <div class="col-md-3 mb-3">
-
             <div class="stat-card bg-alpha">
-
                 <h2>{{ $rekap['alpha'] ?? 0 }}</h2>
                 <p>Total Alpha</p>
-
             </div>
-
         </div>
-
     </div>
 
     {{-- TABEL --}}
     <div class="card laporan-card">
-
         <div class="card-body table-responsive p-0">
-
-            <table class="table modern-table">
-
+            <table class="table table-hover modern-table">
                 <thead>
-
                     <tr>
-
                         <th>No</th>
                         <th>Nama Siswa</th>
                         <th>NIS</th>
@@ -458,119 +385,61 @@
                         <th>Jurusan</th>
                         <th>Tanggal</th>
                         <th>Status</th>
-
                     </tr>
-
                 </thead>
-
                 <tbody>
-
                     @forelse($data as $d)
-
                     <tr>
-
                         <td width="60">
                             {{ $loop->iteration }}
                         </td>
-
                         <td class="font-weight-bold">
                             {{ $d->siswa->nama ?? '-' }}
                         </td>
-
                         <td>
                             {{ $d->siswa->nis ?? '-' }}
                         </td>
-
-                        {{-- KELAS --}}
                         <td>
-
                             <span class="kelas-badge">
-
                                 {{ $d->kelas->namakelas ?? '-' }}
-
                             </span>
-
                         </td>
-
-                        {{-- JURUSAN --}}
                         <td>
-
                             {{ $d->kelas->jurusan->namajurusan ?? '-' }}
-
                         </td>
-
-                        {{-- TANGGAL --}}
                         <td>
-
                             {{ \Carbon\Carbon::parse($d->tanggal)->translatedFormat('d F Y') }}
-
                         </td>
-
-                        {{-- STATUS --}}
                         <td>
-
                             @if($d->status == 'hadir')
-
-                                <span class="badge-modern badge-hadir">
-                                    Hadir
-                                </span>
-
+                                <span class="badge-modern badge-hadir">Hadir</span>
                             @elseif($d->status == 'izin')
-
-                                <span class="badge-modern badge-izin">
-                                    Izin
-                                </span>
-
+                                <span class="badge-modern badge-izin">Izin</span>
                             @elseif($d->status == 'sakit')
-
-                                <span class="badge-modern badge-sakit">
-                                    Sakit
-                                </span>
-
+                                <span class="badge-modern badge-sakit">Sakit</span>
                             @else
-
-                                <span class="badge-modern badge-alpha">
-                                    Alpha
-                                </span>
-
+                                <span class="badge-modern badge-alpha">Alpha</span>
                             @endif
-
                         </td>
-
                     </tr>
-
                     @empty
-
                     <tr>
-
                         <td colspan="7">
-
                             <div class="empty-state text-center">
-
                                 <i class="fas fa-folder-open"></i>
-
                                 <h5 class="font-weight-bold text-muted">
                                     Data laporan belum tersedia
                                 </h5>
-
                                 <small class="text-muted">
                                     Silakan lakukan filter atau input absensi terlebih dahulu
                                 </small>
-
                             </div>
-
                         </td>
-
                     </tr>
-
                     @endforelse
-
                 </tbody>
-
             </table>
-
         </div>
-
     </div>
 
 </div>
